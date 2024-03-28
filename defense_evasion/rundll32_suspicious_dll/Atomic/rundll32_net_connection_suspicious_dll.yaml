@@ -21,7 +21,7 @@ atomic_tests:
     prereq_command: |
       if (Test-Path "#{dll_path}") {exit 0} else {exit 1}
     get_prereq_command: |
-      Invoke-WebRequest "" -OutFile "#{dll_path}" # add inova github link
+      Invoke-WebRequest "https://github.com/Inovasys-CS/Detect-Map/raw/main/defense_evasion/rundll32_suspicious_dll/Atomic/bin/Dll1.dll" -OutFile "#{dll_path}"
   executor:
     command: |
       rundll32.exe #{dll_path},SendHttpGetRequest
@@ -46,7 +46,7 @@ atomic_tests:
     prereq_command: |
       if (Test-Path "#{dll_file_path}") {exit 0} else {exit 1}
     get_prereq_command: |
-      Invoke-WebRequest "" -OutFile "#{dll_file_path}" # add inova github link
+      Invoke-WebRequest "https://github.com/Inovasys-CS/Detect-Map/raw/main/defense_evasion/rundll32_suspicious_dll/Atomic/bin/popup.dll" -OutFile "#{dll_file_path}"
   executor:
     command: |
       rundll32.exe #{dll_file_path},1
