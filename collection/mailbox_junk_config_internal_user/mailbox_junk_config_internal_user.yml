@@ -1,0 +1,22 @@
+title: Internal User Added to Junk Config
+id: f510fe67-9325-448f-a97c-6a68fbafb43d
+status: experimental
+description: Detects the use of Set-MailboxJunkEmailConfiguration to add an internal user to blocked users, this might occur during account takeover.
+references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
+tags: 
+  - attack.collection
+  - attack.t1114.003
+  - attack.resource_development
+  - attack.t1586.002
+author: Inovasys
+date: 2024/03/26
+level: high
+Language: KQL
+Prerequisites: CloudAppEvents
+Query: |
+'let internal_domain = "@example.com"; // Add desired internal domain here
+CloudAppEvents
+| where Application == "Microsoft Exchange Online"
+| where ActionType == "Set-MailboxJunkEmailConfiguration"
+| mv-expand ActivityObjects
+| where ActivityObjects["Name"] == "BlockedSendersAndDomains" and ActivityObjects["Value"] contains internal_domain'

@@ -1,0 +1,19 @@
+title: Inbox Rule Manipulation From Suspicious Country
+id: 3b0724da-5980-460a-beec-3967bba6741a
+status: experimental
+description: Detects inbox rule modification with from an IP in a suspicious country.
+references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
+tags: 
+  - attack.collection
+  - attack.t1114.003
+author: Inovasys
+date: 2024/03/27
+level: medium 
+Language: KQL
+Prerequisites: CloudAppEvents
+Query: |
+'let countries = dynamic(["US","AT"]); //Add countries that you operate in
+CloudAppEvents
+| where Application == "Microsoft Exchange Online"
+| where ActionType == @"UpdateInboxRules"
+| where not(CountryCode in (countries))'

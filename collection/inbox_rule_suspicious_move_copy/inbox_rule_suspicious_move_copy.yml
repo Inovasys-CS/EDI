@@ -1,0 +1,33 @@
+title: Suspicious Inbox Rule Move/Copy Destination
+id: 3c6958a4-a2e1-4664-a623-be7f2d9e53c6
+status: experimental
+description: Detects inbox rule modification with move/copy action to suspicious folder.
+references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
+tags: 
+  - attack.collection
+  - attack.t1114.003
+author: Inovasys
+date: 2024/03/26
+level: medium
+Language: KQL
+Prerequisites: CloudAppEvents
+Query: |
+'let suspicious_locations = dynamic(["RSS Feeds","RSS Subscriptions","Archive","Deleted Items","Conversation History"]);
+CloudAppEvents
+| where Application == "Microsoft Exchange Online"
+| where ActionType == @"UpdateInboxRules"
+| mv-expand ActivityObjects
+| where ActivityObjects["Name"] == "RuleActions" and ActivityObjects["Value"] != "" 
+| where ActivityObjects["Value"] contains '"Move"'
+| extend Value = parse_json(tostring(ActivityObjects["Value"]))  // This workaround was the only way to get the field to parse correctly, not sure why
+| extend DestinationFolder = tostring(parse_json(Value)[0]["DestinationFolderId"])
+| project DestinationFolder, AccountId
+| join kind=inner(
+CloudAppEvents
+| where Application == "Microsoft Exchange Online" and ActionType == "Create"
+| extend Item = RawEventData["Item"]["ParentFolder"]
+| extend Id = tostring(Item["Id"])
+| extend Name = tostring(Item["Path"])
+| project Name,Id, AccountId) on $left.DestinationFolder == $right.Id,AccountId
+| distinct Name,Id,AccountId
+| where Name has_any (suspicious_locations) '
