@@ -26,6 +26,7 @@ rules:
     - execution/cmd_bypassing_security_controls
     - execution/CMD_from_explorer_with_start_command
     - execution/CMD_unusual_or_suspicious_process_ancestry
+    - execution/Office_application_spawning_another_process
     - execution/WMIC_execute_other_process
     - execution/WMIC_loading_scripting_libraries
     - execution/wmiprvse_spawning_suspicious_child_processes

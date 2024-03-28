@@ -1,0 +1,106 @@
+title: Office application spawning another process.
+id: a1eea5ad-d98a-4196-807d-4e9b2591ccd7
+status: experimental
+description: Detects an office application spawning another process.
+references:
+    - https://lolbas-project.github.io/#execut
+
+author: Inovasys
+date: 2023/8/28
+tags:
+    - attack.execution
+    - attack.ta0002
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    office_parent_Image:
+        ParentImage|endswith:
+            - '\excel.exe'
+            - '\winword.exe'
+            - '\powerpnt.exe'
+            - '\PPTVIEW.exe'
+            - '\outlook.exe'
+            - '\msaccess.exe'
+            - '\mspub.exe'
+            - '\eqnedt32.exe'
+
+    suspicious_child_schtasks:
+        - Image|endswith: '\Schtasks.exe'
+        - OriginalFileName: 'schtasks.exe'
+
+    suspicious_child_cmd:
+        - Image|endswith: '\Cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+
+    suspicious_child_certutil:
+        - Image|endswith: '\Certutil.exe'
+        - OriginalFileName: 'CertUtil.exe'
+
+    suspicious_child_mshta:
+        - Image|endswith: '\Mshta.exe'
+        - OriginalFileName: 'MSHTA.EXE'
+
+    suspicious_child_Wmic:
+        - Image|endswith: '\Wmic.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    suspicious_child_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.exe'
+
+    suspicious_child_ping:
+        - Image|endswith: '\PING.EXE'
+        - OriginalFileName: 'PING.EXE'
+
+    suspicious_child_sysinfo:
+        - Image|endswith: '\systeminfo.exe'
+        - OriginalFileName: 'sysinfo.exe'
+
+    suspicious_child_tasklist:
+        - Image|endswith: '\tasklist.exe'
+        - OriginalFileName: 'tasklist.exe'
+
+    suspicious_child_tracert:
+        - Image|endswith: '\TRACERT.EXE'
+        - OriginalFileName: 'tracert.exe'
+
+    suspicious_child_netstat:
+        - Image|endswith: '\netstat.exe'
+        - OriginalFileName: 'sysinfo.exe'
+
+    suspicious_child_netsh:
+        - Image|endswith: '\netsh.exe'
+        - OriginalFileName: 'netsh.exe'
+
+    suspicious_child_reg:
+        - Image|endswith: '\reg.exe'
+        - OriginalFileName: 'reg.exe'
+
+    suspicious_child_rundll32:
+        - Image|endswith: '\Rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+
+    suspicious_child_msbuild:
+        - Image|endswith: '\Msbuild.exe'
+        - OriginalFileName: 'MSBuild.exe'
+
+    suspicious_child_wscript:
+        - Image|endswith: '\Wscript.exe'
+        - OriginalFileName: 'wscript.exe'
+
+    suspicious_child_Cscript:
+        - Image|endswith: '\Cscript.exe'
+        - OriginalFileName: 'cscript.exe'
+
+    suspicious_child_Regsvr32:
+        - Image|endswith: '\Regsvr32.exe'
+        - OriginalFileName: 'REGSVR32.EXE'
+
+    condition: office_parent_Image and 1 of suspicious_child_*
+
+falsepositives:
+    - unknow
+level: high
