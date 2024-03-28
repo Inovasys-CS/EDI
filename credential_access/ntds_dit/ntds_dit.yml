@@ -1,0 +1,81 @@
+title: NTDS.dit Copy using ESENTUTL VSS Shadow Copy
+id: 01d57e7d-9f9e-496b-9dbd-2e0b84322100
+status: experimental
+description: Detects copy of NTDS.dit via esentutl via shadow copy
+references:
+    - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
+    - https://lolbas-project.github.io/lolbas/Binaries/Esentutl/
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    copy_ntds_file:
+        Image|endswith: '\esentutl.exe'
+        CommandLine|contains|all: 
+            - '/y'
+            - 'ntds.dit'
+            - '/vss'
+    condition: copy_ntds_file
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high
+---
+title: NTDSUtil execution
+id: 5fe43575-3919-4956-9505-34972dbc0dea
+status: experimental
+description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
+references:
+    - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    ntdsutil_execution:
+        Image|endswith: '\ntdsutil.exe'
+        CommandLine|contains|all:
+            - 'ifm'
+            - 'ntds'
+    condition: ntdsutil_execution
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file.
+level: high
+---
+title: NTDS.dit Exfiltration VSS Shadow Copy WMI Sysmon
+id: 21a640ab-1c10-4d25-8d92-6097f4675c92
+status: experimental
+description: Detects exfiltration of NTDS.dit via vss shadow copy using WMI.
+references:
+    - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    service: sysmon
+    category: process_creation
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+detection: 
+    copy_ntds_file:
+        EventID: 1
+        ParentImage: 'C:\Windows\system32\wbem\wmiprvse.exe'
+        CommandLine|contains|all: 
+            - 'NTDS.dit'
+            - 'HarddiskVolumeShadowCopy'
+    condition: copy_ntds_file
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high
