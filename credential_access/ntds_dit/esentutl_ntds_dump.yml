@@ -1,0 +1,27 @@
+title: NTDS.dit Copy using ESENTUTL VSS Shadow Copy
+id: 01d57e7d-9f9e-496b-9dbd-2e0b84322100
+status: experimental
+description: Detects copy of NTDS.dit via esentutl via shadow copy
+references:
+    - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
+    - https://lolbas-project.github.io/lolbas/Binaries/Esentutl/
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    copy_ntds_file:
+        Image|endswith: '\esentutl.exe'
+        CommandLine|contains|all: 
+            - '/y'
+            - 'ntds.dit'
+            - '/vss'
+    condition: copy_ntds_file
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high

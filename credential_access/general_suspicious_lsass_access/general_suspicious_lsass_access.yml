@@ -1,0 +1,31 @@
+title: LSASS Suspicious Access
+id: 8ce921d8-e16b-4f5a-a3cf-66dc187fc4b4
+status: experimental
+description: Detects general suspicious LSASS Access.
+references:
+    - https://www.deepinstinct.com/blog/lsass-memory-dumps-are-stealthier-than-ever-before
+
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+
+author: Inovasys
+date: 2023/08/22
+
+logsource:
+    product: windows
+    category: process_access
+detection:
+    lsass_accessed:
+        GrantedAccess: 
+            - '0x1FFFFF'  # ALL_PROCESS_ACCESS
+            - '0x1080'  # PROCESS_CREATE_PROCESS, PROCESS_QUERY_LIMITED_INFORMATION
+            - '0x1010'  # PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_VM_READ
+            - '0x1438'  # PROCESS_QUERY_INFORMATION, PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_VM_READ, PROCESS_VM_WRITE, PROCESS_VM_OPERATION
+            - '0x143A'  # PROCESS_QUERY_INFORMATION, PROCESS_QUERY_LIMITED_INFORMATION, PROCESS_VM_READ, PROCESS_VM_WRITE, PROCESS_VM_OPERATION, Process_CREATE_THREAD
+        TargetImage: 'C:\Windows\system32\lsass.exe'
+    condition: lsass_accessed
+falsepositives:
+    - Legitimate dump of lsass.exe by admins
+
+level: high

@@ -1,0 +1,28 @@
+title: Rundll32 Execution without Command Line Args
+id: 2ce52f22-8c9f-4784-8fc4-e8c5c0d1e65a
+status: experimental
+description: Detects the execution of Rundll32 without any command line arguments, which is a sign of process injection. 
+references:
+    - https://redcanary.com/threat-detection-report/techniques/rundll32/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1055
+
+author: Inovasys
+date: 2024/03/27
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    rundll32_exec:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    rundll32_commandline:
+        CommandLine: ''
+    condition: all of rundll32_*
+falsepositives:
+    - Unknown
+
+level: high

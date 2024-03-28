@@ -1,0 +1,35 @@
+title: Bits Cmdlet Download
+id: ec627e5f-29f6-41b9-b2db-9b75d8448f37
+status: experimental
+description: Detect usage of BITS Commandlets to download files from a remote server. 
+references:
+    - https://www.ired.team/offensive-security/persistence/t1197-bits-jobs
+    - https://lolbas-project.github.io/lolbas/Binaries/Bitsadmin/
+
+tags:
+    - attack.command_and_control
+    - attack.t1105
+
+author: Inovasys
+date: 2023/10/04
+
+logsource:
+    product: windows
+    service: ps_script
+detection:
+    bits_cmdlet_upload:
+        ScriptBlockText|contains|all: 
+            - '-Source "http'
+            - '-Source http'
+            - "-Source 'http"
+    bits_cmdlet_start:
+        ScriptBlockText|contains: 'Start-BitsTransfer'
+    
+    condition: bits_cmdlet_upload
+
+falsepositives:
+    - Legitimate transfer by admins, however this technique is not seen frequently and should be investigated
+fields:
+    - ScriptBlockText
+    
+level: medium

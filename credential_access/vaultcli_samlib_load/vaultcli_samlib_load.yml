@@ -1,0 +1,35 @@
+title: Vaultcli/Samlib DLL Load
+id: b6bc2063-a115-433b-925f-25221e995efc
+status: experimental
+description: Detects the load of vaultcli or samlib dlls. 
+references:
+    - https://redcanary.com/threat-detection-report/techniques/rundll32/
+
+tags:
+    - attack.credential_access
+    - attack.t1003
+
+author: Inovasys
+date: 2024/03/27
+
+logsource:
+    product: windows
+    category: image_load
+detection:
+    load_vaultcli:
+        - ImageLoaded|endswith: '\vaultcli.dll'
+        - OriginalFileName: 'vaultcli.dll'
+    load_samlib:
+        - ImageLoaded|endswith: '\samlib.dll'
+        - OriginalFileName: 'SAMLib.DLL'
+    filter_priviliged_dirs:
+        Image|startswith: 
+            - 'C:\Windows\'
+            - 'C:\Program Files\'
+            - 'C:\Program Files (x86)\'
+
+    condition: 1 of load_* and not filter_priviliged_dirs
+falsepositives:
+    - Unknown
+
+level: high

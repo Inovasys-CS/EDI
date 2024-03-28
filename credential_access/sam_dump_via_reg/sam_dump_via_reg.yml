@@ -1,0 +1,29 @@
+title: Registry Dump of SAM Creds and Secrets
+id: f6d69f00-ecd2-438d-8ad6-325ebfa0577e
+status: experimental
+description: Adversaries may attempt to extract credential material from the Security Account Manager (SAM) database either through Windows Registry where the SAM database is stored
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1003.002/T1003.002.md#atomic-test-1---registry-dump-of-sam-creds-and-secrets
+author: Inovasys
+date: 2023/10/25
+tags:
+    - attack.credential_access
+    - attack.t1003.002
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    process_creation:
+        - Image|endswith: '\reg.exe'
+        - OriginalFileName: 'reg.exe'
+    command_line1:
+        CommandLine|contains: 'save'
+    command_line2:
+        CommandLine|contains:
+            - 'HKLM\sam'
+            - 'HKLM\system'
+            - 'HKLM\security'
+    condition: process_creation and command_line1 and command_line2
+falsepositives:
+    - Unknown
+level: high

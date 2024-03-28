@@ -1,0 +1,28 @@
+title: NTDS.dit Exfiltration VSS Shadow Copy WMI Sysmon
+id: 21a640ab-1c10-4d25-8d92-6097f4675c92
+status: experimental
+description: Detects exfiltration of NTDS.dit via vss shadow copy using WMI.
+references:
+    - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    service: sysmon
+    category: process_creation
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+detection: 
+    copy_ntds_file:
+        EventID: 1
+        ParentImage: 'C:\Windows\system32\wbem\wmiprvse.exe'
+        CommandLine|contains|all: 
+            - 'NTDS.dit'
+            - 'HarddiskVolumeShadowCopy'
+    condition: copy_ntds_file
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high

@@ -1,0 +1,40 @@
+title: LSASS Mimikatz Access
+id: 3ca4f257-68e3-4779-bdc7-78b5f6d62e4f
+status: experimental
+description: Detects suspicious LSASS Access from Mimikatz via Sysmon.
+references:
+    - https://www.deepinstinct.com/blog/lsass-memory-dumps-are-stealthier-than-ever-before
+    - https://book.hacktricks.xyz/windows-hardening/stealing-credentials/credentials-mimikatz
+
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+
+author: Inovasys
+date: 2023/08/22
+
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    mimikatz_launched_original_name:
+        - Image|endswith: '\mimikatz.exe'
+        - OriginalFileName: 'mimikatz.exe'
+    mimikatz_company:
+        Company: 'gentilkiwi (Benjamin DELPY)' 
+    mimikatz_access_commands:
+        CommandLine|endswith: 
+            - 'sekurlsa::logonpasswords'
+            - 'lsadump::lsa'
+            - 'lsadump::sam'
+            - 'lsadump::setntlm'
+            - 'lsadump::secrets'
+            - 'privilege::debug'
+            - 'sekurlsa::minidump'
+            - 'kerberos::golden'
+            - 'kerberos::ptt'
+    condition: 1 of mimikatz_*
+falsepositives:
+    - None
+
+level: high

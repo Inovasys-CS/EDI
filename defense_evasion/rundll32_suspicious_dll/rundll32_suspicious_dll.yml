@@ -1,0 +1,50 @@
+title: Rundll32 Abnormal Dll
+id: e4ae442c-801b-4525-9a87-47018611278a
+status: experimental
+description: Detects a rundll32.exe instance that loads abnormal dlls
+references:
+    - https://redcanary.com/threat-detection-report/techniques/rundll32/
+    - https://www.cybereason.com/blog/rundll32-the-infamous-proxy-for-executing-malicious-code
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.011
+
+author: Inovasys
+date: 2023/09/17
+
+logsource:
+    product: windows
+    category: image_load
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+detection:
+    rundll32_loads:
+        Image|endswith: '\rundll32.exe'
+    legitimate_dlls:
+        Signature: 'Microsoft Windows'
+        SignatureStatus: 'Valid'
+    suspicious_signed_dlls:
+        ImageLoaded|endswith:
+            - '\advpack.dll'
+            - '\dfshim.dll'
+            - '\ieadvpack.dll'
+            - '\ieframe.dll'
+            - '\mshtml.dll'
+            - '\pcwutl.dll'
+            - '\scrobj.dll'
+            - '\shdocvw.dll'
+            - '\shell32.dll'
+            - '\shimgvw.dll'
+            - '\syssetup.dll'
+            - '\setupapi.dll'
+            - '\url.dll'
+            - '\zipfldr.dll'
+            - '\comsvcs.dll' 
+    condition: (suspicious_signed_dlls and rundll32_loads) or (rundll32_loads and not legitimate_dlls)
+
+falsepositives:
+    - Legitimate third-party dlls
+    - Legitimate use of blacklisted dlls
+fields:
+    - ImageLoaded
+level: medium

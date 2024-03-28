@@ -1,0 +1,24 @@
+title: NTDSUtil execution
+id: 5fe43575-3919-4956-9505-34972dbc0dea
+status: experimental
+description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
+references:
+    - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
+author: Inovasys
+date: 2023/09/03
+tags:
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    ntdsutil_execution:
+        Image|endswith: '\ntdsutil.exe'
+        CommandLine|contains|all:
+            - 'ifm'
+            - 'ntds'
+    condition: ntdsutil_execution
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file.
+level: high

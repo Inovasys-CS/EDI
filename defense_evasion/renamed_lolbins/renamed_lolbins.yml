@@ -1,0 +1,732 @@
+title: Renamed Lolbins Exeution
+id: 39b5e9e6-ad6f-461f-b547-ccbd2312b75c
+status: experimental
+description: Detects execution of renamed lolbins executables
+references:
+    - https://lolbas-project.github.io
+author: Inovasys
+date: 2023/10/29
+tags:
+    - attack.defense_evasion
+    - attack.t1036.003
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    renamed_AddinUtil:
+        Image|endswith: '\AddinUtil.exe'
+    original_name_AddinUtil:
+        OriginalFileName: 'AddInUtil.exe'
+
+    renamed_Aspnet_Compiler:
+        Image|endswith: '\Aspnet_Compiler.exe'
+    original_name_Aspnet_Compiler:
+        OriginalFileName: 'aspnet_compiler.exe'
+
+    renamed_At:
+        Image|endswith: '\At.exe'
+    original_name_At:
+        OriginalFileName: 'AT.EXE'
+
+    renamed_Atbroker:
+        Image|endswith: '\Atbroker.exe'
+    original_name_Atbroker:
+        OriginalFileName: 'ATBroker.exe'
+
+    renamed_Bash:
+        Image|endswith: '\Bash.exe'
+    original_name_Bash:
+        OriginalFileName: 'Bash.exe'
+
+    renamed_Bitsadmin:
+        Image|endswith: '\Bitsadmin.exe'
+    original_name_Bitsadmin:
+        OriginalFileName: 'bitsadmin.exe'
+
+    renamed_CertReq:
+        Image|endswith: '\CertReq.exe'
+    original_name_CertReq:
+        OriginalFileName: 'CertReq.exe'
+
+    renamed_Certutil:
+        Image|endswith: '\Certutil.exe'
+    original_name_Certutil:
+        OriginalFileName: 'CertUtil.exe'
+
+    renamed_Cmd:
+        Image|endswith: '\Cmd.exe'
+    original_name_Cmd:
+        OriginalFileName: 'Cmd.Exe'
+
+    renamed_Cmdkey:
+        Image|endswith: '\Cmdkey.exe'
+    original_name_Cmdkey:
+        OriginalFileName: 'cmdkey.exe'
+
+    renamed_cmdl32:
+        Image|endswith: '\cmdl32.exe'
+    original_name_cmdl32:
+        OriginalFileName: 'CMDL32.EXE'
+
+    renamed_Cmstp:
+        Image|endswith: '\Cmstp.exe'
+    original_name_Cmstp:
+        OriginalFileName: 'CMSTP.EXE'
+
+    renamed_Colorcpl:
+        Image|endswith: '\Colorcpl.exe'
+    original_name_Colorcpl:
+        OriginalFileName: 'colorcpl.exe'
+
+    renamed_ConfigSecurityPolicy:
+        Image|endswith: '\ConfigSecurityPolicy.exe'
+    original_name_ConfigSecurityPolicy:
+        OriginalFileName: 'ConfigSecurityPolicy.exe'
+
+    renamed_Conhost:
+        Image|endswith: '\Conhost.exe'
+    original_name_Conhost:
+        OriginalFileName: 'CONHOST.EXE'
+
+    renamed_Control:
+        Image|endswith: '\Control.exe'
+    original_name_Control:
+        OriginalFileName: 'CONTROL.EXE'
+
+    renamed_Csc:
+        Image|endswith: '\Csc.exe'
+    original_name_Csc:
+        OriginalFileName: 'csc.exe'
+
+    renamed_Cscript:
+        Image|endswith: '\Cscript.exe'
+    original_name_Cscript:
+        OriginalFileName: 'cscript.exe'
+
+    renamed_CustomShellHost:
+        Image|endswith: '\CustomShellHost.exe'
+    original_name_CustomShellHost:
+        OriginalFileName: 'CustomShellHost.exe'
+
+    renamed_Desktopimgdownldr:
+        Image|endswith: '\Desktopimgdownldr.exe'
+    original_name_Desktopimgdownldr:
+        OriginalFileName: 'desktopimgdownldr.exe'
+
+    renamed_DeviceCredentialDeployment:
+        Image|endswith: '\DeviceCredentialDeployment.exe'
+    original_name_DeviceCredentialDeployment:
+        OriginalFileName: '"DeviceCredentialDeployment.exe"'
+
+    renamed_Dfsvc:
+        Image|endswith: '\Dfsvc.exe'
+    original_name_Dfsvc:
+        OriginalFileName: 'dfsvc.exe'
+
+    renamed_Esentutl:
+        Image|endswith: '\Esentutl.exe'
+    original_name_Esentutl:
+        OriginalFileName: 'esentutl.exe'
+
+    renamed_Eventvwr:
+        Image|endswith: '\Eventvwr.exe'
+    original_name_Eventvwr:
+        OriginalFileName: 'eventvwr.exe'
+
+    renamed_Expand:
+        Image|endswith: '\Expand.exe'
+    original_name_Expand:
+        OriginalFileName: 'expand'
+
+    renamed_Explorer:
+        Image|endswith: '\Explorer.exe'
+    original_name_Explorer:
+        OriginalFileName: 'EXPLORER.EXE'
+
+    renamed_Extexport:
+        Image|endswith: '\Extexport.exe'
+    original_name_Extexport:
+        OriginalFileName: 'extexport.exe'
+
+    renamed_Extrac32:
+        Image|endswith: '\Extrac32.exe'
+    original_name_Extrac32:
+        OriginalFileName: 'extrac32.exe'
+
+    renamed_Findstr:
+        Image|endswith: '\Findstr.exe'
+    original_name_Findstr:
+        OriginalFileName: 'FINDSTR.EXE'
+
+    renamed_Finger:
+        Image|endswith: '\Finger.exe'
+    original_name_Finger:
+        OriginalFileName: 'finger.exe'
+
+    renamed_fltMC:
+        Image|endswith: '\fltMC.exe'
+    original_name_fltMC:
+        OriginalFileName: 'fltMC.exe'
+
+    renamed_Forfiles:
+        Image|endswith: '\Forfiles.exe'
+    original_name_Forfiles:
+        OriginalFileName: 'forfiles.exe'
+
+    renamed_Ftp:
+        Image|endswith: '\Ftp.exe'
+    original_name_Ftp:
+        OriginalFileName: 'ftp.exe'
+
+    renamed_Gpscript:
+        Image|endswith: '\Gpscript.exe'
+    original_name_Gpscript:
+        OriginalFileName: 'GPSCRIPT.EXE'
+
+    renamed_Hh:
+        Image|endswith: '\Hh.exe'
+    original_name_Hh:
+        OriginalFileName: 'HH.exe'
+
+    renamed_IMEWDBLD:
+        Image|endswith: '\IMEWDBLD.exe'
+    original_name_IMEWDBLD:
+        OriginalFileName: 'imewdbld.exe'
+
+    renamed_Ie4uinit:
+        Image|endswith: '\Ie4uinit.exe'
+    original_name_Ie4uinit:
+        OriginalFileName: 'IE4UINIT.EXE'
+
+    renamed_iediagcmd:
+        Image|endswith: '\iediagcmd.exe'
+    original_name_iediagcmd:
+        OriginalFileName: 'IEDiagCmd.exe'
+
+    renamed_Ieexec:
+        Image|endswith: '\Ieexec.exe'
+    original_name_Ieexec:
+        OriginalFileName: 'IEExec.exe'
+
+    renamed_Ilasm:
+        Image|endswith: '\Ilasm.exe'
+    original_name_Ilasm:
+        OriginalFileName: 'ilasm.exe'
+
+    renamed_Infdefaultinstall:
+        Image|endswith: '\Infdefaultinstall.exe'
+    original_name_Infdefaultinstall:
+        OriginalFileName: 'InfDefaultInstall.EXE'
+
+    renamed_Installutil:
+        Image|endswith: '\Installutil.exe'
+    original_name_Installutil:
+        OriginalFileName: 'InstallUtil.exe'
+
+    renamed_Jsc:
+        Image|endswith: '\Jsc.exe'
+    original_name_Jsc:
+        OriginalFileName: 'jsc.exe'
+
+    renamed_Makecab:
+        Image|endswith: '\Makecab.exe'
+    original_name_Makecab:
+        OriginalFileName: 'makecab.exe'
+
+    renamed_Mavinject:
+        Image|endswith: '\Mavinject.exe'
+    original_name_Mavinject:
+        OriginalFileName: 'mavinject32.exe'
+
+    renamed_MicrosoftWorkflowCompiler:
+        Image|endswith: '\Microsoft.Workflow.Compiler.exe'
+    original_name_MicrosoftWorkflowCompiler:
+        OriginalFileName: 'Microsoft.Workflow.Compiler.exe'
+
+    renamed_Mmc:
+        Image|endswith: '\Mmc.exe'
+    original_name_Mmc:
+        OriginalFileName: 'mmc.exe'
+
+    renamed_Msbuild:
+        Image|endswith: '\Msbuild.exe'
+    original_name_Msbuild:
+        OriginalFileName: 'MSBuild.exe'
+
+    renamed_Msconfig:
+        Image|endswith: '\Msconfig.exe'
+    original_name_Msconfig:
+        OriginalFileName: 'msconfig.EXE'
+
+    renamed_Msdt:
+        Image|endswith: '\Msdt.exe'
+    original_name_Msdt:
+        OriginalFileName: 'msdt.exe'
+
+    renamed_Msedge:
+        Image|endswith: '\Msedge.exe'
+    original_name_Msedge:
+        OriginalFileName: 'msedge.exe'
+
+    renamed_Mshta:
+        Image|endswith: '\Mshta.exe'
+    original_name_Mshta:
+        OriginalFileName: 'MSHTA.EXE'
+
+    renamed_Msiexec:
+        Image|endswith: '\Msiexec.exe'
+    original_name_Msiexec:
+        OriginalFileName: 'msiexec.exe'
+
+    renamed_Netsh:
+        Image|endswith: '\Netsh.exe'
+    original_name_Netsh:
+        OriginalFileName: 'netsh.exe'
+
+    renamed_Odbcconf:
+        Image|endswith: '\Odbcconf.exe'
+    original_name_Odbcconf:
+        OriginalFileName: 'odbcconf.exe'
+
+    renamed_OfflineScannerShell:
+        Image|endswith: '\OfflineScannerShell.exe'
+    original_name_OfflineScannerShell:
+        OriginalFileName: 'OfflineScannerShell.exe'
+
+    renamed_Pcwrun:
+        Image|endswith: '\Pcwrun.exe'
+    original_name_Pcwrun:
+        OriginalFileName: 'pcwrun.exe'
+
+    renamed_Pktmon:
+        Image|endswith: '\Pktmon.exe'
+    original_name_Pktmon:
+        OriginalFileName: 'PktMon.exe'
+
+    renamed_Pnputil:
+        Image|endswith: '\Pnputil.exe'
+    original_name_Pnputil:
+        OriginalFileName: 'pnputil.exe'
+
+    renamed_Presentationhost:
+        Image|endswith: '\Presentationhost.exe'
+    original_name_Presentationhost:
+        OriginalFileName: 'PresentationHost.exe'
+
+    renamed_Print:
+        Image|endswith: '\Print.exe'
+    original_name_Print:
+        OriginalFileName: 'Print.Exe'
+
+    renamed_PrintBrm:
+        Image|endswith: '\PrintBrm.exe'
+    original_name_PrintBrm:
+        OriginalFileName: 'PrintBrm.exe'
+
+    renamed_Provlaunch:
+        Image|endswith: '\Provlaunch.exe'
+    original_name_Provlaunch:
+        OriginalFileName: 'provlaunch'
+
+    renamed_Psr:
+        Image|endswith: '\Psr.exe'
+    original_name_Psr:
+        OriginalFileName: 'psr.exe'
+
+    renamed_Rasautou:
+        Image|endswith: '\Rasautou.exe'
+    original_name_Rasautou:
+        OriginalFileName: 'rasdlui.exe'
+
+    renamed_rdrleakdiag:
+        Image|endswith: '\rdrleakdiag.exe'
+    original_name_rdrleakdiag:
+        OriginalFileName: 'RdrLeakDiag.exe'
+
+    renamed_Reg:
+        Image|endswith: '\Reg.exe'
+    original_name_Reg:
+        OriginalFileName: 'reg.exe'
+
+    renamed_Regasm:
+        Image|endswith: '\Regasm.exe'
+    original_name_Regasm:
+        OriginalFileName: 'RegAsm.exe'
+
+    renamed_Regedit:
+        Image|endswith: '\Regedit.exe'
+    original_name_Regedit:
+        OriginalFileName: 'REGEDIT.EXE'
+
+    renamed_Regini:
+        Image|endswith: '\Regini.exe'
+    original_name_Regini:
+        OriginalFileName: 'REGINI.EXE'
+
+    renamed_Register-cimprovider:
+        Image|endswith: '\Register-cimprovider.exe'
+    original_name_Register-cimprovider:
+        OriginalFileName:
+            - 'Register-CimProvider2.exe'
+            - 'renamed_Register-cimprovider'
+
+    renamed_Regsvr32:
+        Image|endswith: '\Regsvr32.exe'
+    original_name_Regsvr32:
+        OriginalFileName: 'REGSVR32.EXE'
+
+    renamed_Replace:
+        Image|endswith: '\Replace.exe'
+    original_name_Replace:
+        OriginalFileName: 'REPLACE.EXE'
+
+    renamed_Rpcping:
+        Image|endswith: '\Rpcping.exe'
+    original_name_Rpcping:
+        OriginalFileName: 'RpcPing.exe'
+
+    renamed_Rundll32:
+        Image|endswith: '\Rundll32.exe'
+    original_name_Rundll32:
+        OriginalFileName: 'RUNDLL32.EXE'
+
+    renamed_Runexehelper:
+        Image|endswith: '\Runexehelper.exe'
+    original_name_Runexehelper:
+        OriginalFileName: 'RunExeHelper.exe'
+
+    renamed_Runonce:
+        Image|endswith: '\Runonce.exe'
+    original_name_Runonce:
+        OriginalFileName: 'RUNONCE.EXE'
+
+    renamed_Sc:
+        Image|endswith: '\Sc.exe'
+    original_name_Sc:
+        OriginalFileName: 'sc.exe'
+
+    renamed_Schtasks:
+        Image|endswith: '\Schtasks.exe'
+    original_name_Schtasks:
+        OriginalFileName: 'schtasks.exe'
+
+    renamed_SyncAppvPublishingServer:
+        Image|endswith: '\SyncAppvPublishingServer.exe'
+    original_name_SyncAppvPublishingServer:
+        OriginalFileName: 'syncappvpublishingserver.exe'
+
+    renamed_Tar:
+        Image|endswith: '\Tar.exe'
+    original_name_Tar:
+        OriginalFileName: 'bsdtar'
+
+    renamed_Ttdinject:
+        Image|endswith: '\Ttdinject.exe'
+    original_name_Ttdinject:
+        OriginalFileName: 'TTDInject.EXE'
+
+    renamed_Tttracer:
+        Image|endswith: '\Tttracer.exe'
+    original_name_Tttracer:
+        OriginalFileName: 'TTTracer.exe'
+
+    renamed_Unregmp2:
+        Image|endswith: '\Unregmp2.exe'
+    original_name_Unregmp2:
+        OriginalFileName: 'unregmp2.exe'
+
+    renamed_vbc:
+        Image|endswith: '\vbc.exe'
+    original_name_vbc:
+        OriginalFileName: 'vbc.exe'
+
+    renamed_Verclsid:
+        Image|endswith: '\Verclsid.exe'
+    original_name_Verclsid:
+        OriginalFileName: 'verclsid.exe'
+
+    renamed_Wab:
+        Image|endswith: '\Wab.exe'
+    original_name_Wab:
+        OriginalFileName: 'WAB.EXE'
+
+    renamed_Wlrmdr:
+        Image|endswith: '\Wlrmdr.exe'
+    original_name_Wlrmdr:
+        OriginalFileName: 'WLRMNDR.EXE'
+
+    renamed_Wmic:
+        Image|endswith: '\Wmic.exe'
+    original_name_Wmic:
+        OriginalFileName: 'wmic.exe'
+
+    renamed_WorkFolders:
+        Image|endswith: '\WorkFolders.exe'
+    original_name_WorkFolders:
+        OriginalFileName: 'WorkFolders.exe'
+
+    renamed_Wscript:
+        Image|endswith: '\Wscript.exe'
+    original_name_Wscript:
+        OriginalFileName: 'wscript.exe'
+
+    renamed_Wsreset:
+        Image|endswith: '\Wsreset.exe'
+    original_name_Wsreset:
+        OriginalFileName: 'WSReset.exe'
+
+    renamed_wuauclt:
+        Image|endswith: '\wuauclt.exe'
+    original_name_wuauclt:
+        OriginalFileName: 'wuauclt.exe'
+
+    renamed_Xwizard:
+        Image|endswith: '\Xwizard.exe'
+    original_name_Xwizard:
+        OriginalFileName: 'xwizard.exe'
+
+    renamed_fsutil:
+        Image|endswith: '\fsutil.exe'
+    original_name_fsutil:
+        OriginalFileName: 'fsutil.exe'
+
+    renamed_msedge_proxy:
+        Image|endswith: '\msedge_proxy.exe'
+    original_name_msedge_proxy:
+        OriginalFileName: 'msedge_proxy.exe'
+
+    renamed_Advpackdll:
+        Image|endswith: '\Advpack.dll'
+    original_name_Advpackdll:
+        OriginalFileName: 'ADVPACK.DLL'
+
+    renamed_Deskcpl:
+        Image|endswith: '\Desk.cpl'
+    original_name_Deskcpl:
+        OriginalFileName: 'DESK.CPL'
+
+    renamed_Dfshimdll:
+        Image|endswith: '\Dfshim.dll'
+    original_name_Dfshimdll:
+        OriginalFileName: 'dfsvc.exe'
+
+    renamed_Ieadvpackdll:
+        Image|endswith: '\Ieadvpack.dll'
+    original_name_Ieadvpackdll:
+        OriginalFileName: 'ADVPACK.DLL'
+
+    renamed_Ieframedll:
+        Image|endswith: '\Ieframe.dll'
+    original_name_Ieframedll:
+        OriginalFileName: 'IEFRAME.DLL'
+
+    renamed_Mshtmldll:
+        Image|endswith: '\Mshtml.dll'
+    original_name_Mshtmldll:
+        OriginalFileName: 'MSHTML.DLL'
+
+    renamed_Pcwutldll:
+        Image|endswith: '\Pcwutl.dll'
+    original_name_Pcwutldll:
+        OriginalFileName: 'pcwutl.dll'
+
+    renamed_Scrobjdll:
+        Image|endswith: '\Scrobj.dll'
+    original_name_Scrobjdll:
+        OriginalFileName: 'scrobj.dll'
+
+    renamed_Setupapidll:
+        Image|endswith: '\Setupapi.dll'
+    original_name_Setupapidll:
+        OriginalFileName: 'SETUPAPI.DLL'
+
+    renamed_Shdocvwdll:
+        Image|endswith: '\Shdocvw.dll'
+    original_name_Shdocvwdll:
+        OriginalFileName: 'SHDOCVW.DLL'
+
+    renamed_Shell32dll:
+        Image|endswith: '\Shell32.dll'
+    original_name_Shell32dll:
+        OriginalFileName: 'SHELL32.DLL'
+
+    renamed_Shimgvwdll:
+        Image|endswith: '\Shimgvw.dll'
+    original_name_Shimgvwdll:
+        OriginalFileName: 'shimgvw.dll'
+
+    renamed_Syssetupdll:
+        Image|endswith: '\Syssetup.dll'
+    original_name_Syssetupdll:
+        OriginalFileName: 'SYSSETUP.DLL'
+
+    renamed_Urldll:
+        Image|endswith: '\Url.dll'
+    original_name_Urldll:
+        OriginalFileName: 'URL.DLL'
+
+    renamed_Zipfldrdll:
+        Image|endswith: '\Zipfldr.dll'
+    original_name_Zipfldrdll:
+        OriginalFileName: 'ZIPFLDR.DLL'
+
+    renamed_Comsvcsdll:
+        Image|endswith: '\Comsvcs.dll'
+    original_name_Comsvcsdll:
+        OriginalFileName: 'COMSVCS.DLL'
+
+    renamed_Appvlp:
+        Image|endswith: '\Appvlp.exe'
+    original_name_Appvlp:
+        OriginalFileName: 'appvlp.exe'
+
+    renamed_Dotnet:
+        Image|endswith: '\Dotnet.exe'
+    original_name_Dotnet:
+        OriginalFileName: '.NET Host'
+
+    renamed_Wfc:
+        Image|endswith: '\Wfc.exe'
+    original_name_Wfc:
+        OriginalFileName: 'wfc.exe'
+
+    renamed_Winword:
+        Image|endswith: '\Winword.exe'
+    original_name_Winword:
+        OriginalFileName: 'WinWord.exe'
+
+    renamed_Wsl:
+        Image|endswith: '\Wsl.exe'
+    original_name_Wsl:
+        OriginalFileName: 'wsl.exe'
+
+    renamed_powershell:
+        Image|endswith: '\powershell.exe'
+    original_name_powershell:
+        OriginalFileName: 'PowerShell.exe'
+
+    condition: |
+        (original_name_AddinUtil and not renamed_AddinUtil) or
+        (original_name_Aspnet_Compiler and not renamed_Aspnet_Compiler) or
+        (original_name_At and not renamed_At) or
+        (original_name_Atbroker and not renamed_Atbroker) or
+        (original_name_Bash and not renamed_Bash) or
+        (original_name_Bitsadmin and not renamed_Bitsadmin) or
+        (original_name_CertReq and not renamed_CertReq) or
+        (original_name_Certutil and not renamed_Certutil) or
+        (original_name_Cmd and not renamed_Cmd) or
+        (original_name_Cmdkey and not renamed_Cmdkey) or
+        (original_name_cmdl32 and not renamed_cmdl32) or
+        (original_name_Cmstp and not renamed_Cmstp) or
+        (original_name_Colorcpl and not renamed_Colorcpl) or
+        (original_name_ConfigSecurityPolicy and not renamed_ConfigSecurityPolicy) or
+        (original_name_Conhost and not renamed_Conhost) or
+        (original_name_Control and not renamed_Control) or
+        (original_name_Csc and not renamed_Csc) or
+        (original_name_Cscript and not renamed_Cscript) or
+        (original_name_CustomShellHost and not renamed_CustomShellHost) or
+        (original_name_Desktopimgdownldr and not renamed_Desktopimgdownldr) or
+        (original_name_DeviceCredentialDeployment and not renamed_DeviceCredentialDeployment) or
+        (original_name_Dfsvc and not renamed_Dfsvc) or
+        (original_name_Esentutl and not renamed_Esentutl) or
+        (original_name_Eventvwr and not renamed_Eventvwr) or
+        (original_name_Expand and not renamed_Expand) or
+        (original_name_Explorer and not renamed_Explorer) or
+        (original_name_Extexport and not renamed_Extexport) or
+        (original_name_Extrac32 and not renamed_Extrac32) or
+        (original_name_Findstr and not renamed_Findstr) or
+        (original_name_Finger and not renamed_Finger) or
+        (original_name_fltMC and not renamed_fltMC) or
+        (original_name_Forfiles and not renamed_Forfiles) or
+        (original_name_Ftp and not renamed_Ftp) or
+        (original_name_Gpscript and not renamed_Gpscript) or
+        (original_name_Hh and not renamed_Hh) or
+        (original_name_IMEWDBLD and not renamed_IMEWDBLD) or
+        (original_name_Ie4uinit and not renamed_Ie4uinit) or
+        (original_name_iediagcmd and not renamed_iediagcmd) or
+        (original_name_Ieexec and not renamed_Ieexec) or
+        (original_name_Ilasm and not renamed_Ilasm) or
+        (original_name_Infdefaultinstall and not renamed_Infdefaultinstall) or
+        (original_name_Installutil and not renamed_Installutil) or
+        (original_name_Jsc and not renamed_Jsc) or
+        (original_name_Makecab and not renamed_Makecab) or
+        (original_name_Mavinject and not renamed_Mavinject) or
+        (original_name_MicrosoftWorkflowCompiler and not renamed_MicrosoftWorkflowCompiler) or
+        (original_name_Mmc and not renamed_Mmc) or
+        (original_name_Msbuild and not renamed_Msbuild) or
+        (original_name_Msconfig and not renamed_Msconfig) or
+        (original_name_Msdt and not renamed_Msdt) or
+        (original_name_Msedge and not renamed_Msedge) or
+        (original_name_Mshta and not renamed_Mshta) or
+        (original_name_Msiexec and not renamed_Msiexec) or
+        (original_name_Netsh and not renamed_Netsh) or
+        (original_name_Odbcconf and not renamed_Odbcconf) or
+        (original_name_OfflineScannerShell and not renamed_OfflineScannerShell) or
+        (original_name_Pcwrun and not renamed_Pcwrun) or
+        (original_name_Pktmon and not renamed_Pktmon) or
+        (original_name_Pnputil and not renamed_Pnputil) or
+        (original_name_Presentationhost and not renamed_Presentationhost) or
+        (original_name_Print and not renamed_Print) or
+        (original_name_PrintBrm and not renamed_PrintBrm) or
+        (original_name_Provlaunch and not renamed_Provlaunch) or
+        (original_name_Psr and not renamed_Psr) or
+        (original_name_Rasautou and not renamed_Rasautou) or
+        (original_name_rdrleakdiag and not renamed_rdrleakdiag) or
+        (original_name_Reg and not renamed_Reg) or
+        (original_name_Regasm and not renamed_Regasm) or
+        (original_name_Regedit and not renamed_Regedit) or
+        (original_name_Regini and not renamed_Regini) or
+        (original_name_Register-cimprovider and not renamed_Register-cimprovider) or
+        (original_name_Regsvr32 and not renamed_Regsvr32) or
+        (original_name_Replace and not renamed_Replace) or
+        (original_name_Rpcping and not renamed_Rpcping) or
+        (original_name_Rundll32 and not renamed_Rundll32) or
+        (original_name_Runexehelper and not renamed_Runexehelper) or
+        (original_name_Runonce and not renamed_Runonce) or
+        (original_name_Sc and not renamed_Sc) or
+        (original_name_Schtasks and not renamed_Schtasks) or
+        (original_name_SyncAppvPublishingServer and not renamed_SyncAppvPublishingServer) or
+        (original_name_Tar and not renamed_Tar) or
+        (original_name_Ttdinject and not renamed_Ttdinject) or
+        (original_name_Tttracer and not renamed_Tttracer) or
+        (original_name_Unregmp2 and not renamed_Unregmp2) or
+        (original_name_vbc and not renamed_vbc) or
+        (original_name_Verclsid and not renamed_Verclsid) or
+        (original_name_Wab and not renamed_Wab) or
+        (original_name_Wlrmdr and not renamed_Wlrmdr) or
+        (original_name_Wmic and not renamed_Wmic) or
+        (original_name_WorkFolders and not renamed_WorkFolders) or
+        (original_name_Wscript and not renamed_Wscript) or
+        (original_name_Wsreset and not renamed_Wsreset) or
+        (original_name_wuauclt and not renamed_wuauclt) or
+        (original_name_Xwizard and not renamed_Xwizard) or
+        (original_name_fsutil and not renamed_fsutil) or
+        (original_name_msedge_proxy and not renamed_msedge_proxy) or
+        (original_name_Advpackdll and not renamed_Advpackdll) or
+        (original_name_Deskcpl and not renamed_Deskcpl) or
+        (original_name_Dfshimdll and not renamed_Dfshimdll) or
+        (original_name_Ieadvpackdll and not renamed_Ieadvpackdll) or
+        (original_name_Ieframedll and not renamed_Ieframedll) or
+        (original_name_Mshtmldll and not renamed_Mshtmldll) or
+        (original_name_Pcwutldll and not renamed_Pcwutldll) or
+        (original_name_Scrobjdll and not renamed_Scrobjdll) or
+        (original_name_Setupapidll and not renamed_Setupapidll) or
+        (original_name_Shdocvwdll and not renamed_Shdocvwdll) or
+        (original_name_Shell32dll and not renamed_Shell32dll) or
+        (original_name_Shimgvwdll and not renamed_Shimgvwdll) or
+        (original_name_Syssetupdll and not renamed_Syssetupdll) or
+        (original_name_Urldll and not renamed_Urldll) or
+        (original_name_Zipfldrdll and not renamed_Zipfldrdll) or
+        (original_name_Comsvcsdll and not renamed_Comsvcsdll) or
+        (original_name_Appvlp and not renamed_Appvlp) or
+        (original_name_Dotnet and not renamed_Dotnet) or
+        (original_name_Wfc and not renamed_Wfc) or
+        (original_name_Winword and not renamed_Winword) or
+        (original_name_Wsl and not renamed_Wsl) or
+        (original_name_powershell and not renamed_powershell)
+
+falsepositives:
+    - renamed utilities by administrators
+level: high

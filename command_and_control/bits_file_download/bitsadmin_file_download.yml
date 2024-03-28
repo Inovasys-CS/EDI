@@ -1,0 +1,33 @@
+title: Bitsadmin Download
+id: 339ad2e9-a3c7-4c06-9a36-8ad76e48372e
+status: experimental
+description: Detect usage of bitsadmin.exe to download files from a remote server. 
+references:
+    - https://www.ired.team/offensive-security/persistence/t1197-bits-jobs
+    - https://lolbas-project.github.io/lolbas/Binaries/Bitsadmin/
+
+tags:
+    - attack.command_and_control
+    - attack.t1105
+
+author: Inovasys
+date: 2023/10/04
+
+logsource:
+    product: windows
+    category: process_creation 
+detection:
+    bitsadmin_exec:
+        - Image|endswith: '\bitsadmin.exe'
+        - OriginalFileName: 'bitsadmin.exe'
+    bitsadmin_commandline:
+        CommandLine|contains|all: 
+            - '/download'
+            - '/transfer'
+    
+    condition: bitsadmin_exec and bitsadmin_commandline
+
+falsepositives:
+    - Legitimate transfer by admins
+    
+level: medium

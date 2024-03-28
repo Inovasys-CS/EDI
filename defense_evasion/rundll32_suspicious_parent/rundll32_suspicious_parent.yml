@@ -1,0 +1,38 @@
+title: Rundll32 Execution from Suspicious Parent Process
+id: 38668bcc-df85-4433-a0af-b5df98cda216
+status: experimental
+description: Detects the execution of Rundll32 from a suspicious parent process. 
+references:
+    - https://redcanary.com/threat-detection-report/techniques/rundll32/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.011
+
+author: Inovasys
+date: 2024/03/27
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    rundll32_exec:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    rundll32_parent:
+        ParentImage|endswith:
+            - 'winword.exe' 
+            - 'excel.exe'
+            - 'msaccess.exe' 
+            - 'lsass.exe'
+            - 'taskeng.exe'
+            - 'winlogon.exe'
+            - 'schtask.exe'
+            - 'regsvr32.exe'
+            - 'wmiprvse.exe'
+            - 'wsmprovhost.exe'
+    condition: all of rundll32_*
+falsepositives:
+    - Unknown
+
+level: high
