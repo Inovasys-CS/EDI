@@ -1,0 +1,51 @@
+title: Windows scheduled task suspicious activity
+id: ebf23854-4656-4498-ae1f-6a32a0d984c0
+status: experimental
+description: Detects suspicious activity of Windows scheduled tasks (schtasks.exe) executing with suspicious process names in the command line, potentially indicating an attempt to conceal the execution of malicious code
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.defense_evasion
+    - attack.execution
+    - attack.persistence
+    - attack.t1053.005
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img:
+        - Image|endswith:
+                - '\schtasks.exe'
+                - '\at.exe'
+        - OriginalFileName:
+                - 'schtasks.exe'
+                - 'AT.EXE'
+
+    change_create_commandline:
+        CommandLine|contains:
+            - 'Change'
+            - 'Create'
+
+    suspicious_image_other:
+        CommandLine|contains:
+            - rundll32
+            - msbuild
+            - certutil
+            - wscript
+            - cscript
+            - regsvr32
+
+    suspicious_image_cmd:
+        CommandLine|contains|all:
+            - 'cmd'
+            - '/c'
+
+    condition: selection_img and change_create_commandline and (1 of suspicious_image_*)
+
+falsepositives:
+    - Unknown
+level: high

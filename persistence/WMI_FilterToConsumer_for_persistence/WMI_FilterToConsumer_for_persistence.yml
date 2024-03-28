@@ -1,0 +1,126 @@
+id: b6770cd4-007d-4583-bd2a-e29bfb43a404
+title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
+status: experimental
+description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
+references:
+    - https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-Management-Instrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf
+    - https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/
+author: Inovasys
+date: 2023/10/12
+tags:
+    - attack.persistence
+    - attack.t1546.003
+
+logsource:
+    product: windows
+    service: sysmon
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+
+detection:
+    wmi_binding_event: 
+        EventID: 
+            - 19
+            - 20  #(dania) check in all events for any malicious payload 
+            - 21
+    condition: wmi_binding_event
+
+fields:
+    - Consumer
+    - Filter
+
+falsepositives:
+    - Legitimate administrator or process created a WMI FilterToConsumer  
+level: medium    
+
+---
+
+id: 6a26c6ff-45dc-4998-a3d1-d74046230536
+title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
+status: experimental
+description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
+references:
+    - https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-Management-Instrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf
+    - https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/
+author: Inovasys
+date: 2023/10/12
+tags:
+    - attack.persistence
+    - attack.t1546.003
+
+logsource:
+    product: windows
+    service: wmi
+detection:
+    wmi_filter_to_consumer_binding:
+        EventID: 5861
+        # PossibleCause: 
+        #     - 'ActiveScriptEventConsumer'
+        #     - 'CommandLineEventConsumer'
+        #     - 'CommandLineTemplate'
+    condition: wmi_filter_to_consumer_binding
+
+fields:
+    - Consumer
+falsepositives:
+    - Legitimate administrator or process created a WMI FilterToConsumer  
+level: medium    
+
+---
+id: 6e3b198d-35c9-4163-b0b8-2c38b4ba8b0f
+title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
+status: experimental
+description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
+references:
+    - https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-Management-Instrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf
+    - https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/
+author: Inovasys
+date: 2023/10/12
+tags:
+    - attack.persistence
+    - attack.t1546.003
+
+logsource:
+    product: windows
+    service: powershell
+    definition: 'Navigate to Computer Configuration -> Policies -> Administrative Templates -> Windows Components -> Windows PowerShell'
+
+detection:
+    wmi_filter_to_consumer_binding:
+        EventID: 4104
+        ScriptBlockText|contains:
+            - '__FilterToConsumerBinding'
+    
+    condition: wmi_filter_to_consumer_binding
+
+falsepositives:
+    - Legitimate administrator or process created a WMI FilterToConsumer  
+level: medium    
+
+---
+id: b2c776d0-4a7c-4f2c-b025-75fac46bce41
+title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
+status: experimental
+description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
+references:
+    - https://www.blackhat.com/docs/us-15/materials/us-15-Graeber-Abusing-Windows-Management-Instrumentation-WMI-To-Build-A-Persistent%20Asynchronous-And-Fileless-Backdoor-wp.pdf
+    - https://www.eideon.com/2018-03-02-THL03-WMIBackdoors/
+author: Inovasys
+date: 2023/10/12
+tags:
+    - attack.persistence
+    - attack.t1546.003
+
+logsource:
+    product: windows
+    category: ps_classic_start
+detection:
+    wmi_filter_to_consumer_binding:
+        EventID: 400
+        HostApplication|contains:
+            - '__FilterToConsumerBinding'
+    
+    condition: wmi_filter_to_consumer_binding
+
+falsepositives:
+    - Legitimate administrator or process created a WMI FilterToConsumer  
+level: medium    

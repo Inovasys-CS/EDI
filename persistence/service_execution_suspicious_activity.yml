@@ -1,0 +1,50 @@
+title: services.exe spawning suspicious child processes
+id: 6f4fe3f3-9863-4fad-bbb8-3bf4fec42155
+status: experimental
+description: Detects Service Control Manager (services.exe) suspicious child processes, potentially indicating an attempt to conceal the execution of malicious code
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.execution
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    services_parent_img:
+        ParentImage|endswith: '\services.exe'
+
+    suspicious_child_img:
+        - Image|endswith:
+            - '\rundll32.exe'
+            - '\msbuild.exe'
+            - '\certutil.exe'
+            - '\wscript.exe'
+            - '\cscript.exe'
+            - '\regsvr32.exe'
+        - OriginalFileName:
+            - 'RUNDLL32.EXE'
+            - 'MSBuild.exe'
+            - 'CertUtil.exe'
+            - 'wscript.exe'
+            - 'cscript.exe'
+            - 'REGSVR32.EXE'
+
+    suspicious_child_img_cmd:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+
+    suspicious_child_img_cmd_cli:
+        CommandLine|contains|all:
+            - 'cmd'
+            - '/c'
+
+    condition: services_parent_img and (suspicious_child_img or (suspicious_child_img_cmd and suspicious_child_img_cmd_cli))
+
+falsepositives:
+    - Unknown
+level: high
