@@ -1,0 +1,284 @@
+title: Event Log Clearing Using PowerShell or Wevtutil
+id: d41e539c-7566-47a8-97a3-02b662d4a593
+status: experimental
+description: Detects suspicious event log clearing activities using PowerShell, a frequently employed tactic by malicious actors to conceal their actions and avoid detection. These logs can be erased through methods such as wevtutil.exe, wmic, or specific cmdlets. Detected by process creation and command line arguments
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/clear-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventing.reader.eventlogsession?view=netframework-4.8
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
+author: Inovasys
+date: 2023/08/30
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img_wevtutil:
+        - Image|endswith: '\wevtutil.exe'
+        - OriginalFileName: 'wevtutil.exe'
+
+    selection_commandline_wevtutil:
+        CommandLine|contains:
+            - 'clear-log'
+            - 'cl'
+
+    selection_img_wmic:
+        - Image|endswith: '\wmic.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    selection_commandline_wmic:
+        CommandLine|contains:
+            - 'cleareventlog'
+
+    selection_img_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.EXE'
+
+    selection_commandline_powershell:
+        CommandLine|contains:
+            - 'Clear-EventLog'
+            - 'Remove-EventLog'
+            - 'Clear-WinEvent'
+            - 'ClearLog'
+            - 'ClearEventLog'
+
+    win32ntlog_select:
+        CommandLine|contains:
+            - 'Win32_NTEventlogFile'
+
+    win32ntlog_delete:
+        CommandLine|contains:
+            - 'Delete'
+            - 'DeleteEx'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+    condition: (selection_img_wevtutil and selection_commandline_wevtutil) or (selection_img_wmic and selection_commandline_wmic) or (selection_img_powershell and selection_commandline_powershell) or (selection_img_powershell and win32ntlog_select and win32ntlog_delete)
+
+falsepositives:
+    - Legitimate administrator cleared the event logs using powershell
+level: high
+
+---
+title: Event Log Clearing Using PowerShell or Wevtutil
+id: 06080c72-f645-4058-a09e-576aff6cee05
+status: experimental
+description: Detects suspicious event log clearing activities using custom PowerShell cmdlets, a commonly used tactic by malicious actors to conceal their actions and evade detection. These logs can be erased specifically through custom cmdlets within PowerShell. Detection is based on powershell script block logging.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/clear-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventing.reader.eventlogsession?view=netframework-4.8
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+author: Inovasys
+date: 2023/08/30
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    deleteby_pwsh:
+        ScriptBlockText|contains:
+            - 'Clear-EventLog'
+            - 'Remove-EventLog'
+            - 'Clear-WinEvent'
+            - 'ClearLog'
+            - 'ClearEventLog'
+            - 'clear-log'
+
+    win32ntlog_select:
+        ScriptBlockText|contains:
+            - 'Win32_NTEventlogFile'
+
+    win32ntlog_delete:
+        ScriptBlockText|contains:
+            - 'Delete'
+            - 'DeleteEx'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+    condition: deleteby_pwsh or all of win32ntlog_*
+
+falsepositives:
+    - Legitimate administrator cleared the event logs using powershell
+level: high
+
+---
+
+title: Event Log Clearing Using PowerShell or Wevtutil
+id: 5ee7fa73-5043-4115-8231-82303828f2cc
+status: experimental
+description: Detects suspicious event log clearing activities using custom PowerShell cmdlets, a commonly used tactic by malicious actors to conceal their actions and evade detection. These logs can be erased specifically through custom cmdlets within PowerShell. Detection is based on event id 400.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/clear-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/remove-eventlog?view=powershell-5.1
+    - https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.eventing.reader.eventlogsession?view=netframework-4.8
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
+author: Inovasys
+date: 2023/08/30
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+
+logsource:
+    product: windows
+    category: ps_classic_start
+
+detection:
+    deleteby_pwsh:
+        HostApplication|contains:
+            - 'Clear-EventLog'
+            - 'Remove-EventLog'
+            - 'Clear-WinEvent'
+            - 'ClearLog'
+            - 'ClearEventLog'
+            - 'clear-log' # for wevtutil
+
+    win32ntlog_select:
+        HostApplication|contains:
+            - 'Win32_NTEventlogFile'
+
+    win32ntlog_delete:
+        - HostApplication|contains:
+            - 'Delete'
+            - 'DeleteEx'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+    condition: deleteby_pwsh or all of win32ntlog*
+
+falsepositives:
+    - Legitimate administrator cleared the event logs using powershell
+level: high
+
+---
+
+title: Resizing of event logs using PowerShell or Wevtutil
+id: eaee39fe-4991-4a6f-909a-9b4d1b081288
+status: experimental
+description: Attackers may try to cover their tracks by resizing event logs to a smaller size. Note that improper resizing which results in excessively reduced sizes, could potentially lead the deletion of log files.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/limit-eventlog?view=powershell-5.1
+author: Inovasys
+date: 2023/08/31
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img_wevtutil:
+        - Image|endswith: '\wevtutil.exe'
+        - OriginalFileName: 'wevtutil.exe'
+
+    selection_commandline_wevtutil:
+        CommandLine|contains:
+            - 'set-log'
+            - 'sl'
+
+    selection_img_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.EXE'
+
+    selection_commandline_powershell:
+        CommandLine|contains:
+            - 'Limit-EventLog'
+
+    selection_commandline_powershell_2:
+        CommandLine|contains|all:
+            - 'Win32_NTEventlogFile'
+            - 'FileSize'
+
+    filter_printservice:
+        CommandLine|contains: 'Microsoft-Windows-PrintService/Operational'
+
+    condition: (selection_img_wevtutil and selection_commandline_wevtutil) or (selection_img_powershell and (1 of selection_commandline_powershell*)) and not 1 of filter_*
+
+falsepositives:
+    - Legitimate administrator resized event logs
+level: medium
+
+---
+
+title: Resizing of event logs using PowerShell or Wevtutil
+id: 0c14a401-1b0d-40b8-ae96-fba04799e831
+status: experimental
+description: Attackers may try to cover their tracks by resizing event logs to a smaller size. Note that improper resizing which results in excessively reduced sizes, could potentially lead the deletion of log files.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/limit-eventlog?view=powershell-5.1
+author: Inovasys
+date: 2023/08/31
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
+detection:
+    selection_limitlog:
+        ScriptBlockText|contains:
+            - 'Limit-EventLog'
+
+    selection_win32logFile_resize:
+        ScriptBlockText|contains|all:
+            - 'Win32_NTEventlogFile'
+            - 'FileSize'
+    condition: selection_limitlog or selection_win32logFile_resize
+
+
+falsepositives:
+    - Legitimate administrator resized event logs
+level: medium
+
+---
+
+title: Resizing of event logs using PowerShell or Wevtutil
+id: a50c87d8-c746-4d7a-b02a-063090739bd2
+status: experimental
+description: Attackers may try to cover their tracks by resizing event logs to a smaller size. Note that improper resizing which results in excessively reduced sizes, could potentially lead the deletion of log files.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil
+    - https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/limit-eventlog?view=powershell-5.1
+author: Inovasys
+date: 2023/08/31
+tags:
+    - attack.defense_evasion
+    - attack.t1070.001
+    - car.2016-04-002
+
+logsource:
+    product: windows
+    category: ps_classic_start
+detection:
+    limitlogpsclassic:
+        HostApplication|contains:
+            - 'Limit-EventLog'
+    win32logFile_resize:
+        HostApplication|contains|all:
+            - 'Win32_NTEventlogFile'
+            - 'FileSize'
+    condition: 1 of them
+
+falsepositives:
+    - Legitimate administrator resized event logs
+level: medium

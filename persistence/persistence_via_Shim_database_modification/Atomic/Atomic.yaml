@@ -1,0 +1,25 @@
+attack_technique: T1546.011
+display_name: Application Shimming
+atomic_tests:
+- name: Application Shim Installation using sdbinst.exe
+  auto_generated_guid: cfbbaef8-cb7d-4b86-b97a-4b05cd637338
+  description: Install a shim database. This technique is used for privilege escalation and bypassing user access control. Upon execution, "Installation of AtomicShim complete." will be displayed
+
+  supported_platforms:
+  - windows
+  input_arguments:
+    sdb_file:
+      description: a sample sdb file for this test
+      type: path
+      default: PathToAtomicsFolder\Atomic\src\sdb_file.sdb
+  dependency_executor_name: powershell
+  dependencies:
+  - description: my payload description
+    prereq_command: if (Test-Path "#{sdb_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      Write-Host "to be done after github"
+  executor:
+    command: sdbinst.exe "#{sdb_file}" 
+    cleanup_command: sdbinst.exe -u "#{sdb_file}" >nul 2>&1
+    name: powershell
+    elevation_required: true

@@ -1,0 +1,1 @@
+start "" cmd /c "echo Meaw Meaw &echo(&pause"

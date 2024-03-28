@@ -1,0 +1,30 @@
+attack_technique: T1070
+display_name: Event log operations in WMI
+
+atomic_tests:
+- name: Performing operations on Event logs using WMIC.exe
+  auto_generated_guid: 9424da03-8c60-4705-8e29-374a73dd9e6f
+  description: |
+    Runs wmic with argument nteventlog to get all the event logs
+
+  supported_platforms:
+    - windows
+
+  executor:
+    name: powershell
+    elevation_required: true
+    command:  wmic nteventlog
+- name: Performing operations on Event logs using powershell and Win32_NTEventlogFile class
+  auto_generated_guid: d9755f7f-a55c-4ec7-ae77-a4283b5a8891
+  description: |
+    Gets the objects in the Win32_NTEventlogFile class using Get-WmiObject and Get-CimInstance Cmdlet
+
+  supported_platforms:
+    - windows
+
+  executor:
+    name: powershell
+    elevation_required: true
+    command:  |
+        Get-WmiObject Win32_NTEventlogFile
+        Get-CimInstance Win32_NTEventlogFile

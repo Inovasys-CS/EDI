@@ -1,0 +1,43 @@
+attack_technique: T1218.007
+display_name: System Binary Proxy Execution Msiexec
+atomic_tests:
+- name: Msiexec.exe used to install a msi package
+  auto_generated_guid: f304812b-08b3-40b7-8b3c-8fa15f8cbdde
+  description: abuse of msiexec.exe to proxy execution of malicious payloads. Msiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi)
+
+  supported_platforms:
+  - windows
+  input_arguments:
+    msi_file:
+      description: msi file to install
+      type: path
+      default: PathToAtomicsFolder\Atomic\src\7zip.msi
+  dependency_executor_name: powershell
+  dependencies:
+  - description: my msi package to install
+    prereq_command: if (Test-Path "#{msi_file}") {exit 0} else {exit 1}
+    get_prereq_command: Write-Host "to be done after github"
+  executor:
+    command: msiexec.exe /q /i "#{msi_file}"
+    name: powershell
+    elevation_required: true
+- name: Msiexec.exe used to run a dll
+  auto_generated_guid: 44603da8-c885-4ae6-b269-127e5bb737cf
+  description: abuse of msiexec.exe to proxy execution and run a dll under msi.exe
+
+  supported_platforms:
+  - windows
+  input_arguments:
+    dll_file:
+      description: dll to run
+      type: path
+      default: PathToAtomicsFolder\Atomic\src\meow.dll
+  dependency_executor_name: powershell
+  dependencies:
+  - description: the dll to run
+    prereq_command: if (Test-Path "#{dll_file}") {exit 0} else {exit 1}
+    get_prereq_command: Write-Host "to be done after github"
+  executor:
+    command: msiexec.exe /y "#{dll_file}"
+    name: powershell
+    elevation_required: true

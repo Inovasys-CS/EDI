@@ -1,0 +1,26 @@
+id: 67f5dda7-025e-44d3-a9b2-18c493b5a9a3
+title: Werfault.exe Utilizing SilentProcessExit to Dump lsass 
+status: experimental
+description: Detects changes within the Windows Registry under (Image File Execution Options\lsass.exe) which indicate the utilization of werfault.exe to dump LSASS process, by configuring the SilentProcessExit mechanism
+references:
+    - https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/registry-entries-for-silent-process-exit
+    - https://www.deepinstinct.com/blog/lsass-memory-dumps-are-stealthier-than-ever-before-part-2
+author: Inovasys
+date: 2023/10/10
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+
+logsource:
+    category: registry_event
+    product: windows
+
+detection:
+    selection_reg_change:
+        TargetObject: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\lsass.exe'
+
+    condition: selection_reg_change
+
+falsepositives:
+    - Legitimate administrator or process changed Registry under (Image File Execution Options\lsass.exe)
+level: critical    

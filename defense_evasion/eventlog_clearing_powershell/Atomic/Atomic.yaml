@@ -1,0 +1,67 @@
+attack_technique: T1070.001
+display_name: Event Log Clearing
+
+atomic_tests:
+- name: Clearing Event Log Using  Wevtutil
+  auto_generated_guid: 15385c94-3670-417e-90ee-3b7a7ca47a04
+  description: |
+    Detects suspicious event log clearing activities using Wevtutil, a frequently employed tactic by malicious actors to conceal their actions and avoid detection
+
+  supported_platforms:
+    - windows
+      
+  executor:
+    name: powershell
+    elevation_required: true
+    command: wevtutil cl System
+
+
+- name: Clearing Event Log Using PowerShell's Remove-EventLog CmdLet
+  auto_generated_guid: 04190d14-0c6e-4b95-9b19-15b58ed7d553
+  description: |
+    Detects suspicious event log clearing activities using PowerShell Remove-EventLog CmdLet, a frequently employed tactic by malicious actors to conceal their actions and avoid detection
+
+  supported_platforms:
+    - windows
+      
+  executor:
+    name: powershell
+    elevation_required: true
+    command: Remove-EventLog -LogName Security
+- name: Clearing Event Log Using PowerShell's Win32_NTEventlogFile WMI class
+  auto_generated_guid: 52ea6e08-13b7-492d-9209-3415fa56d4ff
+  description: |
+    suspicious event log clearing activities using PowerShell's Win32_NTEventlogFile class with method ClearEventlog, a frequently employed tactic by malicious actors to conceal their actions and avoid detection
+
+  supported_platforms:
+    - windows
+      
+  executor:
+    name: powershell
+    elevation_required: true
+    command:  Get-WmiObject Win32_NTEventlogFile| % { $_.ClearEventLog() }
+    
+- name: Resizing Event Log Using PowerShell's Limit-Eventlog CmdLet
+  auto_generated_guid: bf429ebb-de1b-42e0-b005-46b75b5c38d5
+  description: |
+    Suspicious event log resizing activities using PowerShell Limit-Eventlog CmdLet
+
+  supported_platforms:
+    - windows
+      
+  executor:
+    name: powershell
+    elevation_required: true
+    command: Limit-Eventlog -Logname Application -MaximumSize 200MB
+- name: Resizing Event Log Using Wevtutil
+  auto_generated_guid: 85acb747-8f3f-490f-b0b4-2d72f98998ab
+  description: |
+    Suspicious event log resizing activities using
+
+  supported_platforms:
+    - windows
+      
+  executor:
+    name: powershell
+    elevation_required: true
+    command: wevtutil sl "Application" /ms:200000
