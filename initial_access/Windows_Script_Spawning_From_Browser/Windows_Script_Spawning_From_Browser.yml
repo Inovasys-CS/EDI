@@ -1,0 +1,30 @@
+title: Windows Script Network connection from browser
+id: 18c7f0a8-400e-4459-b412-b2df4b1c2e66
+status: experimental
+description: Detect suspicious network connection by wscript.exe or cscript.exe from the browsers
+references:
+    - https://attack.mitre.org/techniques/T1189/
+    - https://redcanary.com/threat-detection-report/threats/socgholish/
+author: Inovasys
+date: 2023/03/27
+tags:
+    - attack.initial_access
+    - attack.T1189
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    execution:
+        ParentImage|endswith:
+            - '\brave.exe'
+            - '\chrome.exe'
+            - '\msedge.exe'
+            - '\opera.exe'
+        Image|endswith:
+            - 'cscript.exe'
+            - 'wscript.exe'
+
+    condition: execution
+falsepositives:
+    - unknows
+level: low

@@ -1,0 +1,36 @@
+attack_technique: T1546.010
+display_name: 'Event Triggered Execution: AppInit DLLs'
+atomic_tests:
+- name: AppInit_DLLs Persistence
+  auto_generated_guid: a740d94d-6706-4e66-9262-218ea42a5133
+  description: |
+    Detects the modification of the registry key AppInit_DLLs which is used to achieve persistence
+    
+    Upon successful execution the input dll will fire on every application launch
+  supported_platforms:
+  - windows
+  input_arguments:
+    dll_path:
+      description: Path to the dll that will be added.
+      type: path
+      default: PathToAtomicsFolder\appinit_dlls\bin\popup.dll
+  dependency_executor_name: powershell
+  dependencies:
+  - description: |
+      Loading AppInit DLLs needs to be enabled on the device
+    prereq_command: |
+      if ((Get-ItemPropertyValue -Path "HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs") -eq 0) {exit 1} else {if ((Get-ItemPropertyValue -Path "HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs") -eq 0) {exit 1} else {exit 0}}
+    get_prereq_command: |
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs" -Value 0
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs" -Value 0
+  executor:
+    command: |
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "AppInit_DLLs" -Value "#{dll_path}" -Type String
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "AppInit_DLLs" -Value "#{dll_path}" -Type String
+    cleanup_command: |
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "AppInit_DLLs" -Value "" -Type String
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs" -Value 0
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "AppInit_DLLs" -Value "" -Type String
+      Set-ItemProperty -Path "HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows" -Name "LoadAppInit_DLLs" -Value 0
+    name: powershell
+    elevation_required: true

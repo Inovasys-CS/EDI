@@ -1,0 +1,26 @@
+title: AppInit DLLs Enable
+id: 32c9e98d-3b77-405e-93bb-bd818e636a69
+status: experimental
+description: Detects the modification of the registry key AppInit_DLLs which is used to achieve persistence. 
+references:
+    - https://cocomelonc.github.io/tutorial/2022/05/16/malware-pers-5.html
+tags:
+    - attack.persistence
+author: Inovasys
+date: 2023/09/19
+
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    modifying_either_value:
+        TargetObject|contains: 
+            - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs'
+            - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs'
+            - 'HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs'
+            - 'HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs'
+    condition: modifying_either_value
+
+falsepositives:
+    - None
+level: Medium

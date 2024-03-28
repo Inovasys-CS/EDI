@@ -36,5 +36,25 @@ detection:
     condition: 1 of mimikatz_*
 falsepositives:
     - None
-
 level: high
+---
+title: Kerberos Ticket Files
+id: a4cf7e8b-4a78-4dd3-8fac-c08dc64dfca7
+status: experimental
+description:Detect the creation of .kirbi files, commonly utilized by tools like Mimikatz, for the purpose of stealing and forging Kerberos tickets.
+references:
+    - https://redcanary.com/threat-detection-report/threats/mimikatz/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.credential_access
+logsource:
+    category: file_event
+    product: windows
+detection:
+    kerberos_Ticket:
+        TargetFilename|endswith: '.kirbi'
+    condition: kerberos_Ticket
+falsepositives:
+    - Unknown
+level: low

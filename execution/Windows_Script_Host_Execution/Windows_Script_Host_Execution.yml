@@ -1,0 +1,33 @@
+title: Windows Script Host Execution
+id: 18c7f0a8-400e-4459-b412-b2df4b1c2e66
+status: experimental
+description: Detect suspicious scripts execution via wscript.exe or cscript.exe
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Cscript/
+    - https://lolbas-project.github.io/lolbas/Binaries/Wscript/
+author: Inovasys
+date: 2023/03/27
+tags:
+    - attack.execution
+    - attack.T1059
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    execution:
+        Image|endswith:
+            - 'cscript.exe'
+            - 'wscript.exe'
+        CommandLine|contains:
+            - '.js'
+            - '.vba'
+            - '.vbe'
+            - '.jse'
+            - '.wsf'
+    filter:
+        ParentImage}endswith:
+            - 'svchost.exe'
+    condition: execution and not filter
+falsepositives:
+    -  Legitimate scripts used by administrators.
+level: medium
