@@ -1,0 +1,36 @@
+title: Red Canary Threat Detection Report 2024
+description: A collection of rules that relate to the trends spotted in the Red Canary Threat Detection Report of 2024.
+category: Report
+date: 2024/03/13
+company: Red Canary
+reference: https://resource.redcanary.com/rs/003-YRU-314/images/2024ThreatDetectionReport_RedCanary.pdf?version=0
+rules:
+    - command_and_control/bits_file_download
+    - command_and_control/certreq_download
+    - command_and_control/certutil_file_download
+    - command_and_control/files_downloaded_using_powershell
+    - credential_access/general_suspicious_lsass_access
+    - credential_access/impacket_secretsdump
+    - credential_access/mimikatz_cli
+    - credential_access/ntds_dit
+    - credential_access/potential_credential_access_via_system_files
+    - credential_access/sam_dump_via_reg
+    - credential_access/vaultcli_samlib_load
+    - defense_evasion/renamed_lolbins
+    - defense_evasion/rundll32_dllregisterserver
+    - defense_evasion/rundll32_no_commandline
+    - defense_evasion/rundll32_suspicious_dll
+    - defense_evasion/rundll32_suspicious_parent
+    - defense_evasion/system_binary_unusual_path
+    - defense_evasion/proc_creation_win_powershell_base64_encoded_cmd_patterns
+    - execution/cmd_bypassing_security_controls
+    - execution/CMD_from_explorer_with_start_command
+    - execution/CMD_unusual_or_suspicious_process_ancestry
+    - execution/WMIC_execute_other_process
+    - execution/WMIC_loading_scripting_libraries
+    - execution/wmiprvse_spawning_suspicious_child_processes
+    - impact/deletion_of_shadow_copies
+    - persistence/WMI_FilterToConsumer_for_persistence
+    - persistence/service_execution_suspicious_activity
+    - persistence/windows_scheduled_task_suspicious_activity
+    - reconnaissance/WMIC.exe_suspicious_reconnaissance_commands
