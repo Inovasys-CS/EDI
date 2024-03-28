@@ -1,0 +1,195 @@
+title: Suspicious Commands Related to Deletion of Shadowcopies
+id: 253064ef-2a30-468c-8e0d-a26daa0d20e6
+status: experimental
+description: Detects potential attempts to hinder system recovery by employing legitimate Windows tools to delete Shadow Copies, commonly seen in ransomware attacks.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/vssadmin-delete-shadows
+    - https://www.bvanleeuwen.nl/faq/?p=813
+    - https://www.fortinet.com/blog/threat-research/stomping-shadow-copies-a-second-look-into-deletion-methods
+author: Inovasys
+date: 2023/08/23
+tags:
+    - attack.Impact
+    - attack.t1490
+    - car.2021-01-009
+logsource:
+    product: windows
+    service: sysmon
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+detection:
+    deleteby_wmic:
+        EventID: 1
+        ProcessName:
+            - 'WMIC.exe'
+        CommandLine|contains|all:
+            - 'shadowcopy'
+            - 'delete'
+
+    deleteby_vssadmin:
+        EventID: 1
+        ProcessName:
+            - 'vssadmin.exe'
+        CommandLine|contains|all:
+            - 'delete'
+            - 'shadows'
+
+    win32_shadowcopy_select:
+        EventID: 1
+        ProcessName:
+          - 'powershell.exe'
+          - 'pwsh.exe'
+        CommandLine|contains:
+            - 'Win32_ShadowCopy'
+
+    win32_shadowcopy_delete:
+        CommandLine|contains:
+            - 'Delete'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+
+    condition: 1 of deleteby* or all of win32_shadowcopy*
+
+falsepositives:
+    - Legitimate administrator or windows proccess deleted shadow copies
+level: high
+---
+title: Suspicious Commands Related to Deletion of Shadowcopies
+id: 02ffb04d-a70d-4687-9e31-a81b57ab7d42
+status: experimental
+description: Detects potential attempts to hinder system recovery by employing powershell scripts to delete Shadow Copies 
+references:
+    - https://www.fortinet.com/blog/threat-research/stomping-shadow-copies-a-second-look-into-deletion-methods
+author: Inovasys
+date: 2023/08/28
+tags:
+    - attack.Impact
+    - attack.t1490
+logsource:
+    product: windows
+    service: powershell
+    definition: Navigate to 'Computer Configuration' -> Policies -> Administrative Templates -> Windows Components -> Windows PowerShell.
+detection:
+    shadowcopy_select:
+        EventID: 4104
+        ScriptBlockText|contains:
+            - 'Win32_ShadowCopy'
+    
+    shadowcopy_delete:
+        EventID: 4104
+        ScriptBlockText|contains:
+            - 'Delete'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+    condition: shadowcopy_select and shadowcopy_delete
+
+falsepositives:
+    - Legitimate administrator or windows proccess deleted shadow copies using powershell
+level: high
+
+---
+
+title: Suspicious Commands Related to Deletion of Shadowcopies
+id: df3a0658-1ffa-4d64-9a93-0ba223ab22e5
+status: experimental
+description: Detects potential attempts to hinder system recovery by employing powershell scripts to delete Shadow Copies, commonly seen in ransomware attacks.
+references:
+    - https://www.fortinet.com/blog/threat-research/stomping-shadow-copies-a-second-look-into-deletion-methods
+author: Inovasys
+date: 2023/08/28
+tags:
+    - attack.Impact
+    - attack.t1490
+
+logsource:
+    product: windows
+    category: ps_classic_start
+
+detection:
+    shadowcopy_select:
+        EventID: 400
+        HostApplication|contains:
+            - 'Win32_ShadowCopy'
+    
+    shadowcopy_delete:
+        EventID: 400
+        HostApplication|contains:
+            - 'Delete'
+            - 'Remove'
+            - 'rwmi'
+            - 'rcim'
+
+    condition: shadowcopy_select and shadowcopy_delete
+
+
+falsepositives:
+    - Legitimate administrator or windows proccess deleted shadow copies using powershell
+level: high
+
+---
+
+title: Suspicious Process Manipulating Shadowcopies
+id: 8296ccd3-cee3-477f-81b3-c9f0d3120353
+status: experimental
+description: Detects suspicious process attempting to manipulation of shadow copies
+references:
+    - https://www.fortinet.com/blog/threat-research/stomping-shadow-copies-a-second-look-into-deletion-methods
+author: Inovasys
+date: 2023/08/28
+tags:
+    - attack.Impact
+    - attack.t1490
+
+logsource:
+    product: windows
+    service: sysmon
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+detection:
+    correct_process:
+        EventID: 7
+        ProcessName: 
+            - 'vssadmin.exe'
+            - 'wmiprvse.exe'
+    loaded_dll:
+        EventID: 7
+        ImageLoaded: 'vss_ps.dll'
+    condition: loaded_dll and not correct_process
+
+falsepositives:
+    - legitimate process manipulated shadow copies
+level: medium
+
+---
+
+title: Suspicious Commands Related to Resizing of Shadowcopies
+id: 8be48b12-8401-43ad-a359-ad2aeadcbfa3
+status: experimental
+description: Detects potential attempts to hinder system recovery by employing legitimate Windows tools to resize Shadow Copies, commonly seen in ransomware attacks. Note that improper resizing leading to insufficient size might result in Shadow Copies deletion.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/vssadmin-resize-shadowstorage
+author: Inovasys
+date: 2023/08/27
+tags:
+    - attack.impact
+    - attack.t1490
+    - car.2021-01-009
+
+logsource:
+    product: windows
+    service: sysmon
+    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+
+detection:
+    vssadmin_sysmon_event:
+        EventID: 1
+        ProcessName: 
+            - 'vssadmin.exe'
+        CommandLine|contains|all:
+            - 'resize'
+            - 'shadowstorag'
+    condition: vssadmin_sysmon_event
+
+falsepositives:
+    - Legitimate administrator or windows proccess resizing shadow copies
+level: medium

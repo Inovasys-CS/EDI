@@ -1,0 +1,29 @@
+title: WMIC.exe Suspicious reconnaissance Commands
+id: a4c70154-40a9-40ae-900e-64a63a9759b2
+status: experimental
+description: Detects the execution of WMIC.exe with switches \ldap or ntdomain that can indicate an atempt to gather information
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.execution
+    - attack.t1047
+
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    wmic_process:
+        - Image|endswith: '\WMIC.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    cmd_cli:
+        CommandLine|contains:
+            - '\ldap'
+            - 'ntdomain'
+    condition: all of them
+
+falsepositives:
+    - Unknown
+level: low

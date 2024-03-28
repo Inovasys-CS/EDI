@@ -1,0 +1,29 @@
+title: Bypassing security controls using bypass or -exec commands
+id: 5fb528bd-afe5-4b79-8c36-7897cfe452fb
+status: experimental
+description: Detects bypass attempts cmd.exe executing commands containing 'bypass' or '-exec', commonly used to evade security controls
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.execution
+    - attack.t1059
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    selection_commandline:
+        CommandLine|contains|all:
+            - 'bypass'
+            - '-exec'
+    condition: selection_img and selection_commandline
+
+falsepositives:
+    - Legitimate process or administrative script
+level: low
