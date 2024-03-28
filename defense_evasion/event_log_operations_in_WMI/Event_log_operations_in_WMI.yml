@@ -1,0 +1,94 @@
+title: Event Log Operations Using WMI
+id: 390252cd-7472-4bea-8a22-bf32a46fd21f
+status: experimental
+description: Detects any operations performed on Windows Event Logs using Windows Management Instrumentation (WMI)
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-tasks--event-logs
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+author: Inovasys
+date: 2023/09/10
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img_wmic:
+        - Image|endswith: '\wmic.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    wmic_commandine:
+        CommandLine|contains:
+            - 'nteventlog'
+
+    selection_img_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.EXE'
+
+    eventlog_operation_pwsh:
+        CommandLine|contains:
+            - 'Win32_NTEventlogFile'
+
+    condition: (selection_img_wmic and wmic_commandine) or (selection_img_powershell and eventlog_operation_pwsh)
+
+falsepositives:
+    - Legitimate administrator performed operations on windows event logs using WMI
+level: low
+
+---
+title: Event Log Operations Using WMI
+id: 1149c606-5864-40b7-a354-f52c2c5e5593
+status: experimental
+description: Detects any operations performed on Windows Event Logs using Windows Management Instrumentation (WMI)
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-tasks--event-logs
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+author: Inovasys
+date: 2023/09/10
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+
+logsource:
+    product: windows
+    category: ps_script
+    definition: 'Navigate to Computer Configuration -> Policies -> Administrative Templates -> Windows Components -> Windows PowerShell'
+
+detection:
+    eventlog_operation_scriptblock:
+        ScriptBlockText|contains:
+            - 'Win32_NTEventlogFile'
+
+    condition: eventlog_operation_scriptblock
+
+falsepositives:
+    - Legitimate administrator performed operations on windows event logs using WMI
+level: low
+
+---
+title: Event Log Operations Using WMI
+id: 4d489fdb-b98f-424a-98ac-adaac5ce224f
+status: experimental
+description: Detects any operations performed on Windows Event Logs using Windows Management Instrumentation (WMI)
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-tasks--event-logs
+    - https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa394225(v=vs.85)
+author: Inovasys
+date: 2023/09/10
+tags:
+    - attack.defense_evasion
+    - attack.t1070
+logsource:
+    product: windows
+    category: ps_classic_start
+detection:
+    eventlog_operation_classicstart:
+        HostApplication|contains:
+            - 'Win32_NTEventlogFile'
+    condition: eventlog_operation_classicstart
+
+falsepositives:
+    - Legitimate administrator performed operations on windows event logs using WMI
+level: low

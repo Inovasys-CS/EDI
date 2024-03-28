@@ -1,0 +1,62 @@
+id: e0391855-b623-4620-b956-2343bf6cd53d
+title: Potential Persistence Via Shim Database Modification
+status: experimental
+description: Detects the start of process sdbinst. This process is related to Windows Application Compatibility Infrastructure (Application Shim). Attackers may abuse them to introduce malicious content or manipulate compatibility databases to establish persistence on the system.
+references:
+    - https://www.mandiant.com/resources/blog/fin7-shim-databases-persistence
+    - https://pentestlab.blog/2019/12/16/persistence-application-shimming/
+author: Inovasys
+date: 2023/10/15
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1546.011
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img:
+        - Image|endswith: '\sdbinst.exe'
+        - OriginalFileName: 'sdbinst.exe'
+    filter:
+        CommandLine|contains:
+            - '-m'
+            - '-bg'
+            - '-mm'
+    condition: selection_img and not filter
+
+falsepositives:
+    - Legitimate administrator or process started sdbinst.exe
+level: low 
+
+---
+id: b86b63a6-23c0-49bb-9c41-3b7015cec149
+title: Potential Persistence Via Shim Database Modification
+status: experimental
+description: Detects the modifications in the (\CurrentVersion\AppCompatFlags\InstalledSDB\) or (\CurrentVersion\AppCompatFlags\Custom\) registry. These registries are related to Windows Application Compatibility Infrastructure (Application Shim). Attackers may abuse these directories to introduce malicious content or manipulate compatibility databases to establish persistence on the system.
+references:
+    - https://www.mandiant.com/resources/blog/fin7-shim-databases-persistence
+    - https://pentestlab.blog/2019/12/16/persistence-application-shimming/
+author: Inovasys
+date: 2023/10/15
+tags:
+    - attack.persistence
+    - attack.privilege_escalation
+    - attack.t1546.011
+
+logsource:
+    category: registry_event
+    product: windows
+
+detection:
+    selection_reg_change:
+        TargetObject|startswith:
+            - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\InstalledSDB\'
+            - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Custom\'
+    condition: selection_reg_change
+
+falsepositives:
+    - Legitimate administrator or process modified the  (\CurrentVersion\AppCompatFlags\InstalledSDB\) or (\CurrentVersion\AppCompatFlags\Custom\) registry
+level: low

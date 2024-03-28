@@ -1,0 +1,27 @@
+id: 4f1c84b5-2ed6-4b89-98d1-45d08a4e361f
+title: Potential Persistence Via Logon Scripts - Registry
+status: experimental
+description: Detects that a script was suspiciously registered as a logon script. Attackers can use logon scripts to automatically run malicious code when users sign in and establish persistence.
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1037.001/T1037.001.md
+author: Inovasys
+date: 2023/10/18
+tags:
+    - attack.persistence
+    - attack.t1037.001
+
+logsource:
+    category: registry_event
+    product: windows
+
+detection:
+    selection_reg_change:
+        TargetObject|endswith: 'Environment\UserInitMprLogonScript'
+    condition: selection_reg_change
+
+fields:
+    - Details
+
+falsepositives:
+    - Legitimate administrator or process added a Logon Script
+level: low    

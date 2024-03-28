@@ -1,0 +1,28 @@
+title: Path Traversal From cmd.exe to Explorer.exe to Execute Another Binary
+id: 56176417-f15d-449c-bd23-52fd4c0fe830
+status: experimental
+description: Detects suspicious activity involving cmd.exe path traversal to execute an additional binary through explorer.exe. Attackers may use this technique for malicious purposes, attempting to evade detection and execute unauthorized code.
+    references:
+    - https://twitter.com/CyberRaiju/status/1273597319322058752
+author: Inovasys
+date: 2023/09/15
+tags:
+    - attack.defense_evasion
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img:
+        - Image|endswith: '\explorer.exe'
+        - OriginalFileName: 'EXPLORER.EXE'
+
+    selection_commandline:
+        CommandLine|contains:
+            - '\root'
+    condition: selection_img and selection_commandline
+
+falsepositives:
+    - none
+level: high

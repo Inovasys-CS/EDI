@@ -1,0 +1,24 @@
+attack_technique: T1037.001
+display_name: Use of UserInitMprLogonScript as a Persistence Method
+atomic_tests:
+- name: Use of UserInitMprLogonScript as a Persistence Method
+  auto_generated_guid: 86009791-fca1-475c-aa14-eaf4d86e7c3a
+  description: This test adds a script as a logon script. Attackers can use logon scripts to automatically run malicious code when users sign in and establish persistence.
+
+  supported_platforms:
+  - windows
+  input_arguments:
+    bat_payload:
+      description: a bat file to run
+      type: path
+      default: PathToAtomicsFolder\Atomic\src\meow.bat
+  dependency_executor_name: powershell
+  dependencies:
+  - description: a bat file
+    prereq_command: if (Test-Path "#{bat_payload}") {exit 0} else {exit 1}
+    get_prereq_command: Write-Host "to be done after github"
+  executor:
+    command: New-ItemProperty -Path "HKCU:\Environment" -Name "UserInitMprLogonScript" -PropertyType String -Value "#{bat_payload}" -Force
+    cleanup_command: Remove-ItemProperty -Path "HKCU:\Environment" -Name "UserInitMprLogonScript" -Force
+    name: powershell
+    elevation_required: false

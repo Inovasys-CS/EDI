@@ -1,0 +1,26 @@
+title: Potential Registry Persistence Attempt Via CompatTelRunner.exe 
+id: ef076a5c-5dc4-48fe-ac52-c7e65e8b98c4
+status: experimental
+description: Detects potential persistence behavior via Windows telemetry registry keys, exploiting CompatTelRunner.exe for arbitrary command execution
+references:
+    - https://www.trustedsec.com/blog/abusing-windows-telemetry-for-persistence/
+author: Inovasys
+date: 2023/09/24
+tags:
+    - attack.persistence
+    - attack.t1053.005
+
+logsource:
+    category: registry_event
+    product: windows
+
+detection:
+    reg_change:
+        TargetObject|contains|all:
+            - 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController'
+            - 'Command'
+    condition: reg_change
+
+falsepositives:
+- Legitimate administrator or process edited the registry
+level: medium    

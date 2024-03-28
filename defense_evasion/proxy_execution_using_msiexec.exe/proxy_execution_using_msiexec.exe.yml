@@ -1,0 +1,39 @@
+
+title: Msiexec.exe Executed With Suspicious Parameters
+id: 33f7ac0a-8ef0-433a-ad15-8a3cbfb31371
+status: experimental
+description: Detects abuse of msiexec.exe to proxy execution of malicious payloads. Msiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi)
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec
+    - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1218.007/T1218.007.md 
+    - https://bherunda.medium.com/windows-privesc-detecting-alwaysinstallelevated-policy-abuse-f3ffa7a734bd
+
+author: Inovasys
+date: 2023/09/24
+tags:
+    - attack.defense_evasion
+    - attack.t1218.007
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    selection_img:
+        - Image|endswith: '\msiexec.exe'
+        - OriginalFileName: 'msiexec.exe'
+
+    selection_commandline:
+        CommandLine|contains:
+            - '/z'
+            - '/y'
+            - '/quite'
+            - '/qn'
+            - '/q'
+            - 'http'
+            - 'https'
+    condition: selection_img and selection_commandline
+
+falsepositives:
+    - Legitimate administrator or process used msiexec.exe
+level: low

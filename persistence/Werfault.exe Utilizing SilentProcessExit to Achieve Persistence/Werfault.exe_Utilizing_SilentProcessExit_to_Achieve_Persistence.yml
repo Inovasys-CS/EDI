@@ -1,0 +1,25 @@
+id: 5cda394c-72cd-4a55-8da8-3de892eab6cb
+title: Werfault.exe Utilizing SilentProcessExit to Achieve Persistence
+status: experimental
+description: Detects configuration modifications to SilentProcessExit. SilentProcessExit is a Windows feature that allows Werfault.exe to launch any specified process or command when a configured process terminates. This rule helps in identifying potential persistence mechanisms by monitoring registry changes associated with SilentProcessExit configuration modifications.
+references:
+    - https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/registry-entries-for-silent-process-exit
+    - https://persistence-info.github.io/Data/silentexitmonitor.html
+author: Inovasys
+date: 2023/10/10
+tags:
+    - attack.persistence
+
+logsource:
+    category: registry_event
+    product: windows
+
+detection:
+    selection_reg_change:
+        TargetObject|startswith: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SilentProcessExit'
+
+    condition: selection_reg_change
+
+falsepositives:
+    - Legitimate administrator or process changed Registry under (CurrentVersion\SilentProcessExit)
+level: high
