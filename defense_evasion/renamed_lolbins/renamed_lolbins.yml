@@ -236,7 +236,9 @@ detection:
         OriginalFileName: 'makecab.exe'
 
     renamed_Mavinject:
-        Image|endswith: '\Mavinject.exe'
+        Image|endswith:
+            - '\Mavinject.exe'
+            - '\MavInject32.exe'
     original_name_Mavinject:
         OriginalFileName: 'mavinject32.exe'
 
@@ -508,7 +510,9 @@ detection:
         OriginalFileName: 'DESK.CPL'
 
     renamed_Dfshimdll:
-        Image|endswith: '\Dfshim.dll'
+        Image|endswith:
+            - '\Dfshim.dll'
+            - '\dfsvc.exe'
     original_name_Dfshimdll:
         OriginalFileName: 'dfsvc.exe'
 
@@ -538,7 +542,11 @@ detection:
         OriginalFileName: 'scrobj.dll'
 
     renamed_Setupapidll:
-        Image|endswith: '\Setupapi.dll'
+        Image|endswith:
+            - '\Setupapi.dll'
+            - '\devAMD64.exe'
+            - '\AdminService.exe'
+            - '\devcon.exe'
     original_name_Setupapidll:
         OriginalFileName: 'SETUPAPI.DLL'
 

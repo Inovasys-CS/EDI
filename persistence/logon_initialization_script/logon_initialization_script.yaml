@@ -11,7 +11,7 @@ atomic_tests:
     bat_payload:
       description: a bat file to run
       type: path
-      default: PathToAtomicsFolder\Atomic\src\meow.bat
+      default: PathToAtomicsFolder\logon_initialization_script\src\meow.bat
   dependency_executor_name: powershell
   dependencies:
   - description: a bat file
