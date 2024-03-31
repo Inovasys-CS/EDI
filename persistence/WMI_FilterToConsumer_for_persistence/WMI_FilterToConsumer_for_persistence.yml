@@ -1,5 +1,5 @@
 id: b6770cd4-007d-4583-bd2a-e29bfb43a404
-title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
+title: Creation of FilterToConsumer used for persistence - Sysmon
 status: experimental
 description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
 references:
@@ -13,16 +13,13 @@ tags:
 
 logsource:
     product: windows
-    service: sysmon
-    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
+    category: wmi_event
 
 detection:
-    wmi_binding_event: 
-        EventID: 
-            - 19
-            - 20  #(dania) check in all events for any malicious payload 
+    selection_wmi_binding_event:
+        EventID:
             - 21
-    condition: wmi_binding_event
+    condition: selection_wmi_binding_event
 
 fields:
     - Consumer
@@ -34,8 +31,8 @@ level: medium
 
 ---
 
+title: Creation of WMI FilterToConsumer used for persistence - WMI Event Channel
 id: 6a26c6ff-45dc-4998-a3d1-d74046230536
-title: Creation of WMI Filter, Consumer, and FilterToConsumer used for persistence.
 status: experimental
 description: Detects the creation of a WMI FilterToConsumer. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs 
 references:
@@ -61,6 +58,7 @@ detection:
 
 fields:
     - Consumer
+
 falsepositives:
     - Legitimate administrator or process created a WMI FilterToConsumer  
 level: medium    
@@ -81,15 +79,13 @@ tags:
 
 logsource:
     product: windows
-    service: powershell
-    definition: 'Navigate to Computer Configuration -> Policies -> Administrative Templates -> Windows Components -> Windows PowerShell'
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
 
 detection:
     wmi_filter_to_consumer_binding:
-        EventID: 4104
         ScriptBlockText|contains:
             - '__FilterToConsumerBinding'
-    
     condition: wmi_filter_to_consumer_binding
 
 falsepositives:
@@ -115,12 +111,11 @@ logsource:
     category: ps_classic_start
 detection:
     wmi_filter_to_consumer_binding:
-        EventID: 400
-        HostApplication|contains:
+        Data|contains:
             - '__FilterToConsumerBinding'
     
     condition: wmi_filter_to_consumer_binding
 
 falsepositives:
     - Legitimate administrator or process created a WMI FilterToConsumer  
-level: medium    
+level: medium

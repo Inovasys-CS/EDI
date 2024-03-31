@@ -17,7 +17,7 @@ logsource:
 detection:
     copy_ntds_file:
         Image|endswith: '\esentutl.exe'
-        CommandLine|contains|all: 
+        CommandLine|contains|all:
             - '/y'
             - 'ntds.dit'
             - '/vss'
@@ -64,15 +64,13 @@ tags:
     - attack.credential_access
     - attack.t1003.003
 logsource:
-    product: windows
-    service: sysmon
     category: process_creation
-    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
-detection: 
+    product: windows
+
+detection:
     copy_ntds_file:
-        EventID: 1
         ParentImage: 'C:\Windows\system32\wbem\wmiprvse.exe'
-        CommandLine|contains|all: 
+        CommandLine|contains|all:
             - 'NTDS.dit'
             - 'HarddiskVolumeShadowCopy'
     condition: copy_ntds_file

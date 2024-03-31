@@ -12,43 +12,49 @@ tags:
     - attack.Impact
     - attack.t1490
     - car.2021-01-009
+
 logsource:
+    category: process_creation
     product: windows
-    service: sysmon
-    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
 detection:
-    deleteby_wmic:
-        EventID: 1
-        ProcessName:
-            - 'WMIC.exe'
+    selection_img_wmic:
+        - Image|endswith: '\wmic.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    selection_commandline_wmic:
         CommandLine|contains|all:
             - 'shadowcopy'
             - 'delete'
 
-    deleteby_vssadmin:
-        EventID: 1
-        ProcessName:
-            - 'vssadmin.exe'
+    selection_img_vssadmin:
+        - Image|endswith: '\vssadmin.exe'
+        - OriginalFileName: 'VSSADMIN.EXE'
+
+    selection_commandline_vssadmin_1:
         CommandLine|contains|all:
             - 'delete'
             - 'shadows'
 
-    win32_shadowcopy_select:
-        EventID: 1
-        ProcessName:
-          - 'powershell.exe'
-          - 'pwsh.exe'
+    selection_commandline_vssadmin_2:
+        CommandLine|contains|all:
+            - 'resize'
+            - 'shadowstorag'
+
+    selection_img_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.EXE'
+
+    Win32_ShadowCopy_select:
         CommandLine|contains:
             - 'Win32_ShadowCopy'
 
-    win32_shadowcopy_delete:
+    Win32_ShadowCopy_delete:
         CommandLine|contains:
             - 'Delete'
             - 'Remove'
             - 'rwmi'
             - 'rcim'
-
-    condition: 1 of deleteby* or all of win32_shadowcopy*
+    condition: (selection_img_wmic and selection_commandline_wmic) or (selection_img_vssadmin and 1 of selection_commandline_vssadmin_*) or (selection_img_powershell and all of Win32_ShadowCopy_*)
 
 falsepositives:
     - Legitimate administrator or windows proccess deleted shadow copies
@@ -65,24 +71,23 @@ date: 2023/08/28
 tags:
     - attack.Impact
     - attack.t1490
+
 logsource:
     product: windows
-    service: powershell
-    definition: Navigate to 'Computer Configuration' -> Policies -> Administrative Templates -> Windows Components -> Windows PowerShell.
+    category: ps_script
+    definition: 'Requirements: Script Block Logging must be enabled'
 detection:
-    shadowcopy_select:
-        EventID: 4104
+    selection_win32_shadowcopy_select:
         ScriptBlockText|contains:
             - 'Win32_ShadowCopy'
-    
-    shadowcopy_delete:
-        EventID: 4104
+
+    selection_win32_shadowcopy_delete:
         ScriptBlockText|contains:
             - 'Delete'
             - 'Remove'
             - 'rwmi'
             - 'rcim'
-    condition: shadowcopy_select and shadowcopy_delete
+    condition: selection_win32_shadowcopy_select and selection_win32_shadowcopy_delete
 
 falsepositives:
     - Legitimate administrator or windows proccess deleted shadow copies using powershell
@@ -108,20 +113,17 @@ logsource:
 
 detection:
     shadowcopy_select:
-        EventID: 400
-        HostApplication|contains:
+        Data|contains:
             - 'Win32_ShadowCopy'
-    
+
     shadowcopy_delete:
-        EventID: 400
-        HostApplication|contains:
+        Data|contains:
             - 'Delete'
             - 'Remove'
             - 'rwmi'
             - 'rcim'
 
     condition: shadowcopy_select and shadowcopy_delete
-
 
 falsepositives:
     - Legitimate administrator or windows proccess deleted shadow copies using powershell
@@ -142,54 +144,36 @@ tags:
     - attack.t1490
 
 logsource:
+    category: image_load
     product: windows
-    service: sysmon
-    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
 detection:
-    correct_process:
-        EventID: 7
-        ProcessName: 
-            - 'vssadmin.exe'
-            - 'wmiprvse.exe'
     loaded_dll:
-        EventID: 7
-        ImageLoaded: 'vss_ps.dll'
-    condition: loaded_dll and not correct_process
+        ImageLoaded|endswith: '\vss_ps.dll'
+
+    filter_legit:
+        Image|startswith: 'C:\Windows\'
+        Image|endswith:
+            - '\clussvc.exe'
+            - '\dismhost.exe'
+            - '\dllhost.exe'
+            - '\inetsrv\appcmd.exe'
+            - '\inetsrv\iissetup.exe'
+            - '\msiexec.exe'
+            - '\rundll32.exe'
+            - '\searchindexer.exe'
+            - '\srtasks.exe'
+            - '\svchost.exe'
+            - '\taskhostw.exe'
+            - '\thor.exe'
+            - '\thor64.exe'
+            - '\vssadmin.exe'
+            - '\tiworker.exe'
+            - '\vssvc.exe'
+            - '\WmiPrvSE.exe'
+            - '\System32\SystemPropertiesAdvanced.exe'
+
+    condition: loaded_dll and not 1 of filter_*
 
 falsepositives:
     - legitimate process manipulated shadow copies
-level: medium
-
----
-
-title: Suspicious Commands Related to Resizing of Shadowcopies
-id: 8be48b12-8401-43ad-a359-ad2aeadcbfa3
-status: experimental
-description: Detects potential attempts to hinder system recovery by employing legitimate Windows tools to resize Shadow Copies, commonly seen in ransomware attacks. Note that improper resizing leading to insufficient size might result in Shadow Copies deletion.
-references:
-    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/vssadmin-resize-shadowstorage
-author: Inovasys
-date: 2023/08/27
-tags:
-    - attack.impact
-    - attack.t1490
-    - car.2021-01-009
-
-logsource:
-    product: windows
-    service: sysmon
-    definition: Deploy Sysmon (System Monitor) on Windows systems by downloading and running the Sysmon installer
-
-detection:
-    vssadmin_sysmon_event:
-        EventID: 1
-        ProcessName: 
-            - 'vssadmin.exe'
-        CommandLine|contains|all:
-            - 'resize'
-            - 'shadowstorag'
-    condition: vssadmin_sysmon_event
-
-falsepositives:
-    - Legitimate administrator or windows proccess resizing shadow copies
 level: medium
