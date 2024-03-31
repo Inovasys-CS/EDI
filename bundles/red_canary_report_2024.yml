@@ -23,7 +23,7 @@ rules:
     - defense_evasion/rundll32_suspicious_parent
     - defense_evasion/system_binary_unusual_path
     - defense_evasion/proc_creation_win_powershell_base64_encoded_cmd_patterns
-    - execution/cmd_bypassing_security_controls #(will be renamed)
+    - execution/cmd_using_bypass_commands
     - execution/CMD_from_explorer_with_start_command
     - execution/CMD_unusual_or_suspicious_process_ancestry
     - execution/Office_application_spawning_another_process
@@ -32,8 +32,8 @@ rules:
     - execution/wmiprvse_spawning_suspicious_child_processes
     - impact/deletion_of_shadow_copies
     - persistence/WMI_FilterToConsumer_for_persistence
-    - persistence/service_execution_suspicious_activity #(will be renamed)
-    - persistence/windows_scheduled_task_suspicious_activity #(will be renamed)
+    - persistence/services.exe_spawning_suspicious_child_processes
+    - persistence/Schtasks.exe_executing_with_suspicious_process_names_in_cli
     - reconnaissance/WMIC.exe_suspicious_reconnaissance_commands
     - persistence/Appinit_dll
     - discovery/Enumerate_Domain_Trust_Using_Ntltest

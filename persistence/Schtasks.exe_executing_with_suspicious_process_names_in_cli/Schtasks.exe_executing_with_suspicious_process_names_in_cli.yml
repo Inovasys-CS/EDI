@@ -1,4 +1,4 @@
-title: Windows scheduled task suspicious activity
+title: Schtasks.exe Executing With Suspicious Process Names in cli
 id: ebf23854-4656-4498-ae1f-6a32a0d984c0
 status: experimental
 description: Detects suspicious activity of Windows scheduled tasks (schtasks.exe) executing with suspicious process names in the command line, potentially indicating an attempt to conceal the execution of malicious code
