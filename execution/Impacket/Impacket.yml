@@ -1,7 +1,7 @@
 title: Impacket atexec.py execution
 id: 761e2011-0ac3-4958-b039-dbb9c249f716
 status: experimental
-description: Detects specific commandline terms that are found when atexec.py is executed. 
+description: Detects specific commandline terms that are found when atexec.py is executed.
 references:
     - https://redcanary.com/threat-detection-report/threats/impacket/
 
@@ -16,7 +16,7 @@ logsource:
     category: process_creation
 detection:
     exec_parent:
-        ParentImage|endswith: 
+        ParentImage|endswith:
             - '\svchost.exe'
             - '\taskeng.exe'
     exec_commandline:
@@ -87,10 +87,10 @@ logsource:
     category: process_creation
 detection:
     exec_parent:
-        ParentImage|endswith: 'wmiprvse.exe'
+        ParentImage|endswith: '\wmiprvse.exe'
     exec_proc:
-        - Image|endswith: 'cmd.exe'
-        - OriginalFileName: 'Cmd.Exe' 
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
     exec_commandline:
         CommandLine|contains:
             - 'cmd.exe /Q /c '
