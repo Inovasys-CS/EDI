@@ -11,7 +11,7 @@ atomic_tests:
     msi_file:
       description: msi file to install
       type: path
-      default: PathToAtomicsFolder\Atomic\src\7zip.msi
+      default: PathToAtomicsFolder\proxy_execution_using_msiexec.exe\src\7zip.msi
   dependency_executor_name: powershell
   dependencies:
   - description: my msi package to install
@@ -31,7 +31,7 @@ atomic_tests:
     dll_file:
       description: dll to run
       type: path
-      default: PathToAtomicsFolder\Atomic\src\meow.dll
+      default: PathToAtomicsFolder\proxy_execution_using_msiexec.exe\src\meow.dll
   dependency_executor_name: powershell
   dependencies:
   - description: the dll to run

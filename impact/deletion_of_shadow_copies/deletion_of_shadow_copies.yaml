@@ -86,9 +86,9 @@ atomic_tests:
     
   input_arguments:
     custom_vbs:
-      description: DLL to Inject
+      description: custom vbs script
       type: path
-      default: PathToAtomicsFolder\Atomic\src\customscript.vbs
+      default: PathToAtomicsFolder\deletion_of_shadow_copies\customscript.vbs
 
   supported_platforms:
   - windows

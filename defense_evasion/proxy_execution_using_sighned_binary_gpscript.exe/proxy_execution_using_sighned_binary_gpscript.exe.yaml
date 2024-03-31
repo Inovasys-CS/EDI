@@ -15,7 +15,7 @@ atomic_tests:
     script_bat:
       description: a Bat file to execute
       type: path
-      default: PathToAtomicsFolder\Atomic\src\calc.bat
+      default: PathToAtomicsFolder\proxy_execution_using_sighned_binary_gpscript.exe\src\calc.bat
   executor:
     name: powershell
     elevation_required: true

@@ -9,15 +9,15 @@ author: Inovasys
 date: 2023/03/27
 tags:
     - attack.execution
-    - attack.T1059
+    - attack.t1059
 logsource:
     category: process_creation
     product: windows
 detection:
     execution:
         Image|endswith:
-            - 'cscript.exe'
-            - 'wscript.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
         CommandLine|contains:
             - '.js'
             - '.vba'
@@ -25,9 +25,10 @@ detection:
             - '.jse'
             - '.wsf'
     filter:
-        ParentImage}endswith:
-            - 'svchost.exe'
+        ParentImage|endswith:
+            - '\svchost.exe'
     condition: execution and not filter
+
 falsepositives:
     -  Legitimate scripts used by administrators.
 level: medium

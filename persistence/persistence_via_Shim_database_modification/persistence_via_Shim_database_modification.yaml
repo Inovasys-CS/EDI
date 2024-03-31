@@ -11,7 +11,7 @@ atomic_tests:
     sdb_file:
       description: a sample sdb file for this test
       type: path
-      default: PathToAtomicsFolder\Atomic\src\sdb_file.sdb
+      default: PathToAtomicsFolder\persistence_via_Shim_database_modification\src\sdb_file.sdb
   dependency_executor_name: powershell
   dependencies:
   - description: my payload description
