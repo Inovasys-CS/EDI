@@ -1,7 +1,7 @@
 title: System Executable Outside System32
 id: 0dd01f2d-6e55-41f6-8903-913a33c32f10
 status: experimental
-description: Detects the creation of an executable with a system process name in a suspicious folder via Sysmon. 
+description: Detects the creation of an executable with a system process name in a suspicious folder. 
 
 tags:
     - attack.defense_evasion

