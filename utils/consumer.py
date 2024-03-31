@@ -1,12 +1,13 @@
 import yaml, os, shutil
+from distutils.dir_util import copy_tree
 
 
 class Consumer:
     def __init__(
         self,
-        rule_dir: str = "rules",
-        bundles_dir: str = "bundles",
-        output_dir: str = "output",
+        rule_dir: str = "..\\rules" if os.name == "nt" else r"../rules",
+        bundles_dir: str = "bundles" if os.name == "nt" else r"../bundles",
+        output_dir: str = r"..\output" if os.name == "nt" else r"../output",
     ) -> None:
         self.rule_dir = rule_dir
         self.bundles_dir = bundles_dir
@@ -46,6 +47,14 @@ class Consumer:
     def export_bundle(self, rules: list) -> None:
         """Copies rules indicated in rule list to output directory"""
 
+        if not os.path.isdir(self.output_dir):
+            print(
+                f"Output directory does not exist, it was created at {self.output_dir}"
+            )
+            os.mkdir(self.output_dir)
+            os.mkdir(os.path.join(self.output_dir, "rules"))
+            os.mkdir(os.path.join(self.output_dir, "atomics"))
+
         not_found = []
         for rule in rules:
             # Combines rule name with rule directory to be used in file copy function
@@ -63,14 +72,44 @@ class Consumer:
                     exit()
                 continue
 
-            # Copies all rules related to use case
-            if os.path.isdir(self.output_dir):
-                for item in dir_content:
-                    if item.endswith(".yml"):
-                        shutil.copy2(os.path.join(rule_path, item), self.output_dir)
-            else:
-                print("Output directory does not exist")
-                exit()
+            # Copies all rules and atomics related to use case
+
+            for item in dir_content:
+
+                if item.endswith(".yml"):
+                    shutil.copy2(
+                        os.path.join(rule_path, item),
+                        os.path.join(self.output_dir, "rules"),
+                    )
+                elif item.endswith(".yaml"):
+                    atomic_name = (
+                        rule_path.split("/")[-1]
+                        if os.name == "posix"
+                        else rule_path.split("\\")[-1]
+                    )
+                    try:
+                        os.mkdir(os.path.join(self.output_dir, "atomics", atomic_name))
+                    except FileExistsError:
+                        pass
+                    shutil.copy2(
+                        os.path.join(rule_path, item),
+                        os.path.join(
+                            self.output_dir,
+                            "atomics",
+                            atomic_name,
+                            f"{atomic_name}.yaml",
+                        ),
+                    )
+                elif item == "src" or item == "bin":
+                    atomic_name = (
+                        rule_path.split("/")[-1]
+                        if os.name == "posix"
+                        else rule_path.split("\\")[-1]
+                    )
+                    copy_tree(
+                        os.path.join(rule_path, item),
+                        os.path.join(self.output_dir, "atomics", atomic_name, item),
+                    )
 
         # Display completion status
         print(
@@ -85,7 +124,16 @@ class Consumer:
     def list_bundles(self, target: str = "all") -> None:
         """Lists all bundles or bundles with specific category based on user input"""
 
-        bundles = os.listdir(self.bundles_dir)
+        try:
+            bundles = [
+                bundle
+                for bundle in os.listdir(self.bundles_dir)
+                if bundle.endswith(".yml")
+            ]
+        except FileNotFoundError:
+            print("Bundles folder does not exist")
+            exit()
+
         for bundle in bundles:
             bundle_name = bundle.replace(".yml", "")
 

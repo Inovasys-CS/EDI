@@ -1,6 +1,6 @@
-# Detect Map - Detection Use Cases Repository
+# EDI: Emulation, Detection, and Intelligence - Detection Use Cases Repository
 
-Welcome to the Detect Map! This repository aims to collect and structure all the detection use cases based on the MITRE ATT&CK framework. Our goal is to provide a comprehensive resource for security professionals to develop effective detection strategies against cyber threats.
+Pronounced "Eddy", this repository aims to collect and structure all the detection use cases based on the MITRE ATT&CK framework. Our goal is to provide a comprehensive resource for security professionals to develop effective detection strategies against cyber threats.
 
 ## Structure
 
@@ -14,13 +14,15 @@ The repository is structured according to the MITRE ATT&CK framework, organizing
 
 In addition to individual detection use cases, we provide bundles that collect the latest reports for threat detection & intelligence. These bundles consolidate all covered detection use cases, making it easier for users to download and implement them in their security operations.
 
+It's easy to export all the rules associated with a bundle by using the bundle exporter script found in the [utils directory](https://github.com/Inovasys-CS/EDI/tree/main/utils). You can also find more information about the bundle format in the [utils README](https://github.com/Inovasys-CS/EDI/blob/main/utils/README.md)
+
 ## CVEs Coverage
 
 We also cover the latest Common Vulnerabilities and Exposures (CVEs) to make it easier for you to fortify yourself against known vulnerabilities. By integrating CVE data into our detection use cases, we aim to provide a holistic approach to threat detection and mitigation.
 
 ## Contributors
 
-This repository is supported by InovaSys and written by its Blue Team members. InovaSys is committed to advancing cybersecurity knowledge and sharing best practices within the community.
+This repository is supported by Inovasys and written by its Blue Team members. Inovasys is committed to advancing cybersecurity knowledge and sharing best practices within the community.
 
 ## Contributing
 
