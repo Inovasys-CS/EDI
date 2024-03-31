@@ -1,0 +1,13 @@
+attack_technique: T1218.011
+display_name: "System Binary Proxy Execution: Rundll32"
+atomic_tests:
+- name: Rundll32 No Command Line
+  auto_generated_guid: 4552f642-8425-4e97-a516-7179ac40103b
+  description: |
+    Launches an instance of rundll32.exe that does not have a commandline.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      rundll32.exe
+    name: command_prompt

@@ -1,0 +1,27 @@
+attack_technique: T1218.011
+display_name: "System Binary Proxy Execution: Rundll32"
+atomic_tests:
+- name: Rundll32 Suspicious Parent
+  auto_generated_guid: 459b61f1-4ece-4de1-b211-1ff038597609
+  description: |
+    Launches a macro enabled word document that starts an instance of rundll32.exe
+  supported_platforms:
+  - windows
+  input_arguments:
+    macro_file:
+      description: Path to macro enabled word document
+      type: path
+      default: PathToAtomicsFolder\rundll32_suspicious_parent\bin\rundll32spawn.docm
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if document exists
+      prereq_command: |
+        if(Test-Path "#{macro_file}") {exit 0} else {exit 1}
+      get_prereq_command: |
+        Invoke-WebRequest "https://github.com/Inovasys-CS/EDI/raw/main/defense_evasion/rundll32_suspicious_dll/bin/rundll32spawn.docm" -OutFile "#{dll_file}"
+  executor:
+    command: |
+      start #{macro_file}
+    cleanup_command: |
+      Remove-Item -Path #{macro_file}
+    name: powershell

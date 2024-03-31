@@ -1,0 +1,13 @@
+attack_technique: T1218.011
+display_name: "System Binary Proxy Execution: Rundll32"
+atomic_tests:
+- name: Rundll32 DllRegisterServer Execution
+  auto_generated_guid: ab5cb8ca-f2e5-40f0-aa76-015326f88db4
+  description: |
+    Launches an instance of rundll32.exe that executes dllregisterserver function from native dll.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      rundll32.exe C:\Windows\System32\jscript.dll,DllRegisterServer
+    name: command_prompt
