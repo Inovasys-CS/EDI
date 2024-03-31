@@ -87,10 +87,10 @@ logsource:
     category: process_creation
 detection:
     exec_parent:
-        ParentImage|endswith: 'wmiprvse.exe'
+        ParentImage|endswith: '\wmiprvse.exe'
     exec_proc:
-        - Image|endswith: 'cmd.exe'
-        - OriginalFileName: 'Cmd.Exe' 
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
     exec_commandline:
         CommandLine|contains:
             - 'cmd.exe /Q /c '

@@ -21,8 +21,8 @@ detection:
             - '\msedge.exe'
             - '\opera.exe'
         Image|endswith:
-            - 'cscript.exe'
-            - 'wscript.exe'
+            - '\cscript.exe'
+            - '\wscript.exe'
 
     condition: execution
 falsepositives:
