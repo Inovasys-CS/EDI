@@ -14,16 +14,16 @@ author: Inovasys
 date: 2023/08/22
 
 logsource:
+    category: process_creation
     product: windows
-    service: sysmon
 detection:
     mimikatz_launched_original_name:
         - Image|endswith: '\mimikatz.exe'
         - OriginalFileName: 'mimikatz.exe'
     mimikatz_company:
-        Company: 'gentilkiwi (Benjamin DELPY)' 
+        Company: 'gentilkiwi (Benjamin DELPY)'
     mimikatz_access_commands:
-        CommandLine|endswith: 
+        CommandLine|endswith:
             - 'sekurlsa::logonpasswords'
             - 'lsadump::lsa'
             - 'lsadump::sam'
