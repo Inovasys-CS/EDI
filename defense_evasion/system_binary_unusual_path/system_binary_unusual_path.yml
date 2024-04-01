@@ -813,4 +813,4 @@ falsepositives:
     - Lenovo hotkeys creates setapps.exe
     - Git creates curl.exe
 
-level: medium
+level: low

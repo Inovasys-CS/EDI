@@ -1,7 +1,7 @@
 title: LSASS Mimikatz Access
 id: 3ca4f257-68e3-4779-bdc7-78b5f6d62e4f
 status: experimental
-description: Detects suspicious LSASS Access from Mimikatz via Sysmon.
+description: Detects suspicious LSASS Access from Mimikatz via commandline arguments.
 references:
     - https://www.deepinstinct.com/blog/lsass-memory-dumps-are-stealthier-than-ever-before
     - https://book.hacktricks.xyz/windows-hardening/stealing-credentials/credentials-mimikatz
@@ -42,7 +42,7 @@ level: high
 title: Kerberos Ticket Files
 id: a4cf7e8b-4a78-4dd3-8fac-c08dc64dfca7
 status: experimental
-description:Detect the creation of .kirbi files, commonly utilized by tools like Mimikatz, for the purpose of stealing and forging Kerberos tickets.
+description: Detect the creation of .kirbi files, commonly utilized by tools like Mimikatz, for the purpose of stealing and forging Kerberos tickets.
 references:
     - https://redcanary.com/threat-detection-report/threats/mimikatz/
 author: Inovasys
