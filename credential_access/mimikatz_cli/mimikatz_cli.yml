@@ -23,9 +23,10 @@ detection:
     mimikatz_company:
         Company: 'gentilkiwi (Benjamin DELPY)'
     mimikatz_access_commands:
-        CommandLine|endswith:
+        CommandLine|contains:
             - 'sekurlsa::logonpasswords'
             - 'lsadump::lsa'
+            - 'lsadump::setntlm'
             - 'lsadump::sam'
             - 'lsadump::setntlm'
             - 'lsadump::secrets'

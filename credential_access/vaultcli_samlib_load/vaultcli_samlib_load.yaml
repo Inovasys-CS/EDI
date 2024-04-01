@@ -1,0 +1,13 @@
+attack_technique: T1003
+display_name: OS Credential Dumping
+atomic_tests:
+- name: Loading Samlib.dll Via Rundll32.exe
+  auto_generated_guid: c7fe52d3-39d9-4fbb-b3d1-09236d914a72
+  description: |
+    Launches an instance of Rundll32.exe that loads the samlib dll and executes the SamOpenUser function.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      rundll32.exe C:\Windows\SysWOW64\samlib.dll,SamOpenUser
+    name: powershell
