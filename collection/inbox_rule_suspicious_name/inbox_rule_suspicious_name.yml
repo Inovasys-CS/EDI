@@ -1,5 +1,5 @@
 title: Suspicious Inbox Rule Name
-id: 357f177c-a71c-4cb0-992e-021f7129fab5
+id: cdf026c4-7c22-49a8-8eae-3eef4304003c
 status: experimental
 description: Detects inbox rule modification with suspicious rule name.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/

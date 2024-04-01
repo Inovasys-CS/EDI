@@ -1,5 +1,5 @@
 title: Inbox Rule Manipulation From Suspicious Country
-id: 3b0724da-5980-460a-beec-3967bba6741a
+id: 582f5be6-eb63-47d9-b299-5db7553268f4
 status: experimental
 description: Detects inbox rule modification with from an IP in a suspicious country.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/

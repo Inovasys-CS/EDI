@@ -1,5 +1,5 @@
-title: Inbox Rule with Suspicious COndition Search String
-id: 3b0724da-5980-460a-beec-3967bba6741a
+title: Inbox Rule with Suspicious Condition Search String
+id: 092a3d28-7c4f-4d46-9d7c-e7fc3ba7c052
 status: experimental
 description: Detects inbox rule modification with a condition that contains suspicious strings used at times by attackers.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
