@@ -1,0 +1,46 @@
+attack_technique: T1105
+display_name: Ingress Tool Transfer
+atomic_tests:
+- name: BITS Download PowerShell
+  auto_generated_guid: 0abbc53b-4a2e-44b0-b84f-6a99039f4743
+  description: |
+    Uses BITS via PowerShell to start a download job.
+  supported_platforms:
+  - windows
+  input_arguments:
+    request_url:
+      description: URL to download from
+      type: url
+      default: https://raw.githubusercontent.com/Inovasys-CS/EDI/main/README.md
+    download_location:
+      description: Path to download file to
+      type: path
+      default: PathToAtomicsFolder\bits_file_download\test.txt
+  executor:
+    command: |
+      Start-BitsTransfer -Source #{request_url} -Destination #{download_location} -TransferType Download
+    cleanup_command: |
+      Remove-Item #{download_location}
+    name: powershell
+  
+- name: BITS Download Bitsadmin.exe
+  auto_generated_guid: f7c5db19-a7a0-420b-9fb4-5c1b93063b7e
+  description: |
+    Uses BITS via Bitsadmin.exe to start a download job.
+  supported_platforms:
+  - windows
+  input_arguments:
+    request_url:
+      description: URL to download from
+      type: url
+      default: https://raw.githubusercontent.com/Inovasys-CS/EDI/main/README.md
+    download_location:
+      description: Path to download file to
+      type: path
+      default: PathToAtomicsFolder\bits_file_download\test.txt
+  executor:
+    command: |
+      bitsadmin.exe /transfer downloadjob /download #{request_url} #{download_location}
+    cleanup_command: |
+      Remove-Item #{download_location}
+    name: powershell

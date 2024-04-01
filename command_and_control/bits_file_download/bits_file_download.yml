@@ -17,15 +17,18 @@ logsource:
     product: windows
     service: ps_script
 detection:
-    bits_cmdlet_upload:
+    bits_cmdlet_download_source:
         ScriptBlockText|contains|all: 
             - '-Source "http'
             - '-Source http'
             - "-Source 'http"
-    bits_cmdlet_start:
+    bits_cmdlet_download_type:
+        ScriptBlockText|contains:
+            - '-TransferType Download'
+    bits_start:
         ScriptBlockText|contains: 'Start-BitsTransfer'
     
-    condition: bits_cmdlet_upload
+    condition: bits_start and 1 of bits_cmdlet_*
 
 falsepositives:
     - Legitimate transfer by admins, however this technique is not seen frequently and should be investigated

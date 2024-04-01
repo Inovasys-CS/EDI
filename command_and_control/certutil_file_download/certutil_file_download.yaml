@@ -1,28 +1,24 @@
-title: Downloading or encoding of files using certutil.exe.
-id: f35f63fd8-923a-4e2d-8629-24063c4ba82e
-status: experimental
-description: Detects the downloading or encoding of files using certutil.exe..
-references:
-    - https://lolbas-project.github.io/lolbas/Binaries/Certutil/#download
-author: Inovasys 
-date: 2023/08/30
-tags:
-    - attack.command_and_control
-    - attack.t1105
-logsource:
-    product: windows
-    category: process_creation
-detection: 
-    certutil_exec:
-        - Image|endswith: '\certutil.exe'
-        - OriginalFileName: 'CertUtil.exe'
-    commandline_args:
-        CommandLine|contains:
-            - 'verifyctl'
-            - 'urlcache'
-            - 'encode'
-
-    condition: certutil_exec and commandline_args
-falsepositives:
-    - Legitimate use of MpCmdRun to download some Requirements 
-level: high
+attack_technique: T1105
+display_name: Ingress Tool Transfer
+atomic_tests:
+- name: File download using certutil.exe
+  auto_generated_guid: 6623acdb-0c9c-43c5-aa5d-fe108ae30c19
+  description: |
+    Uses Certutil.exe to download a file.
+  supported_platforms:
+  - windows
+  input_arguments:
+    request_url:
+      description: URL to download from
+      type: url
+      default: https://raw.githubusercontent.com/Inovasys-CS/EDI/main/README.md
+    download_location:
+      description: Path to download file to
+      type: path
+      default: PathToAtomicsFolder\certutil_file_download\test.txt
+  executor:
+    command: |
+      certutil.exe -urlcache -split -f #{request_url} #{download_location}
+    cleanup_command: |
+      Remove-Item #{download_location}
+    name: powershell
