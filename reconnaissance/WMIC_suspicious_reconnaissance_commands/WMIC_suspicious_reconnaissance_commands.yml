@@ -7,7 +7,7 @@ references:
 author: Inovasys
 date: 2024/03/27
 tags:
-    - attack.execution
+    - attack.reconnaissance
     - attack.t1047
 
 logsource:
