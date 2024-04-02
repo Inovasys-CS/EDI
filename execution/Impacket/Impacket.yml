@@ -7,6 +7,7 @@ references:
 
 tags:
     - attack.execution
+    - attack.t1053.002
 
 author: Inovasys
 date: 2024/03/28
@@ -36,12 +37,14 @@ level: high
 title: Impacket SMBexec execution
 id: ece673a0-b12f-4b62-b5f3-210356102482
 status: experimental
-description: Detects specific commandline terms that are found when wmiexec is executed. 
+description: Detects specific commandline terms that are found when smbexec is executed. 
 references:
     - https://redcanary.com/threat-detection-report/threats/impacket/
 
 tags:
     - attack.execution
+    - attack.t1569.002
+    - attack.t1059.003
 
 author: Inovasys
 date: 2024/03/28
@@ -78,6 +81,8 @@ references:
 
 tags:
     - attack.execution
+    - attack.t1047
+    - attack.t1059.003
 
 author: Inovasys
 date: 2024/03/28
