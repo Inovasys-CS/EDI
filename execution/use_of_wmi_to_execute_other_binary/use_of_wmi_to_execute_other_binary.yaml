@@ -1,0 +1,16 @@
+attack_technique: T1047
+display_name: Use of wmi to execute other binary
+
+atomic_tests:
+- name: Use of wmic.exe to execute cmd /c and start calc.exe
+  auto_generated_guid: 9f0688d7-2269-4589-a7fe-3a63a93cf0a5
+  description: |
+    This test will use wmic to run cmd with /c switch to evade detection
+
+  supported_platforms:
+    - windows
+  
+  executor:
+    name: powershell
+    elevation_required: true
+    command: wmic process call create "cmd.exe /c calc.exe"

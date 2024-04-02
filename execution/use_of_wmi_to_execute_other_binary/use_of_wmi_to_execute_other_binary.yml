@@ -1,3 +1,38 @@
+title: WMIC.exe Suspicious Commands to execute a process
+id: 070d435b-604c-4cea-b26b-7cdaf1922f95
+status: experimental
+description: Detects the execution of WMIC.exe with switches create, node:, process, and call that indicate the atempt to execute a process via wmic.exe
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+author: Inovasys
+date: 2024/03/27
+tags:
+    - attack.execution
+    - attack.t1059
+
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    wmic_process:
+        - Image|endswith: '\WMIC.exe'
+        - OriginalFileName: 'wmic.exe'
+
+    cmd_cli:
+        CommandLine|contains:
+            - 'create'
+            - 'node:'
+            - 'process'
+            - 'call'
+
+    condition: all of them
+
+falsepositives:
+    - Unknown
+level: low
+
+---
+
 title: wmiprvse.exe spawning suspicious child processes
 id: 9d49c39a-05a2-429b-989b-0d02bce1fd00
 status: experimental
