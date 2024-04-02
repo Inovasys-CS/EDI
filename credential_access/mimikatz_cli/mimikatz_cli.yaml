@@ -17,7 +17,7 @@ atomic_tests:
   dependencies:
     - description: Test if executable exists
       prereq_command: |
-        if(Test-Path "#{path_to_mimikatz}x64\mimikatz.exe") {exit 0} else {exit 1}
+        if(Test-Path "#{path_to_mimikatz}\x64\mimikatz.exe") {exit 0} else {exit 1}
       get_prereq_command: |
         Invoke-WebRequest "https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip" -OutFile "#{path_to_mimikatz}"
         Expand-Archive #{path_to_mimikatz}\mimikatz_trunk.zip
