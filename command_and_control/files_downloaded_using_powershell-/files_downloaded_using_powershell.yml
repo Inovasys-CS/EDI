@@ -95,3 +95,4 @@ detection:
 
 falsepositives: Legitimate administrator used powershell to download a file
 level: medium
+
