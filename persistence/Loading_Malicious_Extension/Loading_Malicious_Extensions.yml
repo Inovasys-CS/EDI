@@ -1,4 +1,4 @@
-title:  Loading Malicious Extensions 
+title: Loading Malicious Extensions 
 id: a1d83ad8-e593-4905-8a8c-4bf3a3a1c801
 status: experimental
 description: Detect the automatic loading of extensions in  chromium based browsers without user interaction, similar to what was observed in the Chrome Loader and Smachjacker threats.
@@ -6,9 +6,10 @@ references:
     - https://redcanary.com/blog/chromeloader/
     - https://redcanary.com/threat-detection-report/threats/smashjacker/
 author: Inovasys
-date: 27/3/2024
+date: 2024/03/27
 tags:
     - attack.persistence
+    - attack.t1176
 logsource:
     category: process_creation
     product: windows
@@ -20,7 +21,7 @@ detection:
             - '\brave.exe'
             - '\opera.exe'
         CommandLine|contains:
-            - 'load-extension'
+            - '--load-extension'
     condition: loading_extension
 falsepositives:
     - Unknown

@@ -1,0 +1,28 @@
+attack_technique: T1482
+display_name: Domain Trust Discovery
+atomic_tests:
+- name: Discover Trust Relationships using nltest.exe (domain_trusts)
+  auto_generated_guid: f4559cf0-8ca7-43d8-81bf-a821c5afd3bc
+  description: |
+    Uses nltest.exe domain_trusts argument to discover trust relations on a machine.
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      nltest.exe /domain_trusts /all_trusts
+    name: powershell
+- name: Discover Trust Relationships using nltest.exe (dclist)
+  auto_generated_guid: 5b30e266-3ce7-4339-bc5c-fbca351d2829
+  description: |
+    Uses nltest.exe dclist argument to discover DCs associated with domain.
+  supported_platforms:
+  - windows
+  input_arguments:
+    domain_name:
+      description: Domain to discover
+      type: string
+      default: test
+  executor:
+    command: |
+      nltest.exe /dclist:#{domain_name}
+    name: powershell

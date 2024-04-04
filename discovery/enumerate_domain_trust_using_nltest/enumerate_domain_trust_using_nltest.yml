@@ -6,19 +6,25 @@ date: 2023/09/27
 status: experimental
 references:
   - https://www.elastic.co/guide/en/security/current/prebuilt-rule-8-3-2-enumerating-domain-trusts-via-nltest-exe.html
+  - https://redcanary.com/threat-detection-report/techniques/domain-trust-discovery/
 tags:
   - attack.discovery
+  - attack.t1482
 logsource:
     category: process_creation
     product: windows
 detection:
-  process_execution:
-    Image|endswith: nltest.exe
+  nltest_exec:
+    - Image|endswith: '\nltest.exe'
+    - OriginalFileName: 'nltestrk.exe'
+  nltest_commandline_dclist:
     CommandLine|contains:
-      - "/domain_trusts"
-      - "/all_trusts"
-      - "/dclist"
-  condition: process_execution
+      - '/dclist'
+  nltest_commandline_domain:
+    CommandLine|contains|all:
+      - '/domain_trusts'
+      - '/all_trusts'
+  condition: nltest_exec and (nltest_commandline_dclist or nltest_commandline_domain)
 falsepositives:
   - Unknown
 level: high
