@@ -5,6 +5,12 @@ date: 2024/03/13
 company: Red Canary
 reference: https://resource.redcanary.com/rs/003-YRU-314/images/2024ThreatDetectionReport_RedCanary.pdf?version=0
 rules:
+    - collection/inbox_rule_suspicious_condition
+    - collection/inbox_rule_suspicious_country
+    - collection/inbox_rule_suspicious_move_copy
+    - collection/inbox_rule_suspicious_name
+    - collection/mailbox_junk_config_internal_user
+    - collection/mailbox_junk_config_suspicious_country
     - command_and_control/bits_file_download
     - command_and_control/certreq_download
     - command_and_control/certutil_file_download
@@ -23,22 +29,25 @@ rules:
     - defense_evasion/rundll32_suspicious_parent
     - defense_evasion/system_binary_unusual_path
     - defense_evasion/proc_creation_win_powershell_base64_encoded_cmd_patterns
+    - defense_evasion/proxy_execution_using_signed_binary_gpscript.exe
+    - discovery/enumerate_domain_trust_using_nltest
     - execution/cmd_using_bypass_commands
-    - execution/CMD_from_explorer_with_start_command
-    - execution/CMD_unusual_or_suspicious_process_ancestry
-    - execution/Office_application_spawning_another_process
-    - execution/WMIC_execute_other_process
-    - execution/WMIC_loading_scripting_libraries
-    - execution/wmiprvse_spawning_suspicious_child_processes
+    - execution/cmd_from_explorer_with_start_command
+    - execution/cmd_unusual_or_suspicious_process_ancestry
+    - execution/impacket
+    - execution/office_application_spawning_another_process
+    - execution/use_of_wmi_to_execute_other_binary
+    - execution/windows_script_host_execution
+    - execution/wmic_loading_scripting_libraries
     - impact/deletion_of_shadow_copies
+    - initial_access/windows_script_spawning_from_browser
     - persistence/WMI_FilterToConsumer_for_persistence
     - persistence/services.exe_spawning_suspicious_child_processes
     - persistence/Schtasks.exe_executing_with_suspicious_process_names_in_cli
-    - reconnaissance/WMIC.exe_suspicious_reconnaissance_commands
-    - persistence/Appinit_dll
-    - discovery/Enumerate_Domain_Trust_Using_Ntltest
-    - execution/Impacket
-    - persistence/Loading_Malicious_Extension
-    - persistence/Run_keys
-    - execution/Windows_Script_Host_Execution
-    - initial_access/Windows_Script_Spawning_From_Browser
+    - persistence/appinit_dll
+    - persistence/loading_malicious_extension
+    - persistence/run_keys
+    - persistence/schtasks.exe_executing_with_suspicious_process_names_in_cli
+    - persistence/services.exe_spawning_suspicious_child_processes
+    - persistence/wmi_filtertoconsumer_for_persistence
+    - reconnaissance/wmic_suspicious_reconnaissance_commands
