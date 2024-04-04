@@ -1,30 +1,66 @@
 title: Windows Script Network connection from browser
 id: 18c7f0a8-400e-4459-b412-b2df4b1c2e66
 status: experimental
-description: Detect suspicious network connection by wscript.exe or cscript.exe from the browsers
+description: Detects suspicious execution of wscript or jscript from the browser, which indicates that a user downloaded and executed a js file.
 references:
-    - https://attack.mitre.org/techniques/T1189/
     - https://redcanary.com/threat-detection-report/threats/socgholish/
+    - https://www.proofpoint.com/us/blog/threat-insight/part-1-socgholish-very-real-threat-very-fake-update
 author: Inovasys
 date: 2023/03/27
 tags:
     - attack.initial_access
-    - attack.T1189
+    - attack.t1189
 logsource:
-    category: network_connection
+    category: process_creation
     product: windows
 detection:
-    execution:
+    exec_cscript:
+        - Image|endswith: '\cscript.exe'
+        - OriginalFileName: 'cscript.exe'
+    exec_wscript:
+        - Image|endswith: '\wscript.exe'
+        - OriginalFileName: 'wscript.exe'
+    browser_parent:
         ParentImage|endswith:
             - '\brave.exe'
             - '\chrome.exe'
             - '\msedge.exe'
             - '\opera.exe'
-        Image|endswith:
+            - '\firefox.exe'
+    condition: 1 of exec_* and browser_parent
+falsepositives:
+    - Unknown
+level: medium
+---
+title: Windows Script Network connection from browser
+id: f364b789-cc01-4cdb-ac58-5440e22b6968
+related: 
+    - id: 18c7f0a8-400e-4459-b412-b2df4b1c2e66
+      type: similar
+status: experimental
+description: Detects suspicious network connection by wscript.exe or cscript.exe
+references:
+    - https://redcanary.com/threat-detection-report/threats/socgholish/
+    - https://www.proofpoint.com/us/blog/threat-insight/part-1-socgholish-very-real-threat-very-fake-update
+author: Inovasys
+date: 2023/03/27
+tags:
+    - attack.initial_access
+    - attack.t1189
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    exec_cscript_wscript:
+        Image|endswith: 
             - '\cscript.exe'
             - '\wscript.exe'
-
-    condition: execution
+    internal_ips:
+        DestinationIp|startswith:
+            - '10.'
+            - '192.168.'
+            - '172.16.'
+    condition: exec_cscript_wscript and not internal_ips
 falsepositives:
-    - unknows
-level: low
+    - Legitimate use of wscript or cscript to external connections
+level: medium
