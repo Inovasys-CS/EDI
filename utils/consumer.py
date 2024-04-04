@@ -5,9 +5,9 @@ from distutils.dir_util import copy_tree
 class Consumer:
     def __init__(
         self,
-        rule_dir: str = "..\\rules" if os.name == "nt" else r"../rules",
-        bundles_dir: str = "bundles" if os.name == "nt" else r"../bundles",
-        output_dir: str = r"..\output" if os.name == "nt" else r"../output",
+        rule_dir: str = "rules",
+        bundles_dir: str = "bundles",
+        output_dir: str = "output",
     ) -> None:
         self.rule_dir = rule_dir
         self.bundles_dir = bundles_dir
