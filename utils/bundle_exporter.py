@@ -5,18 +5,19 @@ import os
 
 bundle_categories = ["all", "report", "cve"]
 epilog = """
-[Example Usage]\n
+[Example Usage]
 
-List all bundles: python main.py -l all\n
-List report bundles: python main.py -l report\n
-Process example bundle (default paths): python main.py -p example_bundle\n
-Process example bundle (custom paths): python main.py -p example_bundle -o C:\\path\\to\\output\\dir -r c:\\path\\to\\rules\\dir -c D:\\path\\to\\bundles\\dir
+List all bundles: python main.py -l all
+List report bundles: python main.py -l report
+Process example bundle (default paths): python utils\\bundle_exporter.py -p example_bundle
+Process example bundle (custom paths): python python utils\\bundle_exporter.py -p example_bundle -o C:\\path\\to\\output\\dir -r c:\\path\\to\\rules\\dir -c D:\\path\\to\\bundles\\dir
 """
 description = "A tool that allows you to export rules linked in a bundle from the Inovasys sigma rule repo"
 
 parser = argparse.ArgumentParser(
     epilog=epilog,
     description=description,
+    formatter_class=argparse.RawDescriptionHelpFormatter,
 )
 
 parser.add_argument(
@@ -31,7 +32,7 @@ parser.add_argument(
 parser.add_argument(
     "-b",
     "--bundles_dir",
-    help="Directory that contains",
+    help="Directory that contains bundles",
     default=os.path.join(os.getcwd(), "bundles"),
 )
 parser.add_argument(
