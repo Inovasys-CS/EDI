@@ -1,0 +1,33 @@
+title: Run regisry keys manipulation 
+id: ac596c84-55f0-11ee-8c99-0242ac120002
+status: experimental
+description: Detects the modification Or addition of the registry run keys, as well as the addition of any new paths (subkeys) inside.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/setupapi/run-and-runonce-registry-keys
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1547.001/T1547.001.md
+
+author: Inovasys
+date: 2023/09/18
+
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    registry_entry:
+        TargetObject|endswith: 
+            - "Microsoft\\Windows\\CurrentVersion\\RunOnce"
+            - "Microsoft\\Windows\\CurrentVersion\\RunOnceEx" 
+            - "Microsoft\\Windows\\CurrentVersion\\Run" 
+            - "Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\Run"
+            - "Microsoft\\Windows\\CurrentVersion\\StartupApproved\\StartupFolder"
+            - "Microsoft\\Windows\\CurrentVersion\\StartupApproved\\Run" 
+            - "Microsoft\\Windows\\CurrentVersion\\StartupApproved\\RunOnce" 
+            - "Microsoft\\Windows*NT\\CurrentVersion\\Winlogon\\Userinit"
+
+    condition: registry_entry
+falsepositives:
+    - Unknown
+level: high
