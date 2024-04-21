@@ -27,9 +27,6 @@ detection:
         CommandLine|contains:
             - '/z'
             - '/y'
-            - '/quite'
-            - '/qn'
-            - '/q'
             - 'http'
             - 'https'
     condition: selection_img and selection_commandline
