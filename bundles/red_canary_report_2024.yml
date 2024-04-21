@@ -28,7 +28,7 @@ rules:
     - defense_evasion/rundll32_suspicious_dll
     - defense_evasion/rundll32_suspicious_parent
     - defense_evasion/system_binary_unusual_path
-    - defense_evasion/proc_creation_win_powershell_base64_encoded_cmd_patterns
+    - defense_evasion/powershell_base64_encoded_patterns
     - defense_evasion/proxy_execution_using_signed_binary_gpscript.exe
     - discovery/enumerate_domain_trust_using_nltest
     - execution/cmd_using_bypass_commands

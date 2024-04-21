@@ -1,0 +1,16 @@
+attack_technique: T1059.001
+display_name: powershell base64 encoded patterns
+
+atomic_tests:
+- name: powershell EncodedCommand switch
+  auto_generated_guid: 54804080-506f-4741-bc28-de61898f6936
+  description: |
+    This test will run powershell -> cmd -> calc.exe all from a EncodedCommand using the -EncodedCommand switch
+
+  supported_platforms:
+    - windows
+
+  executor:
+    name: powershell
+    elevation_required: false
+    command: powershell.exe -EncodedCommand YwBtAGQALgBlAHgAZQAgAC8AYwAgAGMAYQBsAGMALgBlAHgAZQA=

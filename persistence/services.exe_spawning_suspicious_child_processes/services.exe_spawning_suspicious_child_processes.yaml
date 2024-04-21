@@ -1,0 +1,23 @@
+attack_technique: T1543.003
+display_name: services.exe spawning suspicious child processes
+
+atomic_tests:
+- name: services.exe spawning Cmd.exe with /c to execute command
+  auto_generated_guid: 7898d0d7-4b88-4411-a0ba-f6ecf2f9744c
+  description: This test will create a service using the SC Utility and then this service will lanuch cmd to execute commands
+
+  supported_platforms:
+    - windows
+
+  executor:
+    name: command_prompt
+    elevation_required: true
+    command: |
+      sc create Inovaservice binPath= "\"C:\Windows\System32\cmd.exe\" /c echo  although you might get a error when running the service If you see this message then the command was successfuly executed and a file is created in the tmp directory using cmd /c echo> \"%tmp%\works.txt\"" start=auto
+      sc config Inovaservice DisplayName= "Defender Device Manager"
+      sc description Inovaservice "Manages Defender on endpoint. This service cannot be stopped."
+      sc start Inovaservice
+      notepad %tmp%\works.txt
+    cleanup_command: |
+      del %tmp%\works.txt
+      sc delete Inovaservice
