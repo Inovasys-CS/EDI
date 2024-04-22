@@ -1,0 +1,73 @@
+title: CPL File Create From Archive
+id: 4d62863a-239b-44ac-bb6c-6a16950f8048
+related:
+    - id: be081ba4-6e1e-412c-ab87-266a5ad15802
+      type: similar 
+status: experimental
+description: Detects the extraction of a .cpl file from an archive, behavior synonymous with initial infection of Raspberry Robin.
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.002
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: file_event
+detection:
+    archive_execs:
+        Image|endswith: 
+            - '\WinRAR.exe'
+            - '\7zG.exe'
+            - '\7zFM.exe'
+            - '\7za.exe'
+            - '\7z.exe'
+    cpl_create:
+        TargetFilename|endswith: '.cpl'
+
+    condition: archive_execs and cpl_create
+falsepositives:
+    - Unknown
+
+level: medium
+---
+title: CPL File Create
+id: be081ba4-6e1e-412c-ab87-266a5ad15802
+related:
+    - id: 4d62863a-239b-44ac-bb6c-6a16950f8048
+      type: similar 
+status: experimental
+description: Detects the dropping of a .cpl file, behavior synonymous with initial infection of Raspberry Robin through WinRar SFX executables.
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.002
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: file_event
+detection:
+    cpl_create:
+        TargetFilename|endswith: '.cpl'
+
+    filter=:
+        TargetFilename|startswith: 'C:\Windows\System32' # Requires heavy exclusions to avoid false-positives
+
+    condition: cpl_create and not filter
+falsepositives:
+    - Legitimate cpl files created by third-party applications
+
+level: low

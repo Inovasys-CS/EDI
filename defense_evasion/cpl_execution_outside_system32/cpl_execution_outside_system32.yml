@@ -1,0 +1,37 @@
+title: CPL Execution From Suspicious Directory
+id: 500bc2a9-0017-4d98-852f-3ab0de01a1f7
+status: experimental
+description: Detects the execution of a .cpl file from a directory other than system32.
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.002
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    exec:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    commandline:
+        ParentImage|endswith: '\control.exe'
+        CommandLine|contains|all: 
+            - '.cpl'
+            - 'Control_RunDLL'
+            - 'Shell32.dll'
+    filter:
+        CommandLine|contains: 'Shell32.dll,Control_RunDLL "C:\Windows\System32'
+
+    condition: exec and commandline and not filter 
+falsepositives:
+    - Unknown
+
+level: medium

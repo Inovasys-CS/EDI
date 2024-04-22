@@ -1,0 +1,28 @@
+title: CVE-2023-36802 Pool Spraying
+id: f73f7a2d-a061-49e2-9d8f-670d08bb16ec
+status: unsupported
+description: Detects large amounts of pipe creation from one process in a short period of time, which is seen in pool spraying attacks like CVE-2023-36802.
+references:
+    - https://securityintelligence.com/x-force/critically-close-to-zero-day-exploiting-microsoft-kernel-streaming-service/
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1068
+
+author: Inovasys
+date: 2024/04/22
+
+logsource:
+    product: windows
+    category: pipe_created
+detection:
+    selection:
+        PipeName|startswith: '\' 
+    condition: selection | count() by Image > 1500
+falsepositives:
+    - Unknown
+
+level: high
