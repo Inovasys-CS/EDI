@@ -6,6 +6,8 @@ references: https://redcanary.com/threat-detection-report/techniques/email-forwa
 tags: 
   - attack.collection
   - attack.t1114.003
+  - attack.defense_evasion
+  - attack.t1564.008
 author: Inovasys
 date: 2024/03/26
 level: medium 
