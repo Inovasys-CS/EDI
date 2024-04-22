@@ -1,0 +1,15 @@
+title: Raspberry Robin Malware
+description: A collection of rules that relate to the Raspberry Robin malware.
+category: Report
+date: 2024/04/10
+company: HP
+reference: https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+rules:
+    - command_and_control/discord_cdn_connection
+    - defense_evasion/cpl_execution_outside_system32
+    - defense_evasion/cpl_from_zip
+    - defense_evasion/entire_drive_defender_exception
+    - defense_evasion/proxy_execution_using_msiexec.exe
+    - defense_evasion/raspberry_robin_reg_changes
+    - execution/windows_script_host_execution
+    - privilege_escalation/pipe_pool_spraying_cve_2023_36802
