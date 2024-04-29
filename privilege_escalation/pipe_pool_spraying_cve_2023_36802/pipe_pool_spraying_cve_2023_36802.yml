@@ -21,6 +21,7 @@ logsource:
 detection:
     selection:
         PipeName|startswith: '\' 
+    timeframe: 2m
     condition: selection | count() by Image > 1500
 falsepositives:
     - Unknown
