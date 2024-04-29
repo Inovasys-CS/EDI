@@ -22,13 +22,14 @@ detection:
         - Image|endswith: '\rundll32.exe'
         - OriginalFileName: 'RUNDLL32.EXE'
     commandline:
-        ParentImage|endswith: '\control.exe'
         CommandLine|contains|all: 
             - '.cpl'
             - 'Control_RunDLL'
             - 'Shell32.dll'
     filter:
-        CommandLine|contains: 'Shell32.dll,Control_RunDLL "C:\Windows\System32'
+        CommandLine|contains: 
+            - 'Shell32.dll,Control_RunDLL "C:\Windows\System32'
+            - 'Shell32.dll,Control_RunDLL C:\Windows\System32'
 
     condition: exec and commandline and not filter 
 falsepositives:
