@@ -1,0 +1,66 @@
+title: Discord CDN Connections
+id: 36287ef4-36d9-42f0-b0f2-f1a30d690716
+related:
+    - id: 1d003307-5517-4aff-9c0d-2c3d138bb050
+      type: similar
+status: experimental
+description: Detects connections initiated from the device destined to Discord's CDN which at times is used to host malware (eg. Raspberry Robin).
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.initial_access
+    - attack.t1189
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    connection:
+        DestinationHostname: 'cdn.discordapp.com'
+        Initiated: 'true'
+    condition: connection
+falsepositives:
+    - Legitimate usage of discord can result in falsepositives
+
+level: low
+---
+title: Discord CDN Connections
+id: 1d003307-5517-4aff-9c0d-2c3d138bb050
+related:
+    - id: 36287ef4-36d9-42f0-b0f2-f1a30d690716
+      type: similar
+status: experimental
+description: Detects connections initiated from the device destined to Discord's CDN which at times is used to host malware (eg. Raspberry Robin).
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.command_and_control
+    - attack.t1105
+    - attack.initial_access
+    - attack.t1189
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: dns_query
+detection:
+    connection:
+        QueryName: 'cdn.discordapp.com'
+    condition: connection
+falsepositives:
+    - Legitimate usage of discord can result in falsepositives
+
+level: low

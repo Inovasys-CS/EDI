@@ -1,0 +1,31 @@
+title: Adding an Entire Drive to Defender Exclusions
+id: 7598a0ea-08ce-4456-afa5-0ec60ddcd556
+status: experimental
+description: Detects the addition of an entire drive to the defender exclusion list.
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    reg_change:
+        TargetObject|startswith: 
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths\'
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\TemporaryPaths\'
+        TargetObject|endswith: ':\'
+
+    condition: reg_change
+falsepositives:
+    - Unknown
+
+level: high

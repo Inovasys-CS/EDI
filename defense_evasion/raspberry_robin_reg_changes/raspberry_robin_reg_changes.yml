@@ -1,0 +1,35 @@
+title: Raspberry Robin Registry Changes
+id: 0b115bc8-695a-4245-b364-4989f23a8fbb
+status: experimental
+description: Detects proxy setting registry changes that are done by Raspberry Robin Malware.
+references:
+    - https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+    - https://thehackernews.com/2024/04/raspberry-robin-returns-new-malware.html
+    - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
+
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    - attack.t1112
+
+author: Inovasys
+date: 2024/04/21
+
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    registry_changes_1:
+        TargetObject|endswith: 
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\ProxyByPass'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\UNCAsIntranet'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\IntranetName'
+        Details: 'DWORD (0x00000001)'
+    registry_changes_2:
+        TargetObject|endswith: '\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\AutoDetect'
+        Details: 'DWORD (0x00000000)'
+    condition: 1 of registry_changes_*
+falsepositives:
+    - Unknown
+
+level: medium
