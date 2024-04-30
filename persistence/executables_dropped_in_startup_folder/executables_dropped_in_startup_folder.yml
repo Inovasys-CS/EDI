@@ -1,0 +1,71 @@
+title: Executables Dropped in Startup Folder
+id: e6bd12fc-4ef2-4633-b1ea-fae631b2b2bf
+status: experimental
+description: Detects when a file with a suspicious extension (Executables) is created in the startup folder
+references:
+    - https://www.cybereason.com/blog/unboxing-snake-python-infostealer-lurking-through-messaging-service
+
+author: Inovasys
+date: 2024/04/29
+tags:
+    - attack.persistence
+    - attack.t1547
+
+logsource:
+  category: file_event
+  product: windows
+
+detection:
+    selection_path:
+        TargetFilename|contains:
+            - '\Windows\Start Menu\Programs\Startup\'
+
+    selection_file_type:
+        TargetFilename|endswith:
+            - 'action'
+            - 'apk'
+            - 'app'
+            - 'appimage'
+            - 'applescript'
+            - 'bat'
+            - 'bin'
+            - 'cab'
+            - 'cmd'
+            - 'com'
+            - 'command'
+            - 'cpl'
+            - 'dll'
+            - 'dmg'
+            - 'exe'
+            - 'gadget'
+            - 'hta'
+            - 'inf'
+            - 'ins'
+            - 'ipa'
+            - 'isu'
+            - 'jar'
+            - 'job'
+            - 'js'
+            - 'jse'
+            - 'lnk'
+            - 'msi'
+            - 'msp'
+            - 'paf'
+            - 'pif'
+            - 'ps1rgs'
+            - 'run'
+            - 'scr'
+            - 'sct'
+            - 'sh'
+            - 'shb'
+            - 'shortcut'
+            - 'vb'
+            - 'vbe'
+            - 'vbs'
+            - 'xml'
+
+    condition: selection_path and selection_file_type
+
+falsepositives:
+    - Ligitiamte user or administrator added a file to the startup folder
+level: medium

@@ -1,0 +1,94 @@
+title: Non-Browser DNS Queries to IP Lookup Services
+id: 98efc115-acae-40d4-a58f-1173171910d1
+status: experimental
+description: Detects DNS queries for ip lookup services such as api.ipify.org not originating from a browser process via Sysmon.
+references:
+    - https://www.apnic.net/ip-geolocation-service-providers/
+    - https://ipdata.co/blog/best-ip-geolocation-services/
+
+tags:
+    - attack.discovery
+    - attack.t1614
+
+author: Inovasys
+date: 2023/09/11
+
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    browser_process:
+        Image|endswith: 
+            - 'chrome.exe'
+            - 'msedge.exe'
+            - 'firefox.exe'
+            - 'iexplore.exe'
+    ip_lookup_providers:
+        DestinationHostname: 
+            - 'api.2ip.ua'
+            - 'api.bigdatacloud.net'
+            - 'api.ipify.org'
+            - 'bot.whatismyipaddress.com'
+            - 'canireachthe.net'
+            - 'checkip.amazonaws.com'
+            - 'checkip.dyndns.org'
+            - 'curlmyip.com'
+            - 'db-ip.com'
+            - 'edns.ip-api.com'
+            - 'eth0.me'
+            - 'freegeoip.app'
+            - 'geoipy.com'
+            - 'getip.pro'
+            - 'icanhazip.com'
+            - 'ident.me'
+            - 'ifconfig.io'
+            - 'ifconfig.me'
+            - 'ip-api.com'
+            - 'ip.360.cn'
+            - 'ip.anysrc.net'
+            - 'ip.taobao.com'
+            - 'ip.tyk.nu'
+            - 'ipaddressworld.com'
+            - 'ipapi.co'
+            - 'ipconfig.io'
+            - 'ipecho.net'
+            - 'ipinfo.io'
+            - 'ipip.net'
+            - 'ipof.in'
+            - 'ipv4.icanhazip.com'
+            - 'ipv4bot.whatismyipaddress.com'
+            - 'ipv6-test.com'
+            - 'ipwho.is'
+            - 'jsonip.com'
+            - 'myexternalip.com'
+            - 'seeip.org'
+            - 'wgetip.com'
+            - 'whatismyip.akamai.com'
+            - 'whois.pconline.com.cn'
+            - 'wtfismyip.com'
+            - 'api64.ipify.org'
+            - 'apiip.net'
+            - 'api-bdc.net'
+            - 'ipwhois.pro'
+            - 'api.ipdata.co'
+            - 'eu-api.ipdata.co'
+            - 'api.ipgeolocation.io'
+            - 'api.ipregistry.co'
+            - 'eu.api.ipregistry.co'
+            - 'gb.api.ipregistry.co'
+            - 'api.ipstack.com'
+            - 'lite.ip2location.com'
+            - 'geolite.info'
+            - 'geoip.maxmind.com'
+            - 'www.geoplugin.net'
+            - 'api.ipapi.com'
+            - 'telize.com'
+            - 'ip.telize.com'
+            - 'ip4.telize.com'
+            - 'ip6.telize.com'
+    condition: ip_lookup_providers and not browser_process
+
+falsepositives:
+    - None
+
+level: medium
