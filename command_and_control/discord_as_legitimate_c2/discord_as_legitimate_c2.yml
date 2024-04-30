@@ -1,0 +1,57 @@
+title: Discord Message API Connections
+id: b417e52e-cf36-424b-af58-be984e54d179
+status: experimental
+description: Detects connections to the Discord message API endpoint, which can be a sign of using Discord as a C2. A get request to the endpoint retrieves messages and a post request sends messages, this can be used to identify whether the C2 is uni or bidirectional. 
+references:
+    - https://discord.com/developers/docs/resources/channel#create-message
+    - https://discord.com/developers/docs/reference
+    - https://medium.com/@lsecqt/using-discord-as-command-and-control-c2-with-python-and-nuitka-8fdced161fdd
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    discord_message_api:
+        cs-host: 'discord.com'
+        cs-uri|contains|all: 
+            - '/api/v'
+            - '/channels/'
+            - '/messages'
+
+    condition: discord_message_api
+falsepositives:
+    - Legitimate discord bots hosted on the environment
+level: critical
+---
+title: Discord CDN Connections
+id: 73dcd61b-4c95-4aca-9fa5-4b78be572217
+status: experimental
+description: Detects connections to the Discord CDN, which can be used to host malware. The channel ID and filename are included as the second and last part of the requested URI respectively. The channel ID can be used to check for any communication through the message API endpoint. 
+references:
+    - https://www.zscaler.com/blogs/security-research/discord-cdn-popular-choice-hosting-malicious-payloads
+
+tags:
+    - attack.command_and_control
+    - attack.t1105
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    discord_cdn_request:
+        cs-host: 'cdn.discordapp.com'
+        cs-uri|startswith: '/attachments/'
+    condition: discord_cdn_request
+falsepositives:
+    - Legitimate use of the Discord application
+level: high

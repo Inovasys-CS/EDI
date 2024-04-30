@@ -10,3 +10,6 @@ rules:
     - credential_access/browser_credential_store_access
     - command_and_control/curl_spawned_from_powershell_or_cmd
     - persistence/executables_dropped_in_startup_folder
+    - command_and_control/discord_as_legitimate_c2
+    - command_and_control/github_as_legitimate_c2
+    - command_and_control/telegram_as_legitimate_c2

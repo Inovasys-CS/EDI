@@ -1,0 +1,61 @@
+title: Telegram Dead Drop Resolver
+id: 57333f43-8bf6-437d-8605-3062f6464516
+status: experimental
+description: Detects connections to a telegram channel, where an attacker controlled channel can have a display name that contains an IP for a C2. The IP found on the profile can be used to determine whether there was successful C2 communication. 
+references:
+    - https://twitter.com/crep1x/status/1621545518961754114
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.001
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    telegram_channel_request:
+        cs-host: 't.me'
+    telegram_empty_request:
+        cs-uri: '/'
+    condition: telegram_channel_request and not telegram_empty_request
+falsepositives:
+    - Legitimate user navigating to benign profile
+level: low
+---
+title: Telegram API Connections
+id: 9d6ae82a-2e42-489e-9677-e2432c3c4a52
+status: experimental
+description: Detects connections to the Telegram API endpoints, which can be a sign of using Telegram as a C2. 
+references:
+    - https://core.telegram.org/bots/api#available-methods
+    - https://www.cybereason.com/blog/unboxing-snake-python-infostealer-lurking-through-messaging-service
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+    - attack.exfiltration
+    - attack.t1567
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    telegram_api_base:
+        cs-host: 'api.telegram.org'
+        cs-uri|startswith: '/bot'
+    telegram_suspicious_methods:
+        cs-uri|contains:
+            - '/sendDocument'
+            - '/sendMessage'
+            - '/getFile'
+
+    condition: all of telegram_*
+falsepositives:
+    - Legitimate Telegram bots hosted on the environment
+level: critical
