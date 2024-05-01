@@ -1,0 +1,58 @@
+title: GitHub Dead Drop Resolver
+id: 6ac076a0-db5f-4d54-a335-a3dc549517d1
+status: experimental
+description: Detects connections to a GitHub raw readme file, where an attacker controlled file can have IPs/domains for a C2. The IP/domain found on the readme can be used to determine whether there was successful C2 communication. 
+references:
+    - https://www.secureworks.com/blog/drokbk-malware-uses-github-as-dead-drop-resolver
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.001
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    github_raw_readme:
+        cs-host: 'raw.githubusercontent.com'
+        cs-uri|endswith: 'README.md'
+    condition: github_raw_readme
+falsepositives:
+    - Legitimate user navigating to benign readme
+level: low
+---
+title: GitHub API Connections
+id: bef93edc-8245-4de4-aa74-3f85b981f113
+status: experimental
+description: Detects connections to GitHub repo search API endpoints, which can be a sign of using GitHub as a C2.
+references:
+    - https://www.secureworks.com/blog/drokbk-malware-uses-github-as-dead-drop-resolver
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+    - attack.exfiltration
+    - attack.t1567
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    api_base:
+        cs-host: 'api.github.com'
+    github_repo_search:
+        cs-uri|startswith: '/search/repositories'
+    github_repo_content_manipulation:
+        cs-uri|contains|all:
+            - '/repos/'
+            - '/contents/'
+    condition: api_base and 1 of github_*
+falsepositives:
+    - Legitimate applications utilizing GitHub API hosted on the environment
+level: critical

@@ -1,0 +1,15 @@
+attack_technique: T1614
+display_name: System Location Discovery
+atomic_tests:
+- name: IP Lookup Service Not From Browser
+  auto_generated_guid: 01e75497-935e-4c7a-95e9-5940f458ff09
+  description: |
+    Contacts an IP lookup service from powershell.
+
+    Upon successful execution, you should find your public IP in the terminal
+  supported_platforms: 
+    - windows
+  executor:
+    command: | 
+      (Invoke-WebRequest -Uri "https://api.ipify.org").Content
+    name: powershell

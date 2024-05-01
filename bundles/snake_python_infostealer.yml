@@ -1,0 +1,15 @@
+title: Snake Python Infostealer
+description: A collection of rules that relate to a Python Infostealer
+category: Report
+date: 2024/04/15
+company: cybereason
+reference: https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+rules:
+    - command_and_control/files_downloaded_using_powershell
+    - discovery/ip_lookup_services_not_browser
+    - credential_access/browser_credential_store_access
+    - command_and_control/curl_spawned_from_powershell_or_cmd
+    - persistence/executables_dropped_in_startup_folder
+    - command_and_control/discord_as_legitimate_c2
+    - command_and_control/github_as_legitimate_c2
+    - command_and_control/telegram_as_legitimate_c2

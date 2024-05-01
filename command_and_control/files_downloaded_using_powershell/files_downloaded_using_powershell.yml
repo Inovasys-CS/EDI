@@ -31,7 +31,6 @@ detection:
             - irm
             - i'r'm
             - wget
-            - curl
 
     selection_download_by_netwebclient:
         CommandLine|contains:
