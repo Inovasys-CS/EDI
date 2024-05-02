@@ -1,0 +1,31 @@
+title: VirusTotal API Connections
+id: cdb7bca2-1ecd-4fb8-8fae-6e63828cd903
+status: experimental
+description: Detects connections to the VirusTotal API endpoints, which can be a sign of using VirusTotal as a C2.
+references:
+    - https://github.com/RATandC2/VirusTotalC2
+    - https://www.linkedin.com/posts/root-kit00_virustotal-today-hunting-activity-6981663766610395136-I9Wq/
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.002
+    - attack.exfiltration
+    - attack.t1567
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    api_base:
+        cs-host: 'www.virustotal.com'
+    comments_api_v2:
+        cs-uri|startswith: '/vtapi/v2/comments/'
+    comments_api_v3:
+        cs-uri|startswith: '/api/v3/comments'
+    condition: api_base and 1 of comments_*
+falsepositives:
+    - Legitimate applications that use VirusTotal API to read comments on files in the environment
+level: critical

@@ -1,0 +1,25 @@
+title: Steam Dead Drop Resolver
+id: 6ff83a72-e646-4614-a96f-a07cd64add26
+status: experimental
+description: Detects connections to a Steam profile, where an attacker controlled profile can have a display name that contains an IP for a C2. The IP found on the profile (previous IPs can also be found by checking the previous user display names) can be used to determine whether there was successful C2 communication. 
+references:
+    - https://twitter.com/crep1x/status/1621545518961754114
+
+tags:
+    - attack.command_and_control
+    - attack.t1102.001
+
+author: Inovasys
+date: 2024/04/30
+
+logsource:
+    category: proxy
+    definition: 'Enable and configure proxy logs to effectively capture both incoming and outgoing traffic.'
+detection:
+    steam_profile_request:
+        cs-host: 'steamcommunity.com'
+        cs-uri|startswith: '/profiles/'
+    condition: steam_profile_request
+falsepositives:
+    - Legitimate user navigating to benign profile
+level: high
