@@ -1,7 +1,7 @@
 
 # Snake Python Infostealer
 
-cybereason - 2024/04/15, Report, [Reference Link](https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#)
+cybereason - 2024/04/15, Report, [Reference Link](https://www.cybereason.com/blog/unboxing-snake-python-infostealer-lurking-through-messaging-service)
 
 A collection of rules that relate to a Python Infostealer
 
