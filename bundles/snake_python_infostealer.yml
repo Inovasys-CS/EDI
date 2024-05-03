@@ -3,7 +3,7 @@ description: A collection of rules that relate to a Python Infostealer
 category: Report
 date: 2024/04/15
 company: cybereason
-reference: https://threatresearch.ext.hp.com/raspberry-robin-now-spreading-through-windows-script-files/#
+reference: https://www.cybereason.com/blog/unboxing-snake-python-infostealer-lurking-through-messaging-service
 rules:
     - command_and_control/files_downloaded_using_powershell
     - discovery/ip_lookup_services_not_browser
