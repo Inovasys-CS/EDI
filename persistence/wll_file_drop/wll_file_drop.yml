@@ -1,0 +1,28 @@
+title: WLL File Execution via Rundll32.exe
+id: f7a7f3d7-a183-4935-ab5e-5d8d0ae65cc2
+status: experimental
+description: Detects the drop of a WLL file. 
+references:
+    - https://docs.dpaq.de/19834-20240417-kapeka_threat_intelligence_report.pdf
+    - https://osinter.dk/article/aacb1c66434d374051a3a72d85df0158
+
+tags:
+    - attack.persistence
+    - attack.t1137.006
+    - attack.defense_evasion
+    - attack.t1218.011
+
+author: Inovasys
+date: 2024/05/13
+
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_file_type:
+        TargetFilename|endswith: '.wll'
+    condition: selection_file_type
+
+falsepositives:
+    - Unknown
+level: high

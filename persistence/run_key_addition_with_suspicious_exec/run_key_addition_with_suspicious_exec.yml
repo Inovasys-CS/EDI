@@ -1,0 +1,56 @@
+title: Addition of Run Entry with Suspicious Executable
+id: 77058d03-3d95-459e-a585-e7079e2afc4c
+status: experimental
+description: Detects the addition of a run key with suspicious commands. 
+references:
+    - https://docs.dpaq.de/19834-20240417-kapeka_threat_intelligence_report.pdf
+    - https://osinter.dk/article/aacb1c66434d374051a3a72d85df0158
+
+tags:
+    - attack.persistence
+    - attack.t1547.001
+
+author: Inovasys
+date: 2024/05/13
+
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection_run_key:
+        TargetObject|startswith:
+            - 'HKCU\Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKLM\Software\Microsoft\Windows\CurrentVersion\Run'
+    selection_image_other:
+        Details|contains:
+            - 'rundll32'
+            - 'powershell'
+            - 'regsvr32'
+            - 'msbuild'
+            - 'certutil'
+            - 'wscript'
+            - 'cscript'
+    selection_image_win:
+        Details|contains:
+            - 'svchost'
+            - 'spoolsv'
+            - 'lsass'
+            - 'smss'
+            - 'csrss'
+            - 'conhost'
+            - 'wininit'
+            - 'winlogon'
+            - 'taskhost'
+            - 'RuntimeBroker'
+            - 'dllhost'
+            - 'Taskmgr'
+            - 'smartscreen'
+    selection_image_cmd:
+        Details|contains|all:
+            - 'cmd'
+            - '/c'
+    condition: selection_run_key and (1 of selection_image_*)
+
+falsepositives:
+    - Legitimate applications may use this technique at times
+level: medium
