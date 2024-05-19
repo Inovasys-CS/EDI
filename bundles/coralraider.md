@@ -7,7 +7,9 @@ A collection of rules that aim to detect the on-going CoralRaider infostealer ca
 
 ## Related Rules
 
-1. [defense_evasion/defender_exclusion_addition](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/defender_exclusion_addition)
-2. [defense_evasion/mshta_http](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/mshta_http)
-3. [defense_evasion/powershell_defender_preference_edit](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/powershell_defender_preference_edit)
-4. [privilege_escalation/uac_bypass](https://github.com/Inovasys-CS/EDI/tree/main/privilege_escalation/uac_bypass)
+1. [defense_evasion/cisco_ptinst_dll_side_loading](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/cisco_ptinst_dll_side_loading)
+2. [defense_evasion/defender_exclusion_addition](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/defender_exclusion_addition)
+3. [defense_evasion/mshta_http](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/mshta_http)
+4. [defense_evasion/powershell_defender_preference_edit](https://github.com/Inovasys-CS/EDI/tree/main/defense_evasion/powershell_defender_preference_edit)
+5. [privilege_escalation/uac_bypass](https://github.com/Inovasys-CS/EDI/tree/main/privilege_escalation/uac_bypass)
+
