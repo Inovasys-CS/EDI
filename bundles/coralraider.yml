@@ -5,6 +5,7 @@ date: 2024/04/23
 company: Cisco Talos
 reference: https://blog.talosintelligence.com/suspected-coralraider-continues-to-expand-victimology-using-three-information-stealers/
 rules:
+    - defense_evasion/cisco_ptinst_dll_side_loading
     - defense_evasion/defender_exclusion_addition
     - defense_evasion/mshta_http
     - defense_evasion/powershell_defender_preference_edit
