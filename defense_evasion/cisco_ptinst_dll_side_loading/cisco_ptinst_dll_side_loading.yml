@@ -1,0 +1,70 @@
+title: Cisco Webex Ptinst.exe DLL Side-loading
+id: 374d0c04-4db9-459f-a571-5865b97fd97b
+status: experimental
+description: Detects the load of wcldll by ptinst.exe in a directory other than the expected location.
+references:
+    - https://hijacklibs.net/entries/3rd_party/cisco/wcldll.html
+    - Internal Research
+
+author: Inovasys
+date: 2024/05/19
+
+tags: 
+    - attack.defense_evasion
+    - attack.t1574.002
+
+logsource:
+    product: windows
+    category: image_load
+detection:
+    vulnerable_dll:
+        - ImageLoaded|endswith: '\WCLDll.dll'
+        - OriginalFileName: 'wcldll.dll'
+    filter_legit_exec:
+        Image|endswith: '\atmgr.exe'
+    filter_legit_paths_1:
+        ImageLoaded|startswith:
+            - 'C:\Program Files\Cisco Systems\Cisco Jabber\'
+            - 'C:\Program Files (x86)\Cisco Systems\Cisco Jabber\'
+            - 'C:\Program Files\Webex\Applications\'
+            - 'C:\Program Files (x86)\Webex\Applications\'
+            - 'C:\Program Files\Webex\Plugins\'
+            - 'C:\Program Files (x86)\Webex\Plugins\'
+    filter_appdata_paths_1:
+        ImageLoaded|startswith: 'C:\Users\'
+    filter_appdata_paths_2:
+        ImageLoaded|contains:
+            - '\AppData\Local\WebEx\WebEx64\'
+            - '\AppData\Local\WebEx\WebEx\'
+    condition: vulnerable_dll and not (1 of filter_legit_* or all of filter_appdata_*)
+falsepositives:
+    - Legitimate installations in different directories
+level: high
+---
+title: Cisco Webex Ptinst.exe DLL Side-loading
+id: 76c0f025-c53e-41dd-8180-02165e92dd7f
+status: experimental
+description: Detects a renamed instance of ptinst.exe, which can be used for DLL Side-Loading.
+references:
+    - https://hijacklibs.net/entries/3rd_party/cisco/wcldll.html
+    - Internal Research
+
+author: Inovasys
+date: 2024/05/19
+
+tags: 
+    - attack.defense_evasion
+    - attack.t1574.002
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    vulnerable_exec:
+        OriginalFileName: 'ptInst.exe'
+    filter_legit_exec:
+        Image|endswith: '\ptinst.exe'
+    condition: vulnerable_exec and not filter_legit_exec
+falsepositives:
+    - Unknown
+level: high

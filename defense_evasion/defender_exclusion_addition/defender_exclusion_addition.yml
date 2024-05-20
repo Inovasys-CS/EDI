@@ -1,0 +1,30 @@
+title: Windows Defender Exclusions Addition via Registry
+id: 9e9e915b-12f8-456e-8360-38d38217e21d
+status: experimental
+description: Detects the addition on Windows Defender exclusions through registry manipulation.
+references:
+    - https://learn.microsoft.com/en-us/answers/questions/252086/verify-the-windows-defender-exclusions-that-are-se/
+    - https://blog.talosintelligence.com/suspected-coralraider-continues-to-expand-victimology-using-three-information-stealers/
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.defense_evasion
+    - attack.t1562.001
+    
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection_exclusion_keys:
+        TargetObject|startswith:
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Processes'
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Extensions' 
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths' 
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\IpAddresses'
+            - 'HKLM\SOFTWARE\Microsoft\Windows Defender\Exclusions\TemporaryPaths'
+    condition: selection_exclusion_keys
+falsepositives: 
+    - Legitimate additions by system admins/users
+level: high

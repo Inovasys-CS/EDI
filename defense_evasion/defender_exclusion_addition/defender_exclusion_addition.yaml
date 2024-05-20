@@ -1,0 +1,16 @@
+attack_technique: T1562.001
+display_name: 'Impair Defenses: Disable or Modify Tools'
+atomic_tests:
+- name: Defender Exclusion Addition
+  auto_generated_guid: e84407d3-736c-4b05-b5cb-bc4379fd6b73
+  description: |
+    Adds Defender exclusion to .txt files 
+  supported_platforms:
+  - windows
+  executor:
+    command: |
+      Set-MpPreference -ExclusionExtension .txt
+    cleanup_command: |
+      Remove-MpPreference -ExclusionExtension .txt
+    name: powershell
+    elevation_required: true

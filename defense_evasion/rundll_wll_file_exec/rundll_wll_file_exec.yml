@@ -1,0 +1,29 @@
+title: WLL File Execution via Rundll32.exe
+id: 7c73b2ba-5d70-4287-8ebe-15a345b34f6c
+status: experimental
+description: Detects the execution of a Microsoft Word add-in in the form of a WLL file. 
+references:
+    - https://docs.dpaq.de/19834-20240417-kapeka_threat_intelligence_report.pdf
+    - https://osinter.dk/article/aacb1c66434d374051a3a72d85df0158
+
+tags:
+    - attack.defense_evasion
+    - attack.t1218.011
+
+author: Inovasys
+date: 2024/05/13
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    rundll_exec:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    commandline_wll:
+        CommandLine|contains: '.wll'
+    condition: rundll_exec and commandline_wll
+
+falsepositives:
+    - Unknown
+level: high

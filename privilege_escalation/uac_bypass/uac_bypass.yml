@@ -1,0 +1,176 @@
+title: UAC Bypass via Fodhelper
+id: 68c73470-40b9-11ee-be56-0242ac120002
+status: experimental
+description: Detects the use of fodhelper.exe to bypass UAC by running executables with higher privileges.
+
+references:
+    - https://www.elastic.co/security-labs/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+    - https://pentestlab.blog/2017/06/07/uac-bypass-fodhelper/
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-4---bypass-uac-using-fodhelper---powershell
+    - https://blog.talosintelligence.com/suspected-coralraider-continues-to-expand-victimology-using-three-information-stealers/
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+
+logsource:
+    category: process_creation 
+    product: windows
+detection:
+    process_winevent: 
+        ParentImage|endswith: '\fodhelper.exe'
+    condition: process_winevent 
+
+falsepositives:
+    - Unknown
+level: high
+---
+title: Fodhelper UAC Bypass Registry Change 
+id: b79adc30-4a57-11ee-be56-0242ac120002
+status: experimental
+description: Detects the registry manipulation that allows for UAC bypass via fodhelper.exe
+references:
+    - https://www.elastic.co/security-labs/exploring-windows-uac-bypasses-techniques-and-detection-strategies
+    - https://pentestlab.blog/2017/06/07/uac-bypass-fodhelper/
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-4---bypass-uac-using-fodhelper---powershell
+    - https://blog.talosintelligence.com/suspected-coralraider-continues-to-expand-victimology-using-three-information-stealers/
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+
+logsource:
+    category: registry_set 
+    product: windows
+detection:
+    registry:
+        TargetObject|startswith: 'HKU'
+        TargetObject|contains: 
+            - '\Software\Classes\ms-settings\shell\open\command'
+            - '\Software\Classes\ms-settings\CurVer'
+    condition: registry
+falsepositives:
+    - Unknown
+level: high
+---
+title: UAC Bypass via Event Viewer 
+id: dc6f9426-40e1-11ee-be56-0242ac120002
+status: experimental
+description: Detects attackers manipulating the registry entry of the mmc, to make native windows services like gpedit and eventvwr run programs on high integrity.
+
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-2---bypass-uac-using-event-viewer-powershell
+    - https://www.elastic.co/guide/en/security/current/bypass-uac-via-event-viewer.html
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+
+logsource:
+    category: registry_event 
+    product: windows
+
+detection:  
+    objaccess_winevent:
+        TargetObject|contains: '\SOFTWARE\Classes\mscfile\shell\open\command'
+    condition: objaccess_winevent
+falsepositives:
+    - Unknown   
+level: high
+---
+title: Sdclt.exe Execution
+id: 62fedb32-40e7-11ee-be56-0242ac120002
+status: experimental
+description: Detects execution of sdclt.exe, which can be an indicator of a UAC bypass. 
+references: 
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-2---bypass-uac-using-event-viewer-powershell 
+    - https://pentestlab.blog/2017/06/09/uac-bypass-sdclt/
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+
+logsource:
+    category: process_creation 
+    product: windows
+detection: 
+    selection_sdlct_exec:
+        - Image|endswith: '\sdclt.exe'
+        - OriginalFileName: 'sdclt.exe'
+    condition: selection_sdlct_exec
+falsepositives: 
+    - Legitimate use of sdclt.exe
+level: low
+---
+title: Sdclt.exe UAC Bypass
+id: d0ca3fb6-4a4d-11ee-be56-0242ac120002
+status: experimental
+description: Detects suspicious registry modification which is commonly seen when an attacker tries to bypass UAC via sdclt.exe. 
+
+references: 
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-2---bypass-uac-using-event-viewer-powershell 
+    - https://pentestlab.blog/2017/06/09/uac-bypass-sdclt/
+
+author: Inovasys
+date: 2023/08/22
+
+tags:
+    - attack.registry_set
+    - attack.t1548.002
+
+logsource:
+    category: registry_set 
+    product: windows
+detection:
+    selection_registry_manipulation:
+        TargetObject|endswith:
+            - '\Software\Classes\Folder\shell\open\command\(Default)'
+            - '\Software\Classes\Folder\shell\open\command\DelegateExecute'
+            - '\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\control.exe'
+            - 'Software\Classes\exefile\shell\runas\command\IsolatedCommand'
+    condition: selection_registry_manipulation
+
+falsepositives:
+    - Unknown
+
+level: high
+---
+title: Mocking Trusted Directories
+id: c203380e-41ae-11ee-be56-0242ac120002
+status: experimental
+description: Detects UAC bypass by creating mock folders that will be treated like an actual trusted folder like C:Windows \System32 (notice the trailing space after Windows). 
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/f339e7da7d05f6057fdfcdd3742bfcf365fee2a9/atomics/T1548.002/T1548.002.md#atomic-test-6---bypass-uac-by-mocking-trusted-directories
+
+author: Inovasys
+date: 2023/08/23
+
+tags:
+    - attack.privilege_escalation
+    - attack.t1548.002
+
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_directory:
+        TargetFilename|startswith: 
+          - 'C:\Windows \'
+          - 'C:\Windows\System32 '
+          
+    condition: selection_directory
+falsepositives:
+    - Not expected to produce false positives.
+level: high
