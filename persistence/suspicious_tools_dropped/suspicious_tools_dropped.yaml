@@ -1,0 +1,28 @@
+title: Dropping suspicious tools in the documents folder
+id: 2e60a1de-7aec-499a-83f1-8373c6508cca
+status: experimental
+description: as per the report, this rule detects dropping suspicious executable files 
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+author: Inovasys 
+date: 2024/05/16
+tags:
+    - attack.persistence
+    - attack.T1098
+logsource:
+    category: file_event
+    product: windows
+detection: 
+    FileDropped:
+        TargetFileName|endswith: 
+        - '\netscanold.exe'
+        - '\mimikatz.exe'
+    condition: FileDropped
+fields:
+    - ComputerName
+    - User
+    - ParentImage
+    - Image
+falsepositives:
+    - unknown
+level: high

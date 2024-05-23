@@ -1,0 +1,25 @@
+title: Detect Compression of EVTX Files using Powershell
+id: 49bdbdee-bf3e-43bb-b79a-ec10a84be00a
+status: experimental
+description: Detects the use of PowerShell commands to compress EVTX files.
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+author: Inovasys
+date: 2024/05/19
+tags:
+    - attack.Discovery
+    - attack.T1654
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    compress:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains|all:
+            - 'Add-Type'
+            - 'System.IO.Compression.FileSystem'
+            - '.evtx'
+    condition: compress
+falsepositives:
+    - Legitimate administrative tasks
+level: medium
