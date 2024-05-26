@@ -37,7 +37,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bundles/*.md  # Add all Markdown files in the bundles directory
+          git add intelligence_bundles/*.md  # Add all Markdown files in the bundles directory
           git commit -m "Add generated Markdown files" -a  # Commit changes
           git push origin main  # Push back to the main branch
 
@@ -48,6 +48,6 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add bundles/*.md  # Add all Markdown files in the bundles directory
+          git add intelligence_bundles/*.md  # Add all Markdown files in the bundles directory
           git commit -m "Add generated Markdown files" -a  # Commit changes
           git push origin HEAD:${PULL_REQUEST_BRANCH}  # Push to the branch of the pull request
