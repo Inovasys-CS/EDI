@@ -5,12 +5,12 @@ on:
     branches:
       - main
     paths:
-      - 'bundles/*.yml'
+      - 'intelligence_bundles/*.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'bundles/*.yml'
+      - 'intelligence_bundles/*.yml'
 
 jobs:
   build:
