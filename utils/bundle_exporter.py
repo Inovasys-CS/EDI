@@ -27,13 +27,16 @@ parser.add_argument(
     default=os.path.join(os.getcwd(), "output"),
 )
 parser.add_argument(
-    "-r", "--rule_dir", help="Directory that contains rules", default=os.getcwd()
+    "-r",
+    "--rule_dir",
+    help="Directory that contains rules",
+    default=os.path.join(os.getcwd(), "emulation_and_detection"),
 )
 parser.add_argument(
     "-b",
     "--bundles_dir",
     help="Directory that contains bundles",
-    default=os.path.join(os.getcwd(), "bundles"),
+    default=os.path.join(os.getcwd(), "intelligence_bundles"),
 )
 parser.add_argument(
     "-l",
