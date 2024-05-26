@@ -1,0 +1,13 @@
+title: Legitimate C2
+description: A collection of rules that aim to detect legitimate websites that are used by threat actors as a C2.
+category: Collection
+date: 2024/05/01
+company: Inovasys
+rules:
+    - command_and_control/discord_cdn_connection
+    - command_and_control/discord_as_legitimate_c2
+    - command_and_control/github_as_legitimate_c2
+    - command_and_control/steam_as_legitimate_c2
+    - command_and_control/telegram_as_legitimate_c2
+    - command_and_control/twitter_as_legitimate_c2
+    - command_and_control/virustotal_as_legitimate_c2
