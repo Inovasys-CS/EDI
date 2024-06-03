@@ -1,0 +1,25 @@
+title: Remote Access Software Using Zabbix Monitoring Software
+id: 08abbb4e4-fec0-4334-9009-dc318c17c2e9
+status: experimental
+description: Detects Remote Access Software Using Zabbix monitoring software which can also execute remote commands and respond to queries from the Zabbix Server.
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+
+tags:
+    - attack.command_and_control
+    - attack.t1219
+
+author: Inovasys
+date: 2024/05/15
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    zabbix_agentd_exec:
+        - Image|endswith: '\zabbix_agentd.exe'
+    condition: zabbix_agentd_exec
+falsepositives:
+    - Ligitmate usage of Zabbix monitoring software by admins
+
+level: high
