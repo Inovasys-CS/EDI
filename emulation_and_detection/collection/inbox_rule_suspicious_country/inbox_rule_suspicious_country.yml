@@ -3,11 +3,11 @@ id: 582f5be6-eb63-47d9-b299-5db7553268f4
 status: experimental
 description: Detects inbox rule modification with from an IP in a suspicious country.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
-tags: 
-  - attack.collection
-  - attack.t1114.003
-  - attack.defense_evasion
-  - attack.t1564.008
+tags:
+    - attack.collection
+    - attack.t1114.003
+    - attack.defense_evasion
+    - attack.t1564.008
 author: Inovasys
 date: 2024/03/27
 level: medium 
