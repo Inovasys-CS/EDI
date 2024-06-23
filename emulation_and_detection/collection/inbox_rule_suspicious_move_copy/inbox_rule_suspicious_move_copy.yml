@@ -4,6 +4,7 @@ status: experimental
 description: Detects inbox rule modification with move/copy action to suspicious folder.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
 tags:
+    - inovasys.public
     - attack.collection
     - attack.t1114.003
     - attack.defense_evasion

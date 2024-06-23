@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/10/15
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.privilege_escalation
     - attack.t1546.011
@@ -42,6 +43,7 @@ references:
 author: Inovasys
 date: 2023/10/15
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.privilege_escalation
     - attack.t1546.011

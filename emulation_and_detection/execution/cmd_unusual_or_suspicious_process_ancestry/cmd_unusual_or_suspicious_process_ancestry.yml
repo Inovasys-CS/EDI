@@ -7,6 +7,7 @@ references:
 author: Inovasys
 date: 2024/03/27
 tags:
+    - inovasys.public
     - attack.execution
     - attack.t1059
     - attack.t1059.003

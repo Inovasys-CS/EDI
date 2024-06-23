@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/10/12
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1546.003
 
@@ -41,6 +42,7 @@ references:
 author: Inovasys
 date: 2023/10/12
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1546.003
 
@@ -74,6 +76,7 @@ references:
 author: Inovasys
 date: 2023/10/12
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1546.003
 
@@ -103,6 +106,7 @@ references:
 author: Inovasys
 date: 2023/10/12
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1546.003
 

@@ -7,6 +7,7 @@ references:
 author: Inovasys
 date: 2023/10/25
 tags:
+    - inovasys.public
     - attack.credential_access
     - attack.t1003.002
 logsource:

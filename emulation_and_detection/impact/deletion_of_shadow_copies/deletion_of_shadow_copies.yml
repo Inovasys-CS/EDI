@@ -9,6 +9,7 @@ references:
 author: Inovasys
 date: 2023/08/23
 tags:
+    - inovasys.public
     - attack.Impact
     - attack.t1490
     - car.2021-01-009
@@ -69,6 +70,7 @@ references:
 author: Inovasys
 date: 2023/08/28
 tags:
+    - inovasys.public
     - attack.Impact
     - attack.t1490
 
@@ -104,6 +106,7 @@ references:
 author: Inovasys
 date: 2023/08/28
 tags:
+    - inovasys.public
     - attack.Impact
     - attack.t1490
 
@@ -140,6 +143,7 @@ references:
 author: Inovasys
 date: 2023/08/28
 tags:
+    - inovasys.public
     - attack.Impact
     - attack.t1490
 

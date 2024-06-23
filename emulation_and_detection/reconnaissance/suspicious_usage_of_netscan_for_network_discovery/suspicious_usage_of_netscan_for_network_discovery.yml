@@ -7,6 +7,7 @@ references:
     - https://www.protect.airbus.com/blog/uncovering-cyber-intruders-netscan/#:~:text=SoftPerfect%20Network%20Scanner%2C%20also%20known,report%20generation%20and%20data%20export%2C
 
 tags:
+    - inovasys.public
     - attack.discovery
     - attack.t1046
 

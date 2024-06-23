@@ -13,6 +13,7 @@ author: Florian Roth (Nextron Systems)
 date: 2021/12/10
 modified: 2022/02/06
 tags:
+    - inovasys.public
     - attack.initial_access
     - attack.t1190
     - detection.emerging_threats

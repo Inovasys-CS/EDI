@@ -8,6 +8,7 @@ references:
     - https://www.elastic.co/guide/en/security/current/prebuilt-rule-8-3-2-enumerating-domain-trusts-via-nltest-exe.html
     - https://redcanary.com/threat-detection-report/techniques/domain-trust-discovery/
 tags:
+    - inovasys.public
     - attack.discovery
     - attack.t1482
 logsource:

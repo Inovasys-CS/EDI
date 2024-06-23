@@ -5,6 +5,7 @@ description: Detects the modification of the registry key AppInit_DLLs which is 
 references:
     - https://cocomelonc.github.io/tutorial/2022/05/16/malware-pers-5.html
 tags:
+    - inovasys.public
     - attack.persistence
 author: Inovasys
 date: 2023/09/19

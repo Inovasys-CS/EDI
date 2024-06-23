@@ -7,6 +7,7 @@ references:
     - https://osinter.dk/article/aacb1c66434d374051a3a72d85df0158
 
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1547.001
 

@@ -7,6 +7,7 @@ references:
     - https://www.cybereason.com/blog/rundll32-the-infamous-proxy-for-executing-malicious-code
 
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1218.011
 

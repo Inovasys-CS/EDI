@@ -11,6 +11,7 @@ references:
 author: Inovasys
 date: 2023/08/30
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002
@@ -77,6 +78,7 @@ references:
 author: Inovasys
 date: 2023/08/30
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002
@@ -127,6 +129,7 @@ references:
 author: Inovasys
 date: 2023/08/30
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002
@@ -174,6 +177,7 @@ references:
 author: Inovasys
 date: 2023/08/31
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002
@@ -226,6 +230,7 @@ references:
 author: Inovasys
 date: 2023/08/31
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002
@@ -262,6 +267,7 @@ references:
 author: Inovasys
 date: 2023/08/31
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070.001
     - car.2016-04-002

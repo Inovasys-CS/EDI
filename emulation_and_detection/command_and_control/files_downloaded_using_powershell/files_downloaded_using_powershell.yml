@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2024/02/27
 tags:
+    - inovasys.public
     - attack.execution
     - attack.command_and_control
     - attack.t1105
@@ -58,6 +59,7 @@ references:
 author: Inovasys
 date: 2024/02/27
 tags:
+    - inovasys.public
     - attack.execution
     - attack.command_and_control
     - attack.t1105

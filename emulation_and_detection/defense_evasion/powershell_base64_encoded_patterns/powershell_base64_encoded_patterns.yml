@@ -8,6 +8,7 @@ author: Florian Roth (Nextron Systems)
 date: 2022/05/24
 modified: 2023/01/05
 tags:
+    - inovasys.public
     - attack.execution
     - attack.t1059.001
 logsource:

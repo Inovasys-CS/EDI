@@ -6,6 +6,7 @@ references:
     - https://blog.bushidotoken.net/2021/04/dead-drop-resolvers-espionage-inspired.html
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1102.001
 
@@ -35,6 +36,7 @@ references:
     - https://blog.bushidotoken.net/2021/04/dead-drop-resolvers-espionage-inspired.html
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1102.002
     - attack.exfiltration

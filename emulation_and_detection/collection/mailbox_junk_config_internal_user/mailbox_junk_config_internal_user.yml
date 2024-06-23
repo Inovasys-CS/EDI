@@ -4,6 +4,7 @@ status: experimental
 description: Detects the use of Set-MailboxJunkEmailConfiguration to add an internal user to blocked users, this might occur during account takeover.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
 tags:
+    - inovasys.public
     - attack.collection
     - attack.t1114.003
     - attack.defense_evasion

@@ -9,6 +9,7 @@ references:
     - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
 
 tags:
+    - inovasys.public
     - attack.privilege_escalation
     - attack.t1068
 

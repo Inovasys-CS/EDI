@@ -8,6 +8,7 @@ references:
     - https://medium.com/@lsecqt/using-discord-as-command-and-control-c2-with-python-and-nuitka-8fdced161fdd
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1102.002
 
@@ -38,6 +39,7 @@ references:
     - https://www.zscaler.com/blogs/security-research/discord-cdn-popular-choice-hosting-malicious-payloads
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1105
 

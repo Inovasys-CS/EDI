@@ -4,6 +4,7 @@ status: experimental
 description: Detects the creation of an executable with a system process name in a suspicious folder. 
 
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1036.005
 
