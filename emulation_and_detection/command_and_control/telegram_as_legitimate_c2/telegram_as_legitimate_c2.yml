@@ -6,6 +6,7 @@ references:
     - https://twitter.com/crep1x/status/1621545518961754114
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1102.001
 
@@ -34,6 +35,7 @@ references:
     - https://www.cybereason.com/blog/unboxing-snake-python-infostealer-lurking-through-messaging-service
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1102.002
     - attack.exfiltration

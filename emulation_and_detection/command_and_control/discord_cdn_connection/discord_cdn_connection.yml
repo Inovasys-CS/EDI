@@ -11,6 +11,7 @@ references:
     - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1105
     - attack.initial_access
@@ -45,6 +46,7 @@ references:
     - https://www.logpoint.com/en/blog/emerging-threats/raspberry-robin/
 
 tags:
+    - inovasys.public
     - attack.command_and_control
     - attack.t1105
     - attack.initial_access

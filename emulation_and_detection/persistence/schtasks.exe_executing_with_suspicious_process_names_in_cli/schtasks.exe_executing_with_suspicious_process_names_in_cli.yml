@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2024/03/27
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.execution
     - attack.persistence

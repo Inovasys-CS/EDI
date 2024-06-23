@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/09/10
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070
 
@@ -48,6 +49,7 @@ references:
 author: Inovasys
 date: 2023/09/10
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070
 
@@ -78,6 +80,7 @@ references:
 author: Inovasys
 date: 2023/09/10
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1070
 logsource:

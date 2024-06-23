@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/03/27
 tags:
+    - inovasys.public
     - attack.initial_access
     - attack.t1189
 logsource:
@@ -45,6 +46,7 @@ references:
 author: Inovasys
 date: 2023/03/27
 tags:
+    - inovasys.public
     - attack.initial_access
     - attack.t1189
 logsource:

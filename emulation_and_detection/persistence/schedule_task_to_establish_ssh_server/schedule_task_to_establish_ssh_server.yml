@@ -1,0 +1,32 @@
+title: Schedule Task to establish SSH server. 
+id: 3212eab9-9d01-4d30-ac7b-e4ad4da488c0
+status: experimental
+description: Detects Configuring schedula task to be executed every specific time interval to configure “SSH Server” and “SSH Key Exchange”for an Reverse Tunneling. 
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+
+tags:
+    - inovasys.public
+    - attack.command_and_control
+    - attack.t1572
+    - attack.persistence
+    - attack.t1053
+
+author: Inovasys
+date: 2024/05/15
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    vpnbridge_exec:
+        - Image|endswith: '\schtasks.exe'
+        - CommandLine|contains:
+                    - "/Create"
+                    - "/tr "
+                    - "ssh"
+    condition: vpnbridge_exec
+falsepositives:
+    - Ligitmate usage of SoftEather by admins
+
+level: high

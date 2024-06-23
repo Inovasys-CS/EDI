@@ -9,7 +9,8 @@ references:
 author: Inovasys
 date: 2024/05/19
 
-tags: 
+tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1574.002
 
@@ -52,7 +53,8 @@ references:
 author: Inovasys
 date: 2024/05/19
 
-tags: 
+tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1574.002
 

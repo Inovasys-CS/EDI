@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/03/27
 tags:
+    - inovasys.public
     - attack.execution
     - attack.t1059.005
     - attack.defense_evasion

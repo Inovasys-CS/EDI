@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2023/08/28
 tags:
+    - inovasys.public
     - attack.execution
     - attack.t1204.002
 

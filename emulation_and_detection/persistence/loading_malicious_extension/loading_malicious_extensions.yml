@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2024/03/27
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1176
 logsource:

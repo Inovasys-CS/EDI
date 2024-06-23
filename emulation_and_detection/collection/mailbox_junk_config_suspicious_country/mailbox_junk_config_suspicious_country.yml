@@ -3,11 +3,12 @@ id: 1b3d5587-4e96-4a4d-be85-2617620c3383
 status: experimental
 description: Detects change to MailboxJunkEmailConfiguration from an IP in a suspicious country.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
-tags: 
-  - attack.collection
-  - attack.t1114.003
-  - attack.defense_evasion
-  - attack.t1564.008
+tags:
+    - inovasys.public
+    - attack.collection
+    - attack.t1114.003
+    - attack.defense_evasion
+    - attack.t1564.008
 author: Inovasys
 date: 2024/03/27
 level: medium 

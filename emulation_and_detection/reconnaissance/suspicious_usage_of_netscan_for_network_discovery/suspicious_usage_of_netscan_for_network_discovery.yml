@@ -1,0 +1,27 @@
+title: Suspicious usage of Netscan for network discovery
+id: d029828b-30bb-4d39-9a52-38de81b7e63f
+status: experimental
+description: Detects suspcious susage of Netscan for network discovery.
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+    - https://www.protect.airbus.com/blog/uncovering-cyber-intruders-netscan/#:~:text=SoftPerfect%20Network%20Scanner%2C%20also%20known,report%20generation%20and%20data%20export%2C
+
+tags:
+    - inovasys.public
+    - attack.discovery
+    - attack.t1046
+
+author: Inovasys
+date: 2024/05/19
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    netscan_exec:
+        - Image|endswith: '\netscan.exe'
+    condition: netscan_exec
+falsepositives:
+    - Ligitmate usage of Network scan by admins
+
+level: Medium 

@@ -8,6 +8,7 @@ references:
 author: Inovasys
 date: 2024/04/29
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1547
 

@@ -6,6 +6,7 @@ references:
     - https://www.deepinstinct.com/blog/lsass-memory-dumps-are-stealthier-than-ever-before
 
 tags:
+    - inovasys.public
     - attack.credential_access
     - attack.t1003.001
 

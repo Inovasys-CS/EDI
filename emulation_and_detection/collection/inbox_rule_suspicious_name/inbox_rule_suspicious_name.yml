@@ -3,11 +3,12 @@ id: cdf026c4-7c22-49a8-8eae-3eef4304003c
 status: experimental
 description: Detects inbox rule modification with suspicious rule name.
 references: https://redcanary.com/threat-detection-report/techniques/email-forwarding-rule/
-tags: 
-  - attack.collection
-  - attack.t1114.003
-  - attack.defense_evasion
-  - attack.t1564.008
+tags:
+    - inovasys.public
+    - attack.collection
+    - attack.t1114.003
+    - attack.defense_evasion
+    - attack.t1564.008
 author: Inovasys
 date: 2024/03/26
 level: medium 

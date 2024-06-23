@@ -6,6 +6,7 @@ references:
     - https://redcanary.com/threat-detection-report/techniques/rundll32/
 
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1218.011
 

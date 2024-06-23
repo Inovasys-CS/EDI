@@ -8,10 +8,11 @@ references:
 author: Inovasys
 date: 2024/02/27
 tags:
-  - attack.execution
-  - attack.command_and_control
-  - attack.t1105
-  - attack.t1059.001
+    - inovasys.public
+    - attack.execution
+    - attack.command_and_control
+    - attack.t1105
+    - attack.t1059.001
 
 logsource:
     category: process_creation
@@ -58,10 +59,11 @@ references:
 author: Inovasys
 date: 2024/02/27
 tags:
-  - attack.execution
-  - attack.command_and_control
-  - attack.t1105
-  - attack.t1059.001
+    - inovasys.public
+    - attack.execution
+    - attack.command_and_control
+    - attack.t1105
+    - attack.t1059.001
 
 logsource:
     product: windows

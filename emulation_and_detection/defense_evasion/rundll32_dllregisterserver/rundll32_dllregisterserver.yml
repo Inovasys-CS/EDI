@@ -16,6 +16,7 @@ author: Andreas Braathen (mnemonic.io), Inovasys
 date: 2023/10/17
 modified: 2024/03/28
 tags:
+    - inovasys.public
     - attack.defense_evasion
     - attack.t1218.011
 logsource:

@@ -10,6 +10,7 @@ author: Inovasys
 date: 2023/09/18
 
 tags:
+    - inovasys.public
     - attack.persistence
     - attack.t1547.001
 logsource:
