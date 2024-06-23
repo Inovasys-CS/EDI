@@ -18,7 +18,6 @@ class Consumer:
 
         try:
             bundles = os.listdir(self.bundles_dir)
-            bundles = [bundle for bundle in bundles if bundle.endswith(".yml")]
         except FileNotFoundError:
             print("Bundles folder does not exist")
             exit()
@@ -26,7 +25,6 @@ class Consumer:
         for bundle in bundles:
             if wanted_bundle in bundle:
                 contains.append(bundle)
-
         # Check to ensure that there aren't more than one match to the bundle name
         if len(contains) > 1:
             print(
@@ -39,7 +37,10 @@ class Consumer:
             return False
         else:
             # Read file and parse raw yaml file to dictionary object, extracting from it the rules list
-            raw_file = open(os.path.join(self.bundles_dir, bundle)).read()
+            bundle = contains[0]
+            raw_file = open(
+                os.path.join(self.bundles_dir, bundle, f"{bundle}.yml")
+            ).read()
             rules = yaml.load(raw_file, Loader=yaml.Loader)["rules"]
             self.export_bundle(rules)
             return True
@@ -125,11 +126,7 @@ class Consumer:
         """Lists all bundles or bundles with specific category based on user input"""
 
         try:
-            bundles = [
-                bundle
-                for bundle in os.listdir(self.bundles_dir)
-                if bundle.endswith(".yml")
-            ]
+            bundles = [bundle for bundle in os.listdir(self.bundles_dir)]
         except FileNotFoundError:
             print("Bundles folder does not exist")
             exit()
@@ -138,7 +135,9 @@ class Consumer:
             bundle_name = bundle.replace(".yml", "")
 
             # Load and parse yaml file
-            raw_file = open(self.bundles_dir + "\\" + bundle).read()
+            raw_file = open(
+                os.path.join(self.bundles_dir, bundle, f"{bundle}.yml")
+            ).read()
             yaml_parsed = yaml.load(raw_file, Loader=yaml.Loader)
 
             # Check whether the bundle's category matches desired category
