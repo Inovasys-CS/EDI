@@ -8,7 +8,7 @@ author: Inovasys
 date: 2024/03/27
 tags:
     - inovasys.public
-    - attack.reconnaissance
+    - attack.execution
     - attack.t1047
 
 logsource:
