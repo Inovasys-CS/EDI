@@ -10,7 +10,7 @@ rules:
     - discovery/extract_fields_evtx
     - initial_access/log4j_rce
     - persistence/net_user_ modifypassword
-    - persistence/suspicious_tools_dropped
     - persistence/services.exe_spawning_suspicious_child_processes
     - command_and_control/github_as_legitimate_c2
     - command_and_control/telegram_as_legitimate_c2
+    - reconnaissance/network_scanning_tools

@@ -1,7 +1,7 @@
 title: Extracted fields from EVTX Files using Powershell
 id: 21b150f6-6e71-4c0a-86da-b9e660cab441
 status: experimental
-description: Detects the use of PowerShell commands to Extract IDs from EVTX files.
+description: Detects the use of PowerShell commands to Extract data from EVTX files.
 references:
     - https://securelist.com/kaspersky-incident-response-report-2023/112504/
 author: Inovasys
@@ -15,14 +15,11 @@ logsource:
 detection:
     selection_get_eventlog:
         Image|endswith: '\powershell.exe'
-        CommandLine|contains|all:
-            - 'Get-Eventlog'
-            - 'eventID -eq 4624'
+        CommandLine|contains: "Get-Eventlog"
+
     selection_get_winevent:
         Image|endswith: '\powershell.exe'
-        CommandLine|contains|all:
-            - 'Get-WinEvent'
-            - 'ID -eq 4624'
+        CommandLine|contains: "Get-WinEvent"
     condition: selection_get_eventlog or selection_get_winevent
 falsepositives:
     - Legitimate administrative tasks
