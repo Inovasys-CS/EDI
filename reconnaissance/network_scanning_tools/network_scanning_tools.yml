@@ -16,6 +16,7 @@ detection:
     scantool:
         Image|contains: 
         - 'netscanold.exe'
+        - 'netscan.exe''
         - 'nmap.exe'
         - 'nc.exe'
     condition: scantool
