@@ -1,0 +1,16 @@
+title: Kaspersky
+description: A collection of rules that relate to the trends spotted in the Kaspersky Threat Detection Report 2024.
+category: Report
+date: 2024/05/14
+company: Kaspersky
+reference: https://securelist.com/kaspersky-incident-response-report-2023/112504/
+rules:
+    - command_and_control/use_of_legitimate_remote_access_tools_c2
+    - discovery/compress_evtx_discovery
+    - discovery/extract_fields_evtx
+    - initial_access/log4j_rce
+    - persistence/net_user_ modifypassword
+    - persistence/services.exe_spawning_suspicious_child_processes
+    - command_and_control/github_as_legitimate_c2
+    - command_and_control/telegram_as_legitimate_c2
+    - reconnaissance/network_scanning_tools

@@ -1,0 +1,42 @@
+title: Potentially Malicious Activity with Common Legitimate Remote Access Tools
+id: 1035998e-2219-4340-a6a4-4b82ad119492
+status: experimental
+description: Detects potentially malicious activity involving common legitimate remote access tools, including TeamViewer, AnyDesk, LogMeIn, GoToAssist, ScreenConnect, Ammyy Admin, RemotePC, NetSupport, UltraViewer, UltraVNC, and MSP360 Connect.
+references:
+    - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1219/T1219.md
+    - https://thedfirreport.com/2022/08/08/bumblebee-roasts-its-way-to-domain-admin/
+author: Inovasys
+date: 2024/4/29
+tags:
+    - attack.command_and_control
+    - attack.t1219
+
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    process_started:
+        Image|endswith:
+            - 'TeamViewer.exe'
+            - 'AnyDesk.exe'
+            - 'LMIIgnition.exe'
+            - 'Xsl.exe'
+            - 'RemotePCUIU.exe'
+            - 'UltraViewer_Desktop.exe'
+            - 'vncviewer.exe'
+            - 'ScreenConnect.WindowsClient.exe'
+            - 'remoting_desktop.exe' # chrome-remote
+            - 'session_win.exe' # simple help
+            - 'Remote Access Session.exe' # simple help
+            - 'FamItrfc.exe' # Radmin
+            - 'rserver3.exe' # Radmin
+            - '\ehorus_uit.exe'
+            - '\ehorus_cmd.exe'
+            - '\ehorus_launcher.exe'
+
+    condition: process_started
+
+falsepositives:
+    - Legitimate administrator using a remote Access Tool 
+level: medium

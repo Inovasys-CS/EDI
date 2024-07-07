@@ -1,0 +1,25 @@
+title: network scanning using suspicious tools
+id: 9c94c8ec-bd45-4255-aaab-e6684180c334
+status: experimental
+description: Detects active network scanning using suspicious tools
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+author: Inovasys 
+date: 2024/05/16
+tags:
+    - attack.reconnaissance
+    - attack.T1595
+logsource:
+    category: process_creation
+    product: windows
+detection: 
+    scantool:
+        Image|contains: 
+        - 'netscanold.exe'
+        - 'netscan.exe''
+        - 'nmap.exe'
+        - 'nc.exe'
+    condition: scantool
+falsepositives:
+    - Legitimate administrative tasks
+level: medium

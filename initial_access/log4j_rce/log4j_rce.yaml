@@ -1,0 +1,21 @@
+id: 3ad28cb3-1594-46df-bb37-eaac64f0b263
+title: Exploit Public-Facing Application via Log4j 1.2
+status: experimental
+description: Detects Exploit Public-Facing Application via vulnerable version of Log4j 
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+author: Inovasys
+date: 2024/05/16
+tags:
+    - attack.initial_access
+    - attack.T0819
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_file_type:
+        TargetFilename|contains|all:
+            - 'log4j-1.2.jar'
+            - '.jar'
+    condition: selection_file_type
+level: medium
