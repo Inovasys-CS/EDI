@@ -1,0 +1,47 @@
+title: Protocol Tunneling Using VPN
+id: 08abbb4e4-fec0-4334-9009-dc318c17c2e9
+status: experimental
+description: Detects a file was confirmed as a legitimate VPN client implemented to avoid detection/network filtering 
+and/or enable access. 
+references:
+    - https://securelist.com/kaspersky-incident-response-report-2023/112504/
+
+tags:
+    - attack.command_and_control
+    - attack.t1572
+
+author: Inovasys
+date: 2024/05/15
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    vpnbridge_exec:
+    # you should exclude the legit vpn that is being used in your environment
+        - Image|endswith: 
+            - '\vpnbridge.exe'
+            - '\openvpn.exe'
+            - '\charon.exe'
+            - '\pluto.exe'
+            - '\ipsec.exe'
+            - '\pptpd.exe'
+            - '\pptp.exe'
+            - '\xl2tpd.exe'
+            - '\wg.exe'
+            - '\wg-quick.exe'
+            - '\stunnel.exe'
+            - '\vpnserver.exe'
+            - '\vpnclient.exe'
+            - '\vpnbridge.exe'
+            - '\vpnagentd.exe'
+            - '\vpnui.exe'
+            - '\vpnc.exe'
+            - '\sstpc.exe'
+            - '\openconnect.exe'
+            - '\NetworkManager.exe'   
+    condition: vpnbridge_exec
+falsepositives:
+    - Ligitmate usage of SoftEather by admins
+
+level: high

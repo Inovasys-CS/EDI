@@ -34,6 +34,7 @@ detection:
             - '\ehorus_uit.exe'
             - '\ehorus_cmd.exe'
             - '\ehorus_launcher.exe'
+            - '\zabbix_agentd.exe'
 
     condition: process_started
 

@@ -6,11 +6,17 @@ company: Kaspersky
 reference: https://securelist.com/kaspersky-incident-response-report-2023/112504/
 rules:
     - command_and_control/use_of_legitimate_remote_access_tools_c2
+    - command_and_control/protocol_tunneling_using_vpn
     - discovery/compress_evtx_discovery
     - discovery/extract_fields_evtx
     - initial_access/log4j_rce
+    - initial_access/web_cve_2022_21587_oracle_ebs
+    - initial_access/web_cve_2021_44228_log4j
     - persistence/net_user_ modifypassword
     - persistence/services.exe_spawning_suspicious_child_processes
+    - persistence/schedule_task_to_establish_ssh_server
     - command_and_control/github_as_legitimate_c2
     - command_and_control/telegram_as_legitimate_c2
+    - command_and_control/certutil_file_download
     - reconnaissance/network_scanning_tools
+    - credential_access/NTDS.dit_Exfiltration
