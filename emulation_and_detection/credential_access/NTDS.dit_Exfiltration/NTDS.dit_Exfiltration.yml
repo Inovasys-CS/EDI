@@ -4,7 +4,7 @@ status: stable
 description: Detects exfiltration of NTDS.dit via vss shadow copy using WMI.
 references:
     - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
-author: Inovasys_Osama_Zidan
+author: Inovasys
 date: 2023/09/3
 tags:
     - inovasys.public
@@ -32,7 +32,7 @@ description: Detects copy of NTDS.dit via esentutl via shadow copy
 references:
     - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
     - https://lolbas-project.github.io/lolbas/Binaries/Esentutl/
-author: Inovasys_Osama_Zidan
+author: Inovasys
 date: 2023/09/3
 tags:
     - inovasys.public
@@ -62,7 +62,7 @@ status: stable
 description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
 references:
     - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
-author: Inovasys_Osama_Zidan
+author: Inovasys
 date: 2023/09/3
 tags:
     - inovasys.public
@@ -90,7 +90,7 @@ status: stable
 description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
 references:
     - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
-author: Inovasys_Osama_Zidan
+author: Inovasys
 date: 2023/09/03
 tags:
     - inovasys.public
