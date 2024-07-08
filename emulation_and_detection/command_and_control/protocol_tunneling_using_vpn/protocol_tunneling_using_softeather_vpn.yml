@@ -18,6 +18,7 @@ logsource:
     category: process_creation
 detection:
     vpnbridge_exec:
+    # you should exclude the legit vpn that is being used in your environment
         - Image|endswith: 
             - '\vpnbridge.exe'
             - '\openvpn.exe'
