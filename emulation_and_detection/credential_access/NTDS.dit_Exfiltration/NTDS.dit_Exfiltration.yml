@@ -1,0 +1,109 @@
+title: NTDS.dit Exfiltration VSS Shadow Copy WMI Sysmon
+id: 21a640ab-1c10-4d25-8d92-6097f4675c92
+status: stable
+description: Detects exfiltration of NTDS.dit via vss shadow copy using WMI.
+references:
+    - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
+author: Inovasys_Osama_Zidan
+date: 2023/09/3
+tags:
+    - inovasys.public
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection: 
+    copy_ntds_file:
+        ParentImage: 'C:\Windows\system32\wbem\wmiprvse.exe'
+        CommandLine|contains|all: 
+            - 'NTDS.dit'
+            - 'HarddiskVolumeShadowCopy'
+    condition: copy_ntds_file
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high
+---
+title: NTDS.dit Copy using ESENTUTL VSS Shadow Copy Sysmon
+id: 7b0fb929-6e1f-44c0-a341-3d26cf3635e5
+status: stable
+description: Detects copy of NTDS.dit via esentutl via shadow copy
+references:
+    - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
+    - https://lolbas-project.github.io/lolbas/Binaries/Esentutl/
+author: Inovasys_Osama_Zidan
+date: 2023/09/3
+tags:
+    - inovasys.public
+    - attack.exfiltration
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection: 
+    esentutl_exec:
+        - Image|endswith: '\esentutl.exe'
+        - OriginalFileName: 'esentutl.exe'
+    esentutl_commandline:
+        CommandLine|contains|all: 
+            - '/y'
+            - 'ntds.dit'
+            - '/vss'
+    condition: all of esentutl_*
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file remotely via WMI.
+level: high
+---
+title: NTDSUtil execution Sysmon
+id: 63dd15f6-6a8a-4d9c-9640-c966e8c63563
+status: stable
+description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
+references:
+    - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
+author: Inovasys_Osama_Zidan
+date: 2023/09/3
+tags:
+    - inovasys.public
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    ntdsutil_execution:
+        - Image: 'C:\Windows\System32\ntdsutil.exe'
+        - OriginalFileName: 'ntdsutil.exe'
+    ntdsutil_commandline:
+        CommandLine|contains|all:
+            - 'ifm'
+            - 'ntds'
+    condition: all of ntdsutil_*
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file.
+level: high
+---
+title: NTDSUtil execution
+id: 65f44937-0cb9-483d-ab82-3ca3a80952a3
+status: stable
+description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
+references:
+    - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
+author: Inovasys_Osama_Zidan
+date: 2023/09/03
+tags:
+    - inovasys.public
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    product: windows
+    category: pipe_created
+detection:
+    ntds_named_pipe:
+        Image: 'C:\Windows\System32\ntdsutil.exe'
+        PipeName: '\lsass'
+    condition: ntds_named_pipe
+falsepositives:
+    -  Administrators may take backup of NTDS.dit file.
+level: high
