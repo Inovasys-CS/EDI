@@ -10,7 +10,7 @@ tags:
     - attack.defense_evasion
     - attack.t1218.010
 
-author: Inovasys_Salem_Salem
+author: Inovasys
 date: 2023/09/18
 
 logsource:
@@ -72,7 +72,7 @@ tags:
     - attack.defense_evasion
     - attack.t1218.010
 
-author: Inovasys_Salem_Salem
+author: Inovasys
 date: 2024/07/15
 
 logsource:

@@ -4,7 +4,7 @@ status: experimental
 description: Detects suspicious registry changes that are related to the HappyDoor backdoor. These edits contain configuration data stored by the backdoor.
 references:
     - https://asec.ahnlab.com/en/67660/
-author: Inovasys_Salem_Salem
+author: Inovasys
 date: 2024/07/15
 tags:
     - inovasys.public
