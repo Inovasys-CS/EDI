@@ -1,88 +1,124 @@
-title: NTDS.dit Exfiltration VSS Shadow Copy WMI Sysmon
-id: 21a640ab-1c10-4d25-8d92-6097f4675c92
-status: stable
-description: Detects exfiltration of NTDS.dit via vss shadow copy using WMI.
+title: Sensitive File Access Via Volume Shadow Copy Backup
+id: f57f8d16-1f39-4dcb-a604-6c73d9b54b3d
+status: test
+description: |
+    Detects a command that accesses the VolumeShadowCopy in order to extract sensitive files such as the Security or SAM registry hives or the AD database (ntds.dit)
 references:
-    - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/ntds.dit-enumeration
-author: Inovasys
-date: 2023/09/3
+    - https://twitter.com/vxunderground/status/1423336151860002816?s=20
+    - https://www.virustotal.com/gui/file/03e9b8c2e86d6db450e5eceec057d7e369ee2389b9daecaf06331a95410aa5f8/detection
+    - https://pentestlab.blog/2018/07/04/dumping-domain-password-hashes/
+author: Max Altgelt (Nextron Systems), Tobias Michalski (Nextron Systems)
+date: 2021/08/09
+modified: 2024/01/18
 tags:
     - inovasys.public
-    - attack.exfiltration
-    - attack.credential_access
-    - attack.t1003.003
+    - attack.impact
+    - attack.t1490
 logsource:
-    product: windows
     category: process_creation
-detection: 
-    copy_ntds_file:
-        ParentImage: 'C:\Windows\system32\wbem\wmiprvse.exe'
-        CommandLine|contains|all: 
-            - 'NTDS.dit'
-            - 'HarddiskVolumeShadowCopy'
-    condition: copy_ntds_file
-falsepositives:
-    -  Administrators may take backup of NTDS.dit file remotely via WMI.
-level: high
----
-title: NTDS.dit Copy using ESENTUTL VSS Shadow Copy Sysmon
-id: 7b0fb929-6e1f-44c0-a341-3d26cf3635e5
-status: stable
-description: Detects copy of NTDS.dit via esentutl via shadow copy
-references:
-    - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
-    - https://lolbas-project.github.io/lolbas/Binaries/Esentutl/
-author: Inovasys
-date: 2023/09/3
-tags:
-    - inovasys.public
-    - attack.exfiltration
-    - attack.credential_access
-    - attack.t1003.003
-logsource:
     product: windows
-    category: process_creation
-detection: 
-    esentutl_exec:
-        - Image|endswith: '\esentutl.exe'
-        - OriginalFileName: 'esentutl.exe'
-    esentutl_commandline:
-        CommandLine|contains|all: 
-            - '/y'
-            - 'ntds.dit'
-            - '/vss'
-    condition: all of esentutl_*
-falsepositives:
-    -  Administrators may take backup of NTDS.dit file remotely via WMI.
-level: high
----
-title: NTDSUtil execution Sysmon
-id: 63dd15f6-6a8a-4d9c-9640-c966e8c63563
-status: stable
-description: Detects execution of NTDSUtil to extract ntds.dit file from domain controller
-references:
-    - https://blog.netwrix.com/2021/11/30/extracting-password-hashes-from-the-ntds-dit-file/
-author: Inovasys
-date: 2023/09/3
-tags:
-    - inovasys.public
-    - attack.credential_access
-    - attack.t1003.003
-logsource:
-    product: windows
-    category: process_creation
 detection:
-    ntdsutil_execution:
-        - Image: 'C:\Windows\System32\ntdsutil.exe'
-        - OriginalFileName: 'ntdsutil.exe'
-    ntdsutil_commandline:
-        CommandLine|contains|all:
-            - 'ifm'
-            - 'ntds'
-    condition: all of ntdsutil_*
+    selection_1:
+        # copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\Windows\NTDS\NTDS.dit C:\temp\ntds.dit 2>&1
+        # There is an additional "\" to escape the special "?"
+        CommandLine|contains: '\\\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy'
+    selection_2:
+        CommandLine|contains:
+            - '\\NTDS.dit'
+            - '\\SYSTEM'
+            - '\\SECURITY'
+    condition: all of selection_*
 falsepositives:
-    -  Administrators may take backup of NTDS.dit file.
+    - Unlikely
 level: high
+---
+title: Copying Sensitive Files with Credential Data
+id: e7be6119-fc37-43f0-ad4f-1f3f99be2f9f
+status: test
+description: Files with well-known filenames (sensitive files with credential data) copying
+references:
+    - https://room362.com/post/2013/2013-06-10-volume-shadow-copy-ntdsdit-domain-hashes-remotely-part-1/
+    - https://www.slideshare.net/heirhabarov/hunting-for-credentials-dumping-in-windows-environment
+    - https://dfironthemountain.wordpress.com/2018/12/06/locked-file-access-using-esentutl-exe/
+    - https://github.com/LOLBAS-Project/LOLBAS/blob/2cc01b01132b5c304027a658c698ae09dd6a92bf/yml/OSBinaries/Esentutl.yml
+author: Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community
+date: 2019/10/22
+modified: 2024/06/04
+tags:
+    - inovasys.public
+    - attack.credential_access
+    - attack.t1003.002
+    - attack.t1003.003
+    - car.2013-07-001
+    - attack.s0404
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_esent_img:
+        - Image|endswith: '\esentutl.exe'
+        - OriginalFileName: '\esentutl.exe'
+    selection_esent_cli:
+        CommandLine|contains|windash:
+            - 'vss'
+            - ' /m '
+            - ' /y '
+    selection_susp_paths:
+        CommandLine|contains:
+            - '\config\RegBack\sam'
+            - '\config\RegBack\security'
+            - '\config\RegBack\system'
+            - '\config\sam'
+            - '\config\security'
+            - '\config\system '        # space needed to avoid false positives with \config\systemprofile\
+            - '\repair\sam'
+            - '\repair\security'
+            - '\repair\system'
+            - '\windows\ntds\ntds.dit'
+    condition: all of selection_esent_* or selection_susp_paths
+falsepositives:
+    - Copying sensitive files for legitimate use (eg. backup) or forensic investigation by legitimate incident responder or forensic investigator.
+level: high
+---
+title: Suspicious Usage Of Active Directory Diagnostic Tool (ntdsutil.exe)
+id: a58353df-af43-4753-bad0-cd83ef35eef5
+related:
+    - id: 2afafd61-6aae-4df4-baed-139fa1f4c345
+      type: derived
+status: test
+description: Detects execution of ntdsutil.exe to perform different actions such as restoring snapshots...etc.
+references:
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/cc731620(v=ws.11)
+    - https://symantec-enterprise-blogs.security.com/blogs/threat-intelligence/espionage-asia-governments
+author: Nasreddine Bencherchali (Nextron Systems)
+date: 2022/09/14
+tags:
+    - inovasys.public
+    - attack.credential_access
+    - attack.t1003.003
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\ntdsutil.exe'
+        - OriginalFileName: 'ntdsutil.exe'
+    selection_cli:
+        - CommandLine|contains|all:
+              - 'snapshot'
+              - 'mount ' # mounts a specific snapshot - Ex: ntdsutil snapshot "mount c2b3e2c6-1ffb-4625-ba8e-3503c27a9fcb" quit quit
+        - CommandLine|contains|all:
+              # This offers more coverage to the "selection_oneliner_1" case in rule 8bc64091-6875-4881-aaf9-7bd25b5dda08
+              # The shorest form of "activate" can "ac". But "act", "acti"...etc are also valid forms
+              # Same case with the "instance" flag
+              - 'ac'
+              - ' i'
+              - ' ntds'
+    condition: all of selection_*
+falsepositives:
+    - Legitimate usage to restore snapshots
+    - Legitimate admin activity
+level: medium
 ---
 title: NTDSUtil execution
 id: 65f44937-0cb9-483d-ab82-3ca3a80952a3
