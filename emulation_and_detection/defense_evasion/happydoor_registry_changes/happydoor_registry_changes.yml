@@ -1,0 +1,26 @@
+title: HappyDoor Malware Registry Edits
+id: cc4fe6f0-982a-411a-94a8-e3b3dd149f1a
+status: experimental
+description: Detects suspicious registry changes that are related to the HappyDoor backdoor. These edits contain configuration data stored by the backdoor.
+references:
+    - https://asec.ahnlab.com/en/67660/
+author: Inovasys_Salem_Salem
+date: 2024/07/15
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1112
+
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    happydoor_rsa:
+        TargetObject: 'HKEY_CURRENT_USER\SOFTWARE\Microsoft\Notepad\IfChar'
+    happydoor_c2_info:
+        TargetObject: 'HKEY_CURRENT_USER\Software\Microsoft\FTP\Use Https'
+    condition: 1 of happydoor_*
+
+falsepositives:
+    - Unknown
+level: high

