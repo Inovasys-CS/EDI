@@ -1,29 +1,36 @@
-title: Downloading or encoding of files using certutil.exe.
-id: f35f63fd8-923a-4e2d-8629-24063c4ba82e
-status: experimental
-description: Detects the downloading or encoding of files using certutil.exe..
+title: Suspicious Download Via Certutil.EXE
+id: 19b08b1c-861d-4e75-a1ef-ea0c1baf202b
+related:
+    - id: 13e6fe51-d478-4c7e-b0f2-6da9b400a829
+      type: similar
+status: test
+description: Detects the execution of certutil with certain flags that allow the utility to download files.
 references:
-    - https://lolbas-project.github.io/lolbas/Binaries/Certutil/#download
-author: Inovasys 
-date: 2023/08/30
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/certutil
+    - https://forensicitguy.github.io/agenttesla-vba-certutil-download/
+    - https://news.sophos.com/en-us/2021/04/13/compromised-exchange-server-hosting-cryptojacker-targeting-other-exchange-servers/
+    - https://twitter.com/egre55/status/1087685529016193025
+    - https://lolbas-project.github.io/lolbas/Binaries/Certutil/
+author: Florian Roth (Nextron Systems), Jonhnathan Ribeiro, oscd.community, Nasreddine Bencherchali (Nextron Systems)
+date: 2023/02/15
 tags:
     - inovasys.public
-    - attack.command_and_control
-    - attack.t1105
+    - attack.defense_evasion
+    - attack.t1027
 logsource:
-    product: windows
     category: process_creation
-detection: 
-    certutil_exec:
+    product: windows
+detection:
+    selection_img:
         - Image|endswith: '\certutil.exe'
         - OriginalFileName: 'CertUtil.exe'
-    commandline_args:
+    selection_flags:
         CommandLine|contains:
-            - 'verifyctl'
-            - 'urlcache'
-            - 'encode'
-
-    condition: certutil_exec and commandline_args
+            - 'urlcache '
+            - 'verifyctl '
+    selection_http:
+        CommandLine|contains: 'http'
+    condition: all of selection_*
 falsepositives:
-    - Legitimate use of MpCmdRun to download some Requirements 
-level: high
+    - Unknown
+level: medium
