@@ -1,0 +1,85 @@
+title: Suspicious .LNK File Execution
+id: 6b733bf3-fa57-42e1-91bf-2554c4303546
+status: experimental
+description: Detects the execution of an LNK file that points to a suspicious executable like mshta.exe or powershell.exe
+references:
+    - https://blog.talosintelligence.com/suspected-coralraider-continues-to-expand-victimology-using-three-information-stealers/
+    - https://www.proofpoint.com/us/blog/threat-insight/security-brief-ta547-targets-german-organizations-rhadamanthys-stealer
+author: Inovasys
+date: 2024/05/22
+tags:
+    - attack.execution
+    - attack.t1204
+logsource:
+    category: process_creation
+    product: windows
+
+detection:
+    explorer_parent_img:
+        ParentImage|endswith: '\explorer.exe'
+
+    suspicious_img_rundll32:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+
+    suspicious_img_regsvr32:
+        - Image|endswith: '\regsvr32.exe'
+        - OriginalFileName: 'REGSVR32.EXE'
+
+    suspicious_img_CertUtil:
+        - Image|endswith: '\certutil.exe'
+        - OriginalFileName: 'CertUtil.exe'
+
+    suspicious_img_mshta:
+        - Image|endswith: '\mshta.exe'
+        - OriginalFileName: 'mshta.exe'
+
+    suspicious_img_cmd:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+
+    suspicious_img_powershell:
+        - Image|endswith: '\powershell.exe'
+        - OriginalFileName: 'PowerShell.EXE'
+
+    fillter_rundll32:
+        CommandLine:
+            - '"rundll32.exe"'
+            - '"rundll32.exe" '
+    fillter_regsvr32:
+        CommandLine:
+            - '"regsvr32.exe"'
+            - '"regsvr32.exe" '
+    fillter_certutil:
+        CommandLine:
+            - '"certutil.exe"'
+            - '"CertUtil.exe" '
+    fillter_mshta:
+        CommandLine:
+            - '"mshta.exe"'
+            - '"mshta.exe" '
+    fillter_powershell:
+        CommandLine:
+            - '"powershell.exe"'
+            - '"powershell.exe" '
+    fillter_cmd:
+        CommandLine:
+            - '"cmd.exe"'
+            - '"cmd.exe" '
+    fillter_generic:
+        CommandLine|contains:
+            - '.cmd'
+            - '.bat'
+            - '.ps1'
+            - ' mkdir '
+            - ' rmdir '
+            - ' del '
+            - 'C:\Windows\System32\'
+            - 'Prnntfy.dll,AsyncUILoaderEntry'
+            - '-localserver'
+            - 'shell32.dll,Control_RunDLL'
+    condition: explorer_parent_img and 1 of suspicious_img_* and not 1 of fillter_*  
+
+falsepositives:
+    - Unknown
+level: high
