@@ -1,0 +1,99 @@
+title: Regsvr32 Scriptlet Execution
+id: 1804205e-403b-460f-9f06-445d5e26f4ef
+status: test
+description: Detects the execution of scriptlet files using Regsvr32.exe via Sysmon. 
+references:
+    - https://www.ired.team/offensive-security/code-execution/t1117-regsvr32-aka-squiblydoo
+
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1218.010
+
+author: Inovasys
+date: 2023/09/18
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    regsvr32_exec:
+        - Image|endswith: '\regsvr32.exe'
+        - OriginalFileName: 'regsvr32.exe'
+    regsvr32_commandline:
+        CommandLine|contains|all:
+            - '/i:'
+            - '.sct'
+            - 'scrobj.dll'
+    condition: all of regsvr32_*
+
+falsepositives:
+    - Unknown
+
+level: high
+---
+title: Network Connection Initiated By Regsvr32.EXE
+id: c7e91a02-d771-4a6d-a700-42587e0b1095
+status: test
+description: Detects a network connection initiated by "Regsvr32.exe"
+references:
+    - https://pentestlab.blog/2017/05/11/applocker-bypass-regsvr32/
+    - https://oddvar.moe/2017/12/13/applocker-case-study-how-insecure-is-it-really-part-1/
+author: Dmitriy Lifanov, oscd.community
+date: 2019/10/25
+modified: 2023/09/18
+tags:
+    - inovasys.public
+    - attack.execution
+    - attack.t1559.001
+    - attack.defense_evasion
+    - attack.t1218.010
+logsource:
+    category: network_connection
+    product: windows
+detection:
+    selection:
+        Initiated: 'true'
+        Image|endswith: '\regsvr32.exe'
+    condition: selection
+falsepositives:
+    - Unknown
+level: medium
+---
+title: Regsvr32 DLL Proxy Execution
+id: 0d5a36c3-6ecb-4d31-9cbd-2ebebddca484
+status: experimental
+description: Detects the execution of a DLL file via Regsvr32.exe. 
+references:
+    - https://asec.ahnlab.com/en/67660/
+
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1218.010
+
+author: Inovasys
+date: 2024/07/15
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    regsvr32_exec:
+        - Image|endswith: '\regsvr32.exe'
+        - OriginalFileName: 'regsvr32.exe'
+    regsvr32_commandline:
+        CommandLine|contains|all:
+            - ' /i:'
+            - ' /s ' 
+            - ' /n '
+    filter_teams_addin:
+        ParentImage|endswith: '\Update.exe'
+        CommandLine|contains|all:
+            - '\AppData\Local\Microsoft\TeamsMeetingAddin\'
+            - '/i:user'
+    condition: all of regsvr32_* and not 1 of filter_*
+
+falsepositives:
+    - Legitimate office addins are seen being installed in this manner
+level: high

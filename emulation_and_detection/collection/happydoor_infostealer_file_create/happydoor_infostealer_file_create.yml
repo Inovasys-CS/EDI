@@ -1,0 +1,28 @@
+title: HappyDoor Infostealer File Creation
+id: 9cd97fcd-5ca3-4320-9632-2722195b41a6
+status: experimental
+description: Detects suspicious file creation that follows the naming scheme used by the HappyDoor infostealer module. 
+references:
+    - https://asec.ahnlab.com/en/67660/
+
+tags:
+    - inovasys.public
+    - attack.collection
+    - attack.t1074.001
+
+author: Inovasys
+date: 2024/07/15
+
+logsource:
+    product: windows
+    category: file_event
+detection:
+    happydoor_path:
+        TargetFilename|startswith: 'C:\ProgramData\Google\Internet Explorer\LocalData\User Data\'
+        TargetFilename|contains: '@'
+        TargetFilename|endswith: '.ute1'
+    condition: happydoor_path
+
+falsepositives:
+    - Unknown
+level: high
