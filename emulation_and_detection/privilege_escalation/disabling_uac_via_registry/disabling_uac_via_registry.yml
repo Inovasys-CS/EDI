@@ -1,0 +1,28 @@
+id: 31133dfc-631b-4c42-a1eb-414f01dcf70e
+title: Disabling UAC via registry
+status: experimental
+description: Detects the Disabling of UAC via registry
+references:
+    - https://www.cyfirma.com/research/the-persistent-danger-of-remcos-rat/
+author: Inovasys
+date: 2024/08/25
+tags:
+    - inovasys.Ibrahim_Zaki
+    - attack.privilege_escalation
+    - attack.defense_evasion
+    - attack.T1548.002
+
+logsource:
+    product: windows
+    category: registry_event
+
+detection:
+    uac_policy_key:  
+        Image|endswith: '\reg.exe'
+        TargetObject|contains|all: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA'
+        Details: 'DWORD (0x00000000)'
+
+    condition: uac_policy_key
+
+falsepositives: Legitimate files executions in temp folder by legitimate installers
+level: medium
