@@ -1,27 +1,27 @@
-title: Detects camera and microphone access 
+title: Detects camera and microphone access
 id: a6ab15fa-4c98-11ee-be56-0242ac120002
 status: experimental
 description: Detects camera and microphone access by different apps by monitoring registry modifications.
 references:
     - https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1123/T1123.md#atomic-test-1---using-device-audio-capture-commandlet
 
-author: inovasys.public
+author: Inovasys
 date: 2023/09/06
 tags:
+    - inovasys.public
     - attack.Collection
     - attack.T1123
 logsource:
     product: windows
     category: registry_event
 detection:
-    Registry_entry:
-        ObjectName|startswith: 
-          - '\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone'
-          - '\REGISTRY\MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam'
-          - 'HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone\'
-          - 'HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam\'
-    
-    condition: Registry_entry
+    mic_registry_entry:
+        ObjectName|contains:
+            - 'SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone\'
+    cam_registry_entry:
+        ObjectName|contains:
+            - 'SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\webcam\'
+    condition: mic_registry_entry or cam_registry_entry
 falsepositives:
     - unexpected to produce false positives
 level: medium

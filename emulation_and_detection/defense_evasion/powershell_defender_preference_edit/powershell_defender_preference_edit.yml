@@ -25,7 +25,6 @@ detection:
         ScriptBlockText|contains: 
             - 'Add-MpPreference'
             - 'Set-MpPreference'
-            - '-ExclusionExtension'
     condition: selection_cmdlets
 falsepositives:
     - Legitimate Defender manipulation by administrators
@@ -61,7 +60,6 @@ detection:
         CommandLine|contains:
             - 'Add-MpPreference'
             - 'Set-MpPreference'
-            - '-ExclusionExtension'
     condition: all of selection_*
 falsepositives:
     - Legitimate Defender manipulation by administrators
