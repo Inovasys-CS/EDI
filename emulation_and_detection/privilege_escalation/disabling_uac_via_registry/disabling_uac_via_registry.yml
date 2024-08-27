@@ -1,5 +1,5 @@
-id: 31133dfc-631b-4c42-a1eb-414f01dcf70e
 title: Disabling UAC via registry
+id: 31133dfc-631b-4c42-a1eb-414f01dcf70e
 status: experimental
 description: Detects the Disabling of UAC via registry
 references:
