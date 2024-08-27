@@ -9,8 +9,8 @@ author: Inovasys
 date: 2023/09/06
 tags:
     - inovasys.public
-    - attack.Collection
-    - attack.T1123
+    - attack.collection
+    - attack.t1123
 logsource:
     product: windows
     category: registry_event

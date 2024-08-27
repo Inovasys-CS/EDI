@@ -10,7 +10,7 @@ tags:
     - inovasys.public
     - attack.privilege_escalation
     - attack.defense_evasion
-    - attack.T1548.002
+    - attack.t1548.002
 
 logsource:
     product: windows
@@ -19,7 +19,7 @@ logsource:
 detection:
     uac_policy_key:  
         Image|endswith: '\reg.exe'
-        TargetObject|contains|all: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA'
+        TargetObject: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA'
         Details: 'DWORD (0x00000000)'
 
     condition: uac_policy_key
