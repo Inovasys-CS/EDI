@@ -1,0 +1,10 @@
+title: Qilin ransomware
+description: Qilin ransomware caught stealing credentials stored in Google Chrome.
+category: Report
+date: 2024/08/22
+company: Sophos
+reference: https://news.sophos.com/en-us/2024/08/22/qilin-ransomware-caught-stealing-credentials-stored-in-google-chrome/
+rules:
+    - defense_evasion/eventlog_clearing_powershell
+    - execution/suspicious_SYSVOL_domain_group_policy_access
+    - credential_access/browser_credential_store_access
