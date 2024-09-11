@@ -1,0 +1,27 @@
+title: Detects disabling browser updates using registry
+id: 368b57a2-530f-41a6-8404-a089c6deb6e3
+status: experimental
+description: Detects disabling browser updates using registry modifications
+references:
+    - https://reasonlabs.com/research/new-widespread-extension-trojan-malware-campaign
+
+author: Inovasys
+date: 2024/09/11
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    product: windows
+    category: registry_delete
+detection:
+    registry_entry:
+        ObjectName|contains:
+            - HKLM:\SYSTEM\ControlSet001\Services\gupdate 
+            - HKLM:\SYSTEM\ControlSet001\Services\gupdatem 
+            - HKLM:\SYSTEM\CurrentControlSet\Services\gupdate 
+            - HKLM:\SYSTEM\CurrentControlSet\Services\gupdatem 
+    condition: registry_entry
+falsepositives:
+    - unexpected to produce false positives
+level: medium
