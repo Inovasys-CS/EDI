@@ -1,7 +1,7 @@
-title: Detects force downloading browser extentions using registry
+title: Detects force downloading browser extensions using registry
 id: e18fcd8d-629c-44da-8262-df5eb9dedd3b
 status: experimental
-description: Detects force downloading browser extention using registry modifications, this technique can be used by adversaries to install malicious extentions
+description: Detects force downloading browser extension using registry modifications, this technique can be used by adversaries to install malicious extensions.
 references:
     - https://reasonlabs.com/research/new-widespread-extension-trojan-malware-campaign
 
@@ -15,11 +15,11 @@ logsource:
     product: windows
     category: registry_event
 detection:
-    extention_registry_entry:
-        ObjectName|contains:
+    extension_registry_entry:
+        TargetObject|contains:
             - 'SOFTWARE\Policies\Google\Chrome\ExtensionInstallForceList'
             - 'SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForceList'
-    condition: extention_registry_entry
+    condition: extension_registry_entry
 falsepositives:
-    - unexpected to produce false positives
+    - Unknown
 level: medium

@@ -1,7 +1,7 @@
 title: Detects disabling browser updates using registry
 id: 368b57a2-530f-41a6-8404-a089c6deb6e3
 status: experimental
-description: Detects disabling browser updates using registry modifications
+description: Detects the removal of the gupdate service that is responsible for Google updates, by removing the services registry key.
 references:
     - https://reasonlabs.com/research/new-widespread-extension-trojan-malware-campaign
 
@@ -15,13 +15,13 @@ logsource:
     product: windows
     category: registry_delete
 detection:
-    registry_entry:
-        ObjectName|contains:
-            - HKLM:\SYSTEM\ControlSet001\Services\gupdate 
-            - HKLM:\SYSTEM\ControlSet001\Services\gupdatem 
-            - HKLM:\SYSTEM\CurrentControlSet\Services\gupdate 
-            - HKLM:\SYSTEM\CurrentControlSet\Services\gupdatem 
-    condition: registry_entry
+    selection_update_key:
+        TargetObject|startswith:
+            - 'HKLM\SYSTEM\ControlSet001\Services\gupdate'
+            - 'HKLM\SYSTEM\ControlSet001\Services\gupdatem'
+            - 'HKLM\SYSTEM\CurrentControlSet\Services\gupdate' 
+            - 'HKLM\SYSTEM\CurrentControlSet\Services\gupdatem'
+    condition: selection_update_key
 falsepositives:
-    - unexpected to produce false positives
+    - Unknown
 level: medium
