@@ -1,0 +1,25 @@
+title: Detects force downloading browser extensions using registry
+id: e18fcd8d-629c-44da-8262-df5eb9dedd3b
+status: experimental
+description: Detects force downloading browser extension using registry modifications, this technique can be used by adversaries to install malicious extensions.
+references:
+    - https://reasonlabs.com/research/new-widespread-extension-trojan-malware-campaign
+
+author: Inovasys
+date: 2024/09/04
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    extension_registry_entry:
+        TargetObject|contains:
+            - 'SOFTWARE\Policies\Google\Chrome\ExtensionInstallForceList'
+            - 'SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallForceList'
+    condition: extension_registry_entry
+falsepositives:
+    - Unknown
+level: medium

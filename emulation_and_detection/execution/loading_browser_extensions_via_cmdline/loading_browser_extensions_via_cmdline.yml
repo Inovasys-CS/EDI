@@ -1,0 +1,30 @@
+title: Loading malicious browser extensions
+id: 4fa3c953-a195-4e1a-ae07-423697ddfd95
+status: experimental
+description: Detects the loading of browser extensions through the commandline which may be an indicator of malicious activity.
+references:
+    - https://reasonlabs.com/research/new-widespread-extension-trojan-malware-campaign
+
+author: Inovasys
+date: 2024/09/11
+tags:
+    - inovasys.public
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_chrome:
+        - Image|endswith: 
+              - '\chrome.exe'
+              - '\msedge.exe'
+        - OriginalFileName: 
+              - 'chrome.exe'
+              - 'msedge.exe'
+    selection_cmdlets:
+        CommandLine|contains:  '--load-extension='
+    condition: all of selection_*
+falsepositives:
+    - Legitimate loading of extensions
+level: medium
