@@ -9,7 +9,7 @@ A collection of rules that aim to detect the RansomHub ransomware.
 
 1. [command_and_control/use_of_legitimate_remote_access_tools_c2](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/command_and_control/use_of_legitimate_remote_access_tools_c2)
 2. [credential_access/file_event_win_taskmgr_lsass_dump](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/credential_access/file_event_win_taskmgr_lsass_dump)
-3. [defense_evasion/Eventlog_clearing_powershell](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/Eventlog_clearing_powershell)
+3. [defense_evasion/eventlog_clearing_powershell](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/eventlog_clearing_powershell)
 4. [defense_evasion/proc_creation_win_powershell_defender_disable_feature](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/proc_creation_win_powershell_defender_disable_feature)
 5. [defense_evasion/registry_modification_for_winlogon_shell](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/registry_modification_for_winlogon_shell)
 6. [defense_evasion/taskkill_image_filter](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/taskkill_image_filter)

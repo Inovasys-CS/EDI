@@ -7,7 +7,7 @@ reference: https://www.trendmicro.com/en_us/research/24/i/how-ransomhub-ransomwa
 rules:
     - command_and_control/use_of_legitimate_remote_access_tools_c2
     - credential_access/file_event_win_taskmgr_lsass_dump
-    - defense_evasion/Eventlog_clearing_powershell
+    - defense_evasion/eventlog_clearing_powershell
     - defense_evasion/proc_creation_win_powershell_defender_disable_feature
     - defense_evasion/registry_modification_for_winlogon_shell
     - defense_evasion/taskkill_image_filter
