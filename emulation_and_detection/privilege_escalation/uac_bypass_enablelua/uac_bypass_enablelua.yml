@@ -1,0 +1,28 @@
+title: Detect UAC bypass
+id: 64a4e709-befe-459a-ba13-c31a06150805
+status: experimental
+description: Detects modification of the EnableLUA registry value to disable UAC to privilage escalation and defense evasion
+referance:
+   - https://www.trendmicro.com/en_us/research/24/i/how-ransomhub-ransomware-uses-edrkillshifter-to-disable-edr-and-.html
+
+author: Inovasys_Fares_Magdy
+date: 2024/10/14
+modified: 2024/10/14
+tags:
+  - attack.privilege_escalation
+  - attack.defense_evasion
+  - attack.t1548.002
+logsource:
+   category: registry_set
+   product: windows
+detection:
+   registry_modification:
+      TargetObject: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA'
+      Details: 'DWORD (0x00000000)'
+   condition: registry_modification
+fields:
+   - TargetObject
+   - Details
+falsepositives:
+   - Legitimate administrative activities or system configuration changes
+level: high

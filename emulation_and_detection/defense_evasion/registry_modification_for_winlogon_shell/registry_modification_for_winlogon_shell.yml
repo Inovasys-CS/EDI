@@ -1,0 +1,24 @@
+title: Registry Modification for Winlogon Shell
+id: f6ea1095-d11a-48b5-b391-e3751e1736fa
+status: experimental
+description: Detects changes to the Winlogon Shell registry key to set it to explorer.exe.
+references: https://www.trendmicro.com/en_us/research/24/i/how-ransomhub-ransomware-uses-edrkillshifter-to-disable-edr-and-.html
+author: Inovasys_Fares_Magdy
+date: 2024/10/14
+tags:
+    - inovasys.inspired_by_TI
+    - attack.defense_evasion
+    - attack.t1112
+logsource:
+    category: registry_set
+    product: windows
+detection:
+    selection:
+        TargetObject|contains: 'HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\shell'
+        Details: 'explorer.exe'
+    condition: selection
+fields:
+  - Image
+falsepositives:
+    - Unknown
+level: high

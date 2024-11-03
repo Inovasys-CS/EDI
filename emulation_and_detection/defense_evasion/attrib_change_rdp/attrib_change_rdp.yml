@@ -1,0 +1,27 @@
+title: Attribuation Change in RDP File
+id: 84ab2290-b180-4cec-b908-f91112f8fc54
+status: experimental
+description: Detects changes to the Default.rdp file attributes, making it visible to unauthorized users.
+references: https://www.trendmicro.com/en_us/research/24/i/how-ransomhub-ransomware-uses-edrkillshifter-to-disable-edr-and-.html
+author: Inovasys_Fares_Magdy
+date: 2024/10/14
+tags:
+    - inovasys.inspired_by_TI
+    - attack.defense_evasion
+    - attack.t1564.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_attrib:
+        - Image|endswith: '\attrib.exe'
+        - OriginalFileName: 'ATTRIB.EXE'
+    selection_cmdline:
+        CommandLine|contains|all:
+            - ' Default.rdp'
+            - ' -s'
+            - ' -h'
+    condition: all of selection_*
+falsepositives:
+    - Unknown
+level: medium
