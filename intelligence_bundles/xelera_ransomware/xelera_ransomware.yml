@@ -1,0 +1,13 @@
+title: Xelera ransomware
+description:  A collection of rules that aim to detect xelera ransomware which act as a RAT and uses discord as C2 and encrypt files.
+category: Report
+date: 2025/02/12
+company: Seqrite
+reference: https://www.seqrite.com/blog/xelera-ransomware-fake-fci-job-offers/
+rules:
+    - initial_access/executable_file_create_from_office
+    - defense_evasion/executable_downloaded_from_github
+    - execution/office_application_spawning_another_process
+    - command_and_control/discord_as_legitimate_c2
+    - command_and_control/discord_cdn_connection
+    - persistence/file_event_win_startup_folder_file_write
