@@ -1,0 +1,24 @@
+title: Detect Executable Files Downloaded from GitHub
+id: 9f3b8b0e-3b60-4c2e-a7a4-2f4e7f8d7b35
+status: experimental
+description: Detects when executable file is downloaded from github using proxy
+references:
+    - https://www.seqrite.com/blog/xelera-ransomware-fake-fci-job-offers/
+tags:
+    - attack.defense_evasion
+    - attack.t1105  #Ingress Tool Transfer
+    
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-04
+
+logsource:
+    category: proxy
+detection:
+    selection_url:
+        cs-host|contains: 'github'
+        c-uri-extension: '.exe'
+    condition: selection_url
+
+falsepositives:
+  - Legitimate executable file on github
+level: low
