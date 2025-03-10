@@ -1,0 +1,24 @@
+title: Potential Unauthorized System Lockdown via rundll32
+id: 8a2e4cc7-3c54-4f5d-a5a8-3f1d3be5d1f0
+status: experimental
+description: Detects potential unauthorized system lockdown using rundll32.exe with user32.dll LockWorkStation
+references:
+  - https://attack.mitre.org/techniques/T1546/003/
+  - https://www.seqrite.com/blog/xelera-ransomware-fake-fci-job-offers/
+tags:
+  - attack.impact
+  - attack.t1489
+author: Inovasys_Shreif_Mokhtar
+date: 2025/03/04
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  lock_function:
+    Image|endswith: 'rundll32.exe'
+    CommandLine|contains: 'LockWorkStation'
+  condition: lock_function
+falsepositives:
+  - Legitimate system management scripts
+  - Remote desktop management tools
+level: medium
