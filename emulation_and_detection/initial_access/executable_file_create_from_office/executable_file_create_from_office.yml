@@ -1,0 +1,103 @@
+title: Executable File Create From Office
+id: 0bd52dc6-bcba-4be1-9bf4-644572bb5d9a
+status: test
+description: Detects executable and script file creation by office applications.
+references:
+    - https://www.lifewire.com/list-of-executable-file-extensions-2626061
+tags:
+    - attack.initial_access
+    - attack.t1566.001
+    - attack.execution
+    - attack.t1204.002
+
+author: Inovasys_Salem_Salem
+date: 2023-11-28
+
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection_executables:
+        - Image|endswith:
+              - '\WINWORD.EXE'
+              - '\EXCEL.EXE'
+              - '\POWERPNT.EXE'
+              - '\OUTLOOK.EXE'
+        - OriginalFileName:
+              - 'WinWord.exe'
+              - 'Excel.exe'
+              - 'POWERPNT.EXE'
+              - 'Outlook.exe'
+    selection_file_extensions:
+        TargetFilename|endswith:
+            - '.action'
+            - '.apk'
+            - '.app'
+            - '.appimage'
+            - '.applescript'
+            - '.bat'
+            - '.bin'
+            - '.cab'
+            - '.cmd'
+            - '.command'
+            - '.cpl'
+            - '.dmg'
+            - '.exe'
+            - '.gadget'
+            - '.hta'
+            - '.inf'
+            - '.ins'
+            - '.ipa'
+            - '.isu'
+            - '.jar'
+            - '.job'
+            - '.js'
+            - '.jse'
+            - '.msc'
+            - '.msi'
+            - '.msp'
+            - '.paf'
+            - '.pif'
+            - '.ps1'
+            - '.rgs'
+            - '.run'
+            - '.scr'
+            - '.sct'
+            - '.sh'
+            - '.shb'
+            - '.shortcut'
+            - '.vb'
+            - '.vbe'
+            - '.vbs'
+    filter_paths:
+        TargetFilename|contains:
+            - 'AppData\Roaming\Microsoft'
+            - 'AppData\Local\Microsoft'
+    filter_files:
+        TargetFilename|endswith:
+            - 'content.inf'
+            - 'Content.inf'
+    filter_outlook:
+        TargetFilename|contains: 
+            - '\AppData\Local\Temp\Deployment'
+            - '\AppData\Local\Apps\2.0'
+        Image|endswith: '\OUTLOOK.EXE'
+    filter_new_outlook:
+        TargetFilename|endswith: 'AppData\Local\Temp\NewOutlookInstall\NewOutlookInstaller.exe'
+    filter_email:
+        TargetFilename|contains|all:
+            - '.com'
+            - '@'
+    filter_office_assembly:
+        TargetFilename|contains|all:
+            - 'C:\Users\'
+            - '\AppData\Local\assembly\tmp\'
+            - '.DLL'
+        Image|endswith: 
+            - '\OUTLOOK.EXE'
+            - '\EXCEL.EXE'
+    condition: (selection_file_extensions and selection_executables) and not 1 of filter_*
+
+falsepositives:
+    - Legitimate Outlook dlls
+level: medium
