@@ -3,7 +3,7 @@
 
 Seqrite - 2025/02/12, Report, [Reference Link](https://www.seqrite.com/blog/xelera-ransomware-fake-fci-job-offers/)
 
-A collection of rules that aim to detect xelera ransomware which act as a RAT and uses discord as C2 and encrypt files.
+A collection of rules that aim to detect xelera ransomware which act as a RAT, uses discord as C2 and encrypt files.
 
 ## Related Rules
 
