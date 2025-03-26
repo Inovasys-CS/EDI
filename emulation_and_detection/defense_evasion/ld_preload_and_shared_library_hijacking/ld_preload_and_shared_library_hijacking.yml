@@ -1,0 +1,30 @@
+title: LD_PRELOAD and Shared Library Hijacking
+id: 2a5b9c6f-91d0-4e62-b8f3-9c6a4e728e4d
+status: experimental
+description: Detects execution of commands modifying environment variables and files related to shared library hijacking, such as LD_PRELOAD, which is often exploited by malware like Symbiote or auto-color.
+references:
+    - https://intezer.com/blog/research/new-linux-threat-symbiote/
+    - https://blogs.blackberry.com/en/2022/06/symbiote-a-new-nearly-impossible-to-detect-linux-threat
+author: Inovasys_Mahmoud_Osama
+date: 2025-03-18
+tags:
+    - attack.defense-evasion
+    - attack.t1574.006
+logsource:
+    category: process_creation
+    product: linux
+detection:
+    selection_env_vars:
+        CommandLine|contains:
+            - 'export LD_PRELOAD='  #Sets the LD_PRELOAD variable, which can force the system to load malicious shared libraries before any others
+            - 'export LD_LIBRARY_PATH='  # changing the library search order, which can lead to DLL hijacking.
+            - 'echo $LD_PRELOAD'  # Reads the current LD_PRELOAD value, which attackers may do to check if it’s already set
+            - 'unset LD_PRELOAD'  #Clears the LD_PRELOAD variable, which can be used by attackers to avoid detection after executing a malicious payload.
+    selection_files:
+        CommandLine|contains:
+            - '/etc/ld.so.preload'   #Any reference to this file in command-line execution. This file is used to inject shared libraries into all processes.
+    condition: selection_env_vars or selection_files
+falsepositives:
+  - System administrators modifying library paths for legitimate reasons
+  - Certain software installations that update shared library paths
+level: high

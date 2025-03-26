@@ -1,0 +1,23 @@
+title: Suspicious Config-Err File Creation in /tmp/cross/
+id: 36576ced-5f6a-4a9e-bc21-11e0998c003b
+status: experimental
+description: Detects the creation of a file that follows the same scheme of config files holding global target payload info in the auto-color infection chains.
+references:
+    - https://unit42.paloaltonetworks.com/new-linux-backdoor-auto-color/
+author: Inovasys_Mahmoud_Osama
+date: 2025-03-12
+tags:
+    - attack.defense-evasion
+    - attack.t1036
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|startswith:
+            - '/tmp/cross/config-err-'
+            - '/var/log/cross/config-err-'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high

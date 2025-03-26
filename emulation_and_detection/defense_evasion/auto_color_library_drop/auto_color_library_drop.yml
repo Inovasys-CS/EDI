@@ -1,0 +1,31 @@
+title: Auto-Color Malicious Library File Drop
+id: e8bcdab3-6576-4085-95ff-edd383a4a991
+status: experimental
+description: Detects the creation of the malicious library 'libcext.so.2' and any variations other than the legitimate 'libcext.so.0' in system library paths, as seen in auto-color infection chain.
+references:
+    - https://unit42.paloaltonetworks.com/new-linux-backdoor-auto-color/
+author: Inovasys_Mahmoud_Osama
+date: 2025-03-12
+tags:
+    - attack.defense-evasion 
+    - attack.t1574.002
+logsource:
+    category: file_event
+    product: linux
+detection:
+    selection:
+        TargetFilename|contains:
+            - '/lib/libcext.so.'
+            - '/lib64/libcext.so.'
+            - '/usr/lib/libcext.so.'
+            - '/usr/lib64/libcext.so.'
+    filter_legitimate_lib:
+        TargetFilename|endswith:
+            - '/lib/libcext.so.0'
+            - '/lib64/libcext.so.0'
+            - '/usr/lib/libcext.so.0'
+            - '/usr/lib64/libcext.so.0'
+    condition: selection and not filter_legitimate_lib
+falsepositives:
+    - Unknown
+level: high
