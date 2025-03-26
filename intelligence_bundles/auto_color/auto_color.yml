@@ -1,0 +1,11 @@
+title: Auto-Color Backdoor
+description: A collection of rules that aim to detect the execution of linux based auto-color backdoor.
+category: Report
+date: 2025/02/24
+company: Palo Alto
+reference: https://unit42.paloaltonetworks.com/new-linux-backdoor-auto-color/
+rules:
+    - defense_evasion/auto_color_library_drop
+    - defense_evasion/ld_preload_and_shared_library_hijacking
+    - defense_evasion/suspicious_config_err_file_creation
+    - persistence/auto_color_malware_file_creation
