@@ -1,0 +1,33 @@
+title: detects Winhttp.dll file creation in unusual location
+id: f02fa5ad-cc47-43af-9859-a1d1e5a68b51
+status: experimental
+description: Detects the creation of  Winhttp.dll under the AppData\Local\Microsoft\OneDrive folder, which is not their default location and may indicate DLL sideloading
+references:
+  - https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-26
+
+tags:
+  - attack.defense-evasion
+  - attack.ta0005
+  - inovasys.inspired_by_TI
+
+logsource:
+  product: windows
+  category: file_event
+
+detection:
+  selection:
+    TargetFilename|contains:
+      - '\AppData\Local\Microsoft\OneDrive\'
+    TargetFilename|endswith:
+      - 'Winhttp.dll'
+
+  condition: selection
+
+falsepositives:
+  - Application updates that might temporarily create these files in non-standard locations
+  - Legitimate Software installation processes that might place these files in unusual locations
+
+level: Low
