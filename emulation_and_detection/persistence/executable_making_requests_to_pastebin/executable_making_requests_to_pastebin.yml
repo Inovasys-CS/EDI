@@ -1,0 +1,37 @@
+title: Executable making requests to pastebin
+id: 8a63e5b2-b8e4-11ee-a506-0242ac120002
+status: experimental
+description: Detects when executable file is making requests to pastebin as it receives configuration file each 100 mins 
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+tags:
+    - inovasys.inspired_by_TI
+    - attack.persistence
+    - attack.t1102.001
+    
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-16
+
+logsource:
+    category: proxy
+detection:
+    selection_url:
+        cs-host|contains: 'pastebin'
+    filter_browsers:
+        c-useragent|contains:
+            - 'Mozilla/5.0 (Windows NT 10'
+            - 'Mozilla/5.0 (Macintosh; Intel Mac OS X'
+            - 'Mozilla/5.0 (X11; Linux'
+            - 'Mozilla/5.0 (Windows NT 6.1'
+            - 'Chrome/'
+            - 'Firefox/'
+            - 'Safari/'
+            - 'Edge/'
+            - 'AppleWebKit/'
+            - 'Gecko/'
+    condition: selection_url and not filter_browsers
+
+falsepositives:
+    - Legitimate applications making requests to pastebin for data sharing or configuration
+    - Custom applications with non-browser user agents accessing pastebin legitimately
+level: medium
