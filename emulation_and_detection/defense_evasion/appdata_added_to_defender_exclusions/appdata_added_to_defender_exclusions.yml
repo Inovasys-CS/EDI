@@ -1,0 +1,69 @@
+title: AppData Directory Added to Microsoft Defender Exclusion List
+id: cbc4d939-3aa4-4ca5-b319-f5729b126f99
+status: experimental
+description: Detects when the AppData directory is added to Microsoft Defender's exclusion list, which is commonly used by attackers to prevent detection of malicious files
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+    - https://attack.mitre.org/techniques/T1562/001/
+    - https://answers.microsoft.com/en-us/windows/forum/all/event-id-5007-for-windows-defender/1c28e217-79ac-4653-a6f1-da53fce75107
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-16
+modified: 2025-03-16
+tags:
+    - attack.defense-evasion
+    - attack.t1562.001
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: windefend
+detection:
+    selection_reg_path:
+        EventID: 5007
+        NewValue|contains: 'AppData'
+    condition: selection_reg_path
+falsepositives:
+    - Legitimate exclusions set by administrators or software installers
+    - Application troubleshooting scenarios
+level: high
+---
+title: AppData Directory Added to Microsoft Defender Exclusion List
+id: 5f9a12b8-7d2c-11ee-b962-0242ac120002
+status: experimental
+description: Detects when the AppData directory is added to Microsoft Defender's exclusion list, which is commonly used by attackers to prevent detection of malicious files
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+    - https://attack.mitre.org/techniques/T1562/001/
+    - https://docs.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-process-opened-file-exclusions
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-16
+tags:
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - attack.defense-evasion
+    - attack.t1562.001
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection_reg_path:
+        TargetObject|contains: '\Microsoft\Windows Defender\Exclusions\Paths'
+        Details|contains: 'AppData'
+    selection_powershell:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+            - '\cmd.exe'
+        CommandLine|contains:
+            - 'Add-MpPreference'
+            - 'Set-MpPreference'
+            - '-ExclusionPath'
+            - '-ExclusionProcess'
+            - '-ExclusionExtension'
+            - 'AppData'
+    condition: selection_reg_path and selection_powershell
+falsepositives:
+    - Legitimate exclusions set by administrators or software installers
+    - Application troubleshooting scenarios
+level: high
