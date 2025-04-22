@@ -1,0 +1,26 @@
+title: Non-Browser Pastebin Network Connection
+id: 17967059-5caa-44cd-8db9-a9f6fd04de6c
+status: experimental
+description: Detects when nonbrowser executable files making requests to pastebin
+references: https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+tags:
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - inovasys.inspired_by_TI
+    - attack.command-and-control
+    - attack.t1102
+author: Inovasys_shreif_Mokhtar
+date: 2025-03-23
+level: medium
+logsource:
+    product: DefenderXDR
+    category: EDR
+
+language: KQL
+query: |
+    DeviceNetworkEvents
+    | where RemoteUrl contains 'pastebin.com'
+    | where InitiatingProcessFileName endswith '.exe'
+    | where not(InitiatingProcessFileName in~ ('chrome.exe', 'msedge.exe', 'firefox.exe', 'opera.exe', 'brave.exe', 'iexplore.exe', 'safari.exe'))
