@@ -1,0 +1,30 @@
+title: Python DLL File Creation in Temp Folder
+name: python_dll_file_creation_in_temp_folder
+id: 2e42b2e1-e846-4281-a57a-b822db75198c
+status: experimental
+description: Detects drop of python dll by pyinstaller in the temp folder, a common activity of malware packed with pyinstaller.
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-24
+tags:
+    - inovasys.inspired_by_TI
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|endswith: '.dll'
+        TargetFilename|contains|all: 
+            - 'Temp'
+            - 'python'
+    condition: selection
+falsepositives:
+    - Legitimate application packed with pyinstaller
+level: low
