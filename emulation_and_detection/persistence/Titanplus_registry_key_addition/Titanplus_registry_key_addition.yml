@@ -1,0 +1,24 @@
+title: Black Basta/Cactus Ransomware TitanPlus Registry Key Creation
+id: f0e79bc5-6b78-4f7c-a542-3e9cfd82b12e
+status: experimental
+description: Detects the creation of the TitanPlus registry key used by Black Basta/Cactus ransomware to add their IPs for command and control
+references:
+    - https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+author: Inovasys_Shreif_Mokhtar
+date: 2025-04-06
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - attack.command-and-control
+    - attack.ta0011
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    reg_key:
+        TargetObject|contains: 'HKCU\SOFTWARE\TitanPlus'
+    condition: reg_key
+falsepositives:
+    - legitimate titan plus software installation
+level: low
