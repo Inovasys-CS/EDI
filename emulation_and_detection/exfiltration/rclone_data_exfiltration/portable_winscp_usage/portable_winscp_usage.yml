@@ -1,0 +1,24 @@
+title: Portable WinSCP Usage Detection
+id: 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
+status: experimental
+description: Detects when WinSCP.exe creates a WinSCP.ini file, which indecates usage of portable WinSCP that maybe used for data exfiltration 
+references:
+  - https://www.netskope.com/blog/new-evasive-campaign-delivers-legionloader-via-fake-captcha-cloudflare-turnstile
+author: Inovasys_Shreif_Mokhtar
+date: 2025-04-14
+tags:
+  - inovasys.inspired_by_TI
+  - attack.exfiltration
+  - attack.t1048
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    Image|endswith: '\WinSCP.exe'
+    TargetFilename|endswith: '\WinSCP.ini'
+  condition: selection
+falsepositives:
+  - Initial installation of WinSCP
+  - Legitimate administrative use of portable WinSCP
+level: low
