@@ -1,0 +1,37 @@
+title: Batch File Creation From ZIP Archive
+name: batch_file_creation_from_zip_archive
+id: 6f2b6f9e-5d9d-11ec-bf63-0242ac130002
+status: experimental
+description: Detects batch file creation events from ZIP archives, which may indicate archive extraction potentially used for malware delivery
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-16
+tags:
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - inovasys.inspired_by_TI
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|endswith: '.bat'
+        Image|endswith:
+            - '\7z.exe'
+            - '\winzip.exe'
+            - '\winrar.exe'
+            - '\unzip.exe'
+            - '\compact.exe'
+            - '\tar.exe'
+            # - '\explorer.exe' (Salem) Too noisy, not necessarily from archive file
+    condition: selection
+falsepositives:
+    - Software installation or updates that use archived files
+    - Legitimate user extraction of executable files
+    - Administrative scripts that extract archives
+level: medium
