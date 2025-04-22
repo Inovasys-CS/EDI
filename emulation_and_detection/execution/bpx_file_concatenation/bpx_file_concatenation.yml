@@ -1,0 +1,38 @@
+title: BPX Files Concatenation Command
+id: 75cc8b8e-3991-4d9c-a511-0aaa669970d4
+status: experimental
+description: Monitors command line activities concatenating .bpx files, indicating potential malicious file manipulation
+references:
+  - https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-26
+
+tags:
+  - attack.execution
+  - attack.t1059
+  - inovasys.inspired_by_TI
+
+logsource:
+  product: windows
+  category: process_creation
+
+detection:
+  concatenated_files_selection:
+    CommandLine|contains|all:
+      - 'type'
+      - '.bpx'
+      - '>'
+  archive_selection:
+    CommandLine|contains:
+      - '.zip'
+      - '.rar'
+      - '.gz'
+      - '.tar'
+      - '.7z'
+  condition: concatenated_files_selection and archive_selection
+
+falsepositives:
+  - Custom file management utilities
+
+level: medium
