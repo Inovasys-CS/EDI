@@ -1,0 +1,32 @@
+title: Python Service Manipulation via Sc.exe
+name: python_service_manipulation_via_sc_exe
+id: 8e2f4a3c-a436-11ee-8c90-0242ac120002
+status: experimental
+description: Detects the launch of sc.exe with python as the parent process, an uncommon way of manipulating services that was seen in SilentCryptoMiner infections.
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-16
+tags:
+    - inovasys.inspired_by_TI
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - attack.persistence
+    - attack.t1543.003
+logsource:
+  product: windows
+  category: process_creation
+detection:
+    python_service_creation:
+        ParentImage|endswith:
+            - '\python.exe'
+            - '\python3.exe'
+            - '\pythonw.exe'
+        Image|endswith: '\sc.exe'
+    condition:  python_service_creation 
+falsepositives:
+    - Legitimate software that creates services with similar naming conventions
+    - Administrative scripts that follow similar patterns
+level: medium
