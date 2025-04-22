@@ -1,0 +1,28 @@
+title: Suspicious dll Load in OneDriveStandaloneUpdater.exe Process
+id: 4c5d3f1a-8e62-4a9b-b713-d7849ec2f71e
+status: experimental
+description: Detects when Winhttp.dll or wscapi.dll are loaded into OneDriveStandaloneUpdater.exe process, which could indicate DLL sideloading
+references:
+  - https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-26
+tags:
+  - attack.defense-evasion
+  - attack.t1574.002
+  - inovasys.inspired_by_TI
+logsource:
+  product: windows
+  category: image_load
+detection:
+  loaded_dll:
+    Image|endswith: '\OneDriveStandaloneUpdater.exe'
+    ImageLoaded|endswith:
+        - '\Winhttp.dll'
+        - '\wscapi.dll'
+  filter_legitimate:
+    ImageLoaded|startswith: 'C:\Windows\System32\'
+  condition: loaded_dll and not filter_legitimate
+
+falsepositives:
+  - Legitimate loading of Winhttp.dll from the System32 directory by OneDriveStandaloneUpdater.exe
+level: medium
