@@ -1,0 +1,15 @@
+title: SilentCrypto Miner
+description:  A collection of rules that aim to detect SilentCrypto Miner which abuse hardware resources for mining.
+category: Report
+date: 2025/03/05
+company: securelist
+reference: https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+rules:
+    - execution/creation_of_winring_driver
+    - execution/pyinstaller_python_dll_file_creation_in_temp_folder
+    - defense_evasion/appdata_added_to_defender_exclusions
+    - command_and_control/batch_file_creation_from_zip
+    - command_and_control/pastebin_edr_request
+    - persistence/executable_making_requests_to_pastebin
+    - persistence/service_created_from_python_script
+    - privilege_escalation/driver_load_win_vuln_winring0_driver
