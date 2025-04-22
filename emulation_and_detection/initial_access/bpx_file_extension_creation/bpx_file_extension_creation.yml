@@ -1,0 +1,57 @@
+title: detects BPX file creation
+id: f02fa5ad-cc47-43af-9859-a1d1e5a68b51
+status: experimental
+description: Detects .bpx file creation events as its not commonly used in production, potentially indicating malicious archive extraction
+references:
+  - https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-26
+
+tags:
+  - attack.initial-access
+  - attack.t1102
+  - inovasys.inspired_by_TI
+
+logsource:
+  product: windows
+  category: file_event
+
+detection:
+  selection:
+    TargetFilename|endswith: '.bpx'
+  condition: selection
+
+falsepositives:
+  - Legitimate software using .bpx extensions
+  - Custom applications with non-standard file types
+
+level: Low
+
+--- 
+
+title: bpx Files extention Downloaded
+id: 1d31344d-a879-465c-b5c9-e3998db88103
+status: experimental
+description: Detects when .bpx Files extention Downloaded as its not usually used , potentially indicating malicious archive extraction
+references: https://www.trendmicro.com/en_us/research/25/b/black-basta-cactus-ransomware-backconnect.html
+tags: 
+  - attack.initial-access
+  - attack.t1102
+  - inovasys.inspired_by_TI
+author: Inovasys_shreif_Mokhtar
+date: 2025-04-06
+
+logsource:
+    category: proxy
+detection:
+    selection_url:
+        c-uri-extension: '.bpx'
+    condition: selection_url
+
+falsepositives:
+  - Legitimate file used by normal application
+level: low
+
+
+
