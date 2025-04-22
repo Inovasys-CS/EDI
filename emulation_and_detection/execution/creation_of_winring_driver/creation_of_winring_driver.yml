@@ -1,0 +1,31 @@
+title: Suspicious WinRing0 Driver Creation
+id: 5f9c7a8e-4b3f-11ee-be56-0242ac120002
+status: experimental
+description: Detects the creation of WinRing0x64.sys driver file which is legitimately used by hardware monitoring tools but also abused by cryptominers and other malware
+references:
+    - https://securelist.com/silentcryptominer-spreads-through-blackmail-on-youtube/115788/
+author: Inovasys_Shreif_Mokhtar
+date: 2025-03-23
+tags:
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_othaim
+    - inovasys.onboarded_on_deewan
+    - inovasys.inspired_by_TI
+    - attack.execution
+    - attack.t1204.002
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|endswith: 
+            - '\WinRing0x64.sys'
+            - '\WinRing0.sys'
+            - '\WinRing0.dll'
+            - '\WinRing0x64.dll'
+            - '\winring00x64.sys'
+    condition: selection
+falsepositives:
+    - Legitimate application updating behavior
+level: high
