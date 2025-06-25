@@ -1,0 +1,28 @@
+title: HTA File Created in Temp Directory
+id: 43203388-2b35-42c9-a096-2b8c73114eaa
+status: experimental
+description: Detects creation of HTA (HTML Application) files in common temp directories.
+references:
+    - https://unit42.paloaltonetworks.com/kimjongrat-stealer-variant-powershell/
+author: Inovasys_Mahmoud_Osama
+date: 2025-06-23
+tags:
+    - attack.execution
+    - attack.t1059.005
+    - inovasys.inspired_by_TI
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '.hta'
+        TargetFilename|contains:
+            - '\AppData\Local\Temp\'
+            - '\Temp\'
+            - '\Windows\Temp\'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
+
