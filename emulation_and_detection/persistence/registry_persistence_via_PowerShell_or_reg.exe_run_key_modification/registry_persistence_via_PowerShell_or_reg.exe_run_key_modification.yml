@@ -1,0 +1,32 @@
+title: PowerShell Persistence via New-ItemProperty in Run Key
+id: 34769f2a-875a-4ffd-8d3c-a420b3af3b5b
+status: experimental
+description: Detects attempts to establish persistence by modifying the Windows Run registry key using either PowerShell (New-ItemProperty) or reg.exe. Adversaries commonly abuse these techniques to ensure malicious scripts or binaries execute automatically upon user logon.
+references:
+    - https://unit42.paloaltonetworks.com/kimjongrat-stealer-variant-powershell/
+author: Inovasys_Mahmoud_Osama
+date: 2025-06-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_new:
+        CommandLine|contains|all:
+            -  'New-ItemProperty'
+            - '\Software\Microsoft\Windows\CurrentVersion\Run'
+    selection_reg:
+        CommandLine|contains|all:
+            - 'reg'
+            - 'add'
+            - '\Software\Microsoft\Windows\CurrentVersion\Run'
+    filter:
+        ParentImage|endswith: '\microsoft\skype for desktop\skype.exe'
+    condition: (selection_new or selection_reg) and not filter
+falsepositives:
+  - Unknown
+level: medium
+
