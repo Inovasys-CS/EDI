@@ -1,0 +1,54 @@
+title: Suspicious WMI Queries for Anti-Analysis and Persistence
+id: cb47cc56-efbc-4a2a-be51-77431090f3cf 
+status: experimental  
+description: Detects suspicious WMI queries used for anti-VM checks, persistence mechanisms, or reconnaissance, especially when executed by uncommon or suspicious parent processes.  
+references:  
+    - https://attack.mitre.org/techniques/T1047/  
+    - https://blog.talosintelligence.com/new-tornet-backdoor-campaign/  
+author: Inovasys_Mahmoud_Osama 
+date: 2025-02-23  
+tags:
+    - attack.execution  
+    - attack.t1047   
+    - attack.persistence  
+    - attack.defense-evasion  
+logsource:  
+    category: process_creation  
+    product: windows  
+detection:
+    selection_img:
+        - Image|endswith:  
+            - '\wmic.exe'  
+            - '\powershell.exe'  
+            - '\cmd.exe'
+        - OriginalFileName:
+            - 'wmic.exe'
+            - 'PowerShell.EXE'
+            - 'Cmd.Exe'
+    selection_cmdline_1:
+        CommandLine|contains: 'SELECT '
+    selection_cmdline_2: 
+        CommandLine|contains:  
+            - 'FROM Win32_ComputerSystem'  # Anti-VM check  
+            - 'FROM Win32_BIOS'  # Anti-VM check  
+            - 'FROM Win32_Process'  # Process discovery  
+            - 'FROM Win32_NetworkAdapterConfiguration'  # Network discovery  
+            - 'FROM __InstanceCreationEvent'  # WMI persistence  
+            - 'FROM Win32_Service'  # Service enumeration  
+            - 'FROM Win32_StartupCommand'  # Persistence via startup commands  
+            - 'FROM StdRegProv'  # Registry access via WMI  
+    filter_legitimate_parent:
+        ParentImage|endswith:
+            - '\explorer.exe'  
+            - '\services.exe'  
+            - '\svchost.exe'  
+            - '\mmc.exe'  
+            - '\taskmgr.exe'  
+            - '\gpscript.exe'  
+            - '\winlogon.exe'  
+            - '\wmiprvse.exe'  
+    condition: all of selection_* and not filter_legitimate_parent  
+falsepositives:  
+    - System administration scripts using WMI queries from these parent processes.  
+    - Some security tools may use WMI for system reconnaissance.  
+level: high  
