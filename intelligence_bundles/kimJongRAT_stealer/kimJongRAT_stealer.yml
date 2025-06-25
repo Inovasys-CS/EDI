@@ -1,0 +1,21 @@
+title: KimJongRAT infostealer Campaign
+description: A collection of rules that aim to detect the on-going KimJongRAT  infostealer campaign.
+category: Report
+date: 2025/06/24
+company: paloaltonetworks
+reference: https://unit42.paloaltonetworks.com/kimjongrat-stealer-variant-powershell/
+rules:
+    - defense_evasion/file_event_win_susp_lnk_double_extension
+    - execution/proc_creation_win_curl_download_susp_file_sharing_domains
+    - command_and_control/proc_creation_win_cmd_curl_download_exec_combo
+    - execution/proc_creation_win_mshta_susp_pattern
+    - execution/hta_file_created_in_temp_directory
+    - defense_evasion/log_file_created_in_temp_directory
+    - defense_evasion/certutil_decode
+    - execution/proc_creation_win_powershell_set_policies_to_unsecure_level
+    - execution/proc_creation_win_susp_script_exec_from_temp
+    - execution/suspicious_wmi_queries_for_anti_analysis
+    - persistence/registry_set_susp_run_key_img_folder
+    - persistence/vbs_File_added_to_registry_run_key
+    - persistence/powershell_modifying_run_registry_key
+    - persistence/registry_persistence_via_PowerShell_or_reg.exe_run_key_modification
