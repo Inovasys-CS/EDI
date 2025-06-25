@@ -1,0 +1,27 @@
+title: PowerShell Modifying Run Registry Key
+id: 4b928f3d-1c7f-42cb-a83f-5b03e16bdf12
+status: experimental
+description: Detects when PowerShell sets a new registry value in the Run key for persistence
+references:
+    - https://unit42.paloaltonetworks.com/kimjongrat-stealer-variant-powershell/
+author: Inovasys_Mahmoud_Osama
+date: 2025-06-24
+tags:
+    - attack.persistence
+    - attack.t1547.001
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: registry_set
+detection:
+  selection_Img:
+    Image|endswith:
+        - '\powershell.exe'
+        - '\pwsh.exe'
+    TargetObject|contains:
+      - '\Software\Microsoft\Windows\CurrentVersion\Run'
+  condition: selection_Img
+falsepositives:
+  - Legitimate scripts that configure autorun applications
+level: high
+
