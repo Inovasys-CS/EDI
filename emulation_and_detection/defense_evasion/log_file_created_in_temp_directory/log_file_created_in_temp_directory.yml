@@ -1,0 +1,24 @@
+title: Log File Created in Temp Directory
+id: 5ebd6b98-5d33-4f9a-b0f2-d3b3ee4ce29d
+status: experimental
+description: Detects creation of `.log` files in temporary directories, which could indicate suspicious activity like tool output decoding.
+references:
+    - https://unit42.paloaltonetworks.com/kimjongrat-stealer-variant-powershell/
+author: Inovasys_Mahmoud_Osama
+date: 2024-06-24
+tags:
+    - attack.defense_evasion
+    - attack.t1140
+    - inovasys.inspired_by_TI
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '.log'
+        TargetFilename|contains:
+            - '\AppData\Local\Temp\'
+            - '\Temp\'
+    condition: selection
+level: low
+
