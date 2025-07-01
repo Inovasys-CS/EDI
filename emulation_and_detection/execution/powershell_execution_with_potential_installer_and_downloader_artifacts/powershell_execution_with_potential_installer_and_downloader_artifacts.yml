@@ -1,0 +1,26 @@
+title: PowerShell Execution with Potential Installer and Downloader Artifacts
+id: e57cc49e-bb78-4ef1-b1e9-c9bb2ae0c6d0
+status: experimental
+description: Detects PowerShell commands that contain references to 'curl' and 'msiexec.exe', which may indicate script-based installation or download-execute behavior.
+references:
+    - https://www.esentire.com/blog/dont-get-caught-in-the-headlights-deerstealer-analysis
+author: Inovasys_Mahmoud_Osama
+date: 2025-06-30
+tags:
+    - attack.execution
+    - attack.t1059.001  # PowerShell
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: 
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains|all:
+            - 'curl'
+            - '.msi'
+            - 'msiexec.exe'
+    condition: selection
+level: medium
+
