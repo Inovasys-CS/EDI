@@ -1,0 +1,30 @@
+title: Process Started with RunAs Verb
+id: 8b7fefbd-4683-45f5-807b-a0e52813d530
+status: experimental
+description: Detects where process run with runas argument using powershell to run it with administrator privilage.
+references:
+    - https://www.gdatasoftware.com/blog/2025/07/38228-monero-malware-xmrig-resurgence
+author: Inovasys_Mahmoud_Osama
+date: 2025-07-20
+tags:
+    - inovasys.public
+    - attack.privilege_escalation
+    - attack.t1548.002
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\powershell.exe'
+            - '\pwsh.exe'
+        CommandLine|contains|all:
+            - 'Start-Process'
+            - '-Verb'
+            - 'RunAs'
+    condition: selection
+falsepositives:
+    - Legitimate administrative scripting
+level: medium
+
+
