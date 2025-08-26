@@ -1,0 +1,24 @@
+title: Defender Exclusion Added Using reg.exe
+id: a00436d1-8dbf-428b-8232-80092518ccb8
+description: Detects attempts to add Microsoft Defender exclusion paths via reg.exe
+references:
+    - https://www.gdatasoftware.com/blog/2025/07/38228-monero-malware-xmrig-resurgence
+status: experimental
+author: Inovasys_Mahmoud_Osama
+date: 2025-07-20
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1562.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains:
+          - '\Microsoft\Windows Defender\Exclusions\Paths'
+          - '\Microsoft\Windows Defender\Exclusions\Processes'
+          - '\Microsoft\Windows Defender\Exclusions\Extensions'
+    condition: selection
+level: high
