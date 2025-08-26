@@ -1,0 +1,25 @@
+title: SYS File Dropped by Process from Temp Folder
+id: 2ebc5948-0ac5-420d-bbd0-ea86725ab863
+status: experimental
+description: Detects creation of .sys files where the parent process was executed from the temp folder. This is suspicious behavior often linked to BYOVD attacks.
+references:
+    - https://www.gdatasoftware.com/blog/2025/07/38228-monero-malware-xmrig-resurgence
+author: Inovasys_Mahmoud_Osama
+date: 2025-07-20
+tags:
+    - inovasys.public
+    - attack.defense_evasion
+    - attack.t1068
+    - attack.t1547.006
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        TargetFilename|endswith: '.sys'
+        Image|contains: '\Temp\'
+    condition: selection
+falsepositives:
+    - Unknown
+level: high
+
