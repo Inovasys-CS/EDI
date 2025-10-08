@@ -1,0 +1,38 @@
+# Indentation needs to be spaces: 4
+title: Cmd.exe Interaction With Named Pipes
+id: b1350fa9-ff8f-4d09-b63e-f967eab820aa
+status: experimental
+description: Detects instances where cmd.exe is executed with command lines referencing named pipes (\\.\pipe\), which is often used in malware inter-process communication.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+  - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - attack.execution
+    - attack.t1059.003
+    - inovasys.inspired_by_TI
+    - inovasys.onboarded_on_aro
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_deewan
+logsource:
+  category: process_creation
+  product: windows
+detection:
+    selection_img:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    selection_cmdline:
+        CommandLine|contains: '\\.\pipe\'
+    filter_main:
+        ParentImage|endswith:
+            - '\msedge.exe'
+            - '\chrome.exe'
+            - '\brave.exe'
+    filter_optional_code:
+        ParentCommandLine|contains: '--languageServerPipePath='
+        ParentImage|endswith: '\Code.exe'
+    condition: all of selection_* and not 1 of filter_*
+falsepositives:
+    - Rare but possible in some internal toolchains or scripts
+level: medium
