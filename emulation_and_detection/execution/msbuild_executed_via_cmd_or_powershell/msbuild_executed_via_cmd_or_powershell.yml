@@ -8,10 +8,6 @@ references:
     - https://attack.mitre.org/techniques/T1127/001/
     - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
 tags:
-    - inovasys.onboarded_on_aro
-    - inovasys.onboarded_on_hsa
-    - inovasys.onboarded_on_cequens
-    - inovasys.onboarded_on_deewan
     - attack.execution
     - attack.defense-evasion
     - attack.t1127.001
