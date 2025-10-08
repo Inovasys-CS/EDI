@@ -1,0 +1,25 @@
+title: msbuild.exe makes a network connection (Potential C2 Activity)
+id: d0181bbb-9a81-49da-9da3-c17a0fd15784
+status: experimental
+description: Detects when msbuild.exe makes a network connection, which may indicate abuse of MSBuild for C2 communication or fileless malware execution.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://attack.mitre.org/techniques/T1127/001/
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - attack.defense-evasion
+    - attack.t1127.001
+    - attack.command-and-control
+    - attack.t1102.001
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        Image|endswith: '\MSBuild.exe'
+    condition: selection
+falsepositives:
+    - Rare in typical environments; might occur in developer systems (validate IP/Domain context)
+level: high
