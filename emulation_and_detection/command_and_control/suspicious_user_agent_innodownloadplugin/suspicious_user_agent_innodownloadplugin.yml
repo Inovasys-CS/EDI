@@ -1,0 +1,23 @@
+title: Network Connection with Suspicious User-Agent InnoDownloadPlugin
+id: baa31e22-d273-41d6-a10f-837659f3e7b7
+status: experimental
+description: Detects network connections using the User-Agent string 'InnoDownloadPlugin', which may indicate suspicious download behavior via Inno Setup.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://attack.mitre.org/techniques/T1071/001/
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - attack.command-and-control
+    - attack.t1071.001
+    - inovasys.inspired_by_TI
+logsource:
+    category: proxy
+detection:
+    selection:
+        UserAgent|contains: 'InnoDownloadPlugin'
+    condition: selection
+falsepositives:
+    - Legitimate use of Inno Setup installers (verify file source and hash)
+level: medium
+
