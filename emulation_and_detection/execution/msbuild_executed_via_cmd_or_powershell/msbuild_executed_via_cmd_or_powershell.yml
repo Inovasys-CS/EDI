@@ -1,0 +1,33 @@
+title: MSBuild Executed via CMD or PowerShell (Suspicious Parent Process)
+id: 9fc3750b-0b5a-4b52-9ea1-8b57c9164c47
+status: experimental
+description: Detects msbuild.exe being executed with cmd.exe or powershell.exe as parent process, which is uncommon and often associated with malicious use of MSBuild as a LOLBin.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://attack.mitre.org/techniques/T1127/001/
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - inovasys.onboarded_on_aro
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_deewan
+    - attack.execution
+    - attack.defense-evasion
+    - attack.t1127.001
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection_img:
+        - Image|endswith: '\MSBuild.exe'
+        - OriginalFileName: 'MSBuild.exe'
+    selection_parent:
+        ParentImage|endswith:
+            - '\cmd.exe'
+            - '\powershell.exe'
+    condition: all of selection_*
+falsepositives:
+    - Developers or CI/CD environments (consider tuning for dev hosts)
+level: medium
