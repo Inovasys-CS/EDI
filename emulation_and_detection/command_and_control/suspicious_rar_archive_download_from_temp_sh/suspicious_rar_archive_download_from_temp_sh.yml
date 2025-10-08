@@ -1,0 +1,20 @@
+title: Suspicious RAR Archive Download From temp.sh
+id: a0083b50-ebfa-44e4-8b70-13fdae27b618
+status: experimental
+description: Detects the download of .rar files from temp.sh, a file hosting service commonly used in malware campaigns.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - attack.command-and-control
+    - attack.t1105
+    - inovasys.inspired_by_TI
+logsource:
+    category: proxy
+detection:
+    selection:
+        url|contains: "temp.sh"
+        url|endswith: ".rar"
+    condition: selection
+level: high
