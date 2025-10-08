@@ -1,0 +1,26 @@
+# Indentation needs to be spaces: 4
+title: cmd.exe Spawned by dllhost.exe
+id: 419f4679-faba-45fd-adca-f4203f089490
+description: Detects instances where cmd.exe is spawned by dllhost.exe, which is abnormal and may indicate malicious code execution.
+status: experimental
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - attack.defense-evasion 
+    - attack.t1055
+    - inovasys.inspired_by_TI
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|endswith: '\dllhost.exe'
+    selection_cmd:
+        - Image|endswith: '\cmd.exe'
+        - OriginalFileName: 'Cmd.Exe'
+    condition: all of selection_*
+falsepositives:
+    - Unknown
+level: high
