@@ -7,10 +7,6 @@ date: 2025-04-07
 references:
     - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
 tags:
-    - inovasys.onboarded_on_aro
-    - inovasys.onboarded_on_hsa
-    - inovasys.onboarded_on_cequens
-    - inovasys.onboarded_on_deewan
     - attack.execution
     - attack.t1059.003
     - attack.defense-evasion
