@@ -1,0 +1,30 @@
+title: CMD File Creation in Windows NT Program Files Path
+id: 66be21f5-0de4-47eb-9610-aa0ce2c0bf70
+status: experimental
+description: Detects creation of .cmd script files in C:\Program Files\Windows NT, which is uncommon and may indicate execution or persistence techniques.
+author: Inovasys_Mahmoud_Osama
+date: 2025-04-07
+references:
+    - https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/
+tags:
+    - inovasys.onboarded_on_aro
+    - inovasys.onboarded_on_hsa
+    - inovasys.onboarded_on_cequens
+    - inovasys.onboarded_on_deewan
+    - attack.execution
+    - attack.t1059.003
+    - attack.defense-evasion
+    - inovasys.inspired_by_TI
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Program Files\Windows NT\'
+        TargetFilename|endswith:
+            - '.cmd'
+            - '.exe'
+    filter_main_wordpad:
+        TargetFilename: 'C:\Program Files\Windows NT\Accessories\wordpad.exe'
+    condition: selection and not 1 of filter_*
+level: high
