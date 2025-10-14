@@ -3,7 +3,7 @@
 
 The DFIR Reports - 2025/4/25, Report, [Reference Link](https://thedfirreport.com/2025/03/31/fake-zoom-ends-in-blacksuit-ransomware/)
 
-A collection of rules that aim to detect BlackSuit Ransomeware.
+A collection of rules created by inovasys team that aim to detect BlackSuit Ransomeware behavior.
 
 ## Related Rules
 
