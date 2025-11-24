@@ -1,0 +1,42 @@
+title: Suspicious File Downloads from Telegram Infrastructure
+id: 8c9d0e1f-2a3b-4c5d-6e7f-8a9b0c1d2e4f
+status: experimental
+description:  Detects potentially malicious file downloads originating from Telegram domains and IP addresses,
+     with additional suspicious file type filtering
+references:
+  - https://www.picussecurity.com/resource/blog/cavalry-werewolf-apt
+author: Inovasys_Manar_Mamdouh
+date: 2025-10-31
+tags:
+    - attack.exfiltration
+    - attack.t1567.002
+    - attack.t1105
+logsource:
+    category: file_event
+    product: windows
+detection:
+    telegram_domains:
+        FileOriginUrl|contains:
+            - 'api.telegram.org'
+            - 't.me'
+            - 'telegram.org'
+        FileOriginReferrerUrl|contains:
+            - 'api.telegram.org'
+            - 't.me'
+            - 'telegram.org'
+    file_creation:
+        ActionType: 'FileCreated'
+    suspicious_extensions:
+        TargetFilename|endswith:
+            - '.exe'
+            - '.dll'
+            - '.ps1'
+            - '.bat'
+            - '.cmd'
+            - '.vbs'
+            - '.js'
+            - '.scr'
+            - '.zip'
+            - '.rar'
+    condition: file_creation and telegram_domains and suspicious_extensions
+level: medium
