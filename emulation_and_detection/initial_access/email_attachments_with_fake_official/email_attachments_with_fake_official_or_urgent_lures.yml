@@ -1,0 +1,43 @@
+title: Suspicious Email Attachments with Fake Official or Urgent Lures
+id: 352d5523-d4d9-4b7a-8bb9-b315c5088a82
+status: experimental
+description: Detects emails containing attachments with filenames suggesting urgency or official nature
+  (e.g., "urgent", "invoice", "salary") combined with executable or macro-enabled file types  often used 
+  in phishing and malware delivery campaigns.
+references:
+  - https://www.picussecurity.com/resource/blog/cavalry-werewolf-apt
+author: Inovasys_Manar_Mamdouh
+date: 2025-10-31
+tags:
+  - attack.initial_access
+  - attack.t1566.001
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection_keywords:
+     FileName|contains:
+        - 'bonus'
+        - 'payout'
+        - 'layoff'
+        - 'termination'
+        - 'urgent'
+        - 'immediate'
+        - 'confidential'
+        - 'invoice'
+        - 'salary'
+        - 'payment'
+        - 'results'
+        - 'award'
+        - 'audit'
+        - 'project'
+        - 'official'
+        - 'legal'
+        - 'subpoena'
+        - 'money'
+        - 'review'
+        - 'transaction'
+  condition: selection_keywords
+falsepositives:
+  - Legitimate internal emails using these terms for business purposes
+level: high
