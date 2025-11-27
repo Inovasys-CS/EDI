@@ -5,15 +5,11 @@ date: 2025/10/20
 company: Picus Security
 reference: https://www.picussecurity.com/resource/blog/cavalry-werewolf-apt
 rules:
-    - initial_access/phishing_lnk_or_container_delivery
-    - execution/powershell_download_execute_from_external_domains
-    - execution/suspicious_mshta_execution_with_remote_payload
-    - execution/cmd_scheduled_task_creation
-    - persistence/schtasks_creation_by_user_context
-    - persistence/registry_runkey_for_persistence
-    - defense_evasion/powershell_obfuscated_base64_commands
-    - defense_evasion/wscript_or_cscript_running_js_vbs_from_temp
-    - credential_access/suspicious_lsass_memory_access
-    - collection/sensitive_document_archiving_via_rar_or_zip
-    - command_and_control/http_or_https_beaconing_to_suspicious_domains
-    - exfiltration/data_exfiltration_over_http_post
+    - initial_access/email_attachments_with_fake_official
+    - initial_access/suspicious_attachment_in_outlook_cache
+    - command_and_control/non_browser_communication_with_telegram_api
+    - command_and_control/proc_creation_win_pua_chisel
+    - defense_evasion/proc_creation_win_powershell_base64_invoke
+    - discovery/proc_creation_win_susp_network_command
+    - execution/proc_creation_win_powershell_download_iex
+    - exfiltration/file_creation_from_telegram
