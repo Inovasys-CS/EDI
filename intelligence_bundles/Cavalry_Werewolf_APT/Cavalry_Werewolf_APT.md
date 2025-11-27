@@ -8,19 +8,19 @@ Cavalry Werewolf APT deploys custom malware to steal credentials, moves laterall
 ## Related Rules
 
 
-1. [initial_access/email_attachments_with_fake_official](../initial_access/email_attachments_with_fake_official/)
+1. [initial_access/email_attachments_with_fake_official](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/initial_access/email_attachments_with_fake_official)
 
-2. [initial_access/suspicious_attachment_in_outlook_cache](../initial_access/suspicious_attachment_in_outlook_cache/)
+2. [initial_access/suspicious_attachment_in_outlook_cache](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/initial_access/suspicious_attachment_in_outlook_cache)
 
-3. [defense_evasion/proc_creation_win_powershell_base64_invoke](../defense_evasion/proc_creation_win_powershell_base64_invoke/)
+3. [command_and_control/non_browser_communication_with_telegram_api](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/command_and_control/non_browser_communication_with_telegram_api)
 
-4. [discovery/proc_creation_win_susp_network_command](../discovery/proc_creation_win_susp_network_command/)
+4. [command_and_control/proc_creation_win_pua_chisel](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/command_and_control/proc_creation_win_pua_chisel)
 
-5. [execution/proc_creation_win_powershell_download_iex](../execution/proc_creation_win_powershell_download_iex/)
+5. [defense_evasion/proc_creation_win_powershell_base64_invoke](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/defense_evasion/proc_creation_win_powershell_base64_invoke)
 
-6. [exfiltration/file_creation_from_telegram](../exfiltration/file_creation_from_telegram/)
+6. [discovery/proc_creation_win_susp_network_command](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/discovery/proc_creation_win_susp_network_command)
 
-7. [command_and_control/non_browser_communication_with_telegram_api](../command_and_control/non_browser_communication_with_telegram_api/)
+7. [execution/proc_creation_win_powershell_download_iex](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/execution/proc_creation_win_powershell_download_iex)
 
-8. [command_and_control/proc_creation_win_pua_chisel](../command_and_control/proc_creation_win_pua_chisel/)
+8. [exfiltration/file_creation_from_telegram](https://github.com/Inovasys-CS/EDI/tree/main/emulation_and_detection/exfiltration/file_creation_from_telegram)
 
