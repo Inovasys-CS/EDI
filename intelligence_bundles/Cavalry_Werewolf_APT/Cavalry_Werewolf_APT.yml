@@ -1,0 +1,19 @@
+title: Cavalry Werewolf APT
+description: A collection of rules that aim to detect activity related to the Cavalry Werewolf APT group.
+category: Report
+date: 2025/10/20
+company: Picus Security
+reference: https://www.picussecurity.com/resource/blog/cavalry-werewolf-apt
+rules:
+    - initial_access/phishing_lnk_or_container_delivery
+    - execution/powershell_download_execute_from_external_domains
+    - execution/suspicious_mshta_execution_with_remote_payload
+    - execution/cmd_scheduled_task_creation
+    - persistence/schtasks_creation_by_user_context
+    - persistence/registry_runkey_for_persistence
+    - defense_evasion/powershell_obfuscated_base64_commands
+    - defense_evasion/wscript_or_cscript_running_js_vbs_from_temp
+    - credential_access/suspicious_lsass_memory_access
+    - collection/sensitive_document_archiving_via_rar_or_zip
+    - command_and_control/http_or_https_beaconing_to_suspicious_domains
+    - exfiltration/data_exfiltration_over_http_post
