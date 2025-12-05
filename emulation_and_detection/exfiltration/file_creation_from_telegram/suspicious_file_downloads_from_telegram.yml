@@ -1,9 +1,8 @@
 title: Suspicious File Downloads from Telegram Infrastructure
 id: 3c1d7e54-be81-484b-8819-5b35bdd7f852
 status: experimental
-description: |
-    Detects potentially malicious file downloads originating from Telegram domains and IP addresses,
-     with additional suspicious file type filtering
+description: Detects creation of high-risk files (.exe, .dll, .ps1, .bat, .cmd, .vbs, .js, .scr, .zip, .rar) downloaded from Telegram-related infrastructure.
+          This behavior may indicate malware delivery, remote-access tools, or exfiltration using Telegram as a distribution channel.
 references:
    - https://www.picussecurity.com/resource/blog/cavalry-werewolf-apt
 author: Inovasys_Manar_Mamdouh
