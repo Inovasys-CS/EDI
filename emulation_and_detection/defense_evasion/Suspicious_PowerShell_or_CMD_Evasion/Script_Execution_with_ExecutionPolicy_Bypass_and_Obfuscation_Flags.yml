@@ -1,4 +1,4 @@
-title: Obfuscated Script Launch Using ExecutionPolicy Bypass
+title: Evasive PowerShell/CMD with Bypass and Encoding
 id: 934831d6-078c-4d5b-8fa4-6bad2d0b6688
 status: experimental
 description: Detects the execution of PowerShell or CMD processes that use ExecutionPolicy Bypass in combination with common
