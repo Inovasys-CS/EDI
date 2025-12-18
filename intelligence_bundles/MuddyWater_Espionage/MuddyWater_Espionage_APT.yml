@@ -1,0 +1,12 @@
+title: MuddyWater Espionage APT
+description: A collection of rules that aim to detect activity related to the MuddyWater espionage threat actor.
+category: Report
+date: 2025/10/22
+company: Group-IB
+reference: https://www.group-ib.com/blog/muddywater-espionage/
+rules:
+  - credential_access/file_access_win_browser_credential_access
+  - credential_access/file_access_win_dpapi_master_key_access
+  - privilege_escalation/CLSID_Default_Value_Hijacking/COM_Object_Hijacking_via_CLSID_Default_Value_Modification
+  - execution/proc_creation_win_pdqdeploy_execution
+  - persistence/reg_set_com_hijacking_susp_locations/registry_set_persistence_com_hijacking_susp_locations
