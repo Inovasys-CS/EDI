@@ -1,9 +1,6 @@
 # MuddyWater Espionage APT
 
-**Threat Date:** October 22, 2025  
-**Threat Actor Name:** MuddyWater (Espionage)
-
-**Group-IB – 2023, Report [Reference Link](https://www.group-ib.com/blog/muddywater-espionage/)
+**Group-IB – 2023, October 22, 2025, Report [Reference Link](https://www.group-ib.com/blog/muddywater-espionage/)
 
 ---
 
