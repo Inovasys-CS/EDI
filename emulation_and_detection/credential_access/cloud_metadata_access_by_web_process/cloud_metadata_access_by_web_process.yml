@@ -1,0 +1,48 @@
+title: Web Application Process Accessing Cloud Instance Metadata Endpoint
+id: d4e5f6a7-b8c9-0123-defa-234567890123
+status: stable
+description: Detects web server processes (node, python, php, ruby, java) making direct
+  HTTP connections to the cloud instance metadata endpoint 169.254.169.254.
+  This is a core step for stealing temporary cloud IAM credentials.
+references:
+  - https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/
+author: Manar_Mamdouh_Inovasys
+date: 2026-05-14
+tags:
+  - attack.credential_access
+  - attack.t1552.005
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection_web_process:
+    Image|endswith:
+      - '/node'
+      - '/python'
+      - '/python3'
+      - '/deno'
+      - '/php'
+      - '/ruby'
+      - '/java'
+  selection_metadata_endpoint:
+    DestinationIp:
+      - '169.254.169.254'
+      - '169.254.170.2'
+    DestinationPort:
+      - 80
+      - 443
+  filter_cloud_agents:
+    Image|contains:
+      - 'amazon-ssm'
+      - 'cloudwatch'
+      - 'aws-cli'
+      - 'gcloud'
+      - 'waagent'
+      - 'cloud-init'
+      - 'google_guest'
+  condition: selection_web_process and selection_metadata_endpoint
+    and not filter_cloud_agents
+falsepositives:
+  - Custom cloud-aware applications using raw SDK metadata calls
+  - Application health-check scripts using metadata
+level: medium
