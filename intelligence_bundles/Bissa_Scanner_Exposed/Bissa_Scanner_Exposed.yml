@@ -1,1 +1,13 @@
-
+title: Bissa Scanner Exposed
+description: A collection of rules that aim to detect activity related to Bissa Scanner, an AI-assisted mass exploitation and credential harvesting pipeline.
+category: Report
+date: 2026/04/22
+company: DFIR Report
+reference: https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/
+rules:
+  - discovery/web_app_access_credential_artifact
+  - execution/web_process_spawning_command_shell
+  - persistence/node_process_suspicious_file_creation
+  - credential_access/cloud_metadata_access_by_web_process
+  - exfiltration/web_process_connection_to_cloud_storage
+  - execution/linux_web_process_spawning_command_shell
