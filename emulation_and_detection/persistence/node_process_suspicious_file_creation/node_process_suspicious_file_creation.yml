@@ -1,0 +1,46 @@
+title: Suspicious File Creation by Node Process
+id: 2c27c7bb-c3a4-4d4a-9cbb-7df1286d89b0
+status: test
+description: Detects the creation of suspicious files (e.g., web shells, executables) by a Node.js or Next.js server process. This activity is a common post-exploitation step after a successful RCE, such as from exploiting CVE-2025-55182 (React2Shell), where an attacker drops a backdoor for persistence.
+references:
+    - https://securitylabs.datadoghq.com/articles/cve-2025-55182-react2shell-remote-code-execution-react-server-components
+    - https://www.trendmicro.com/en_gb/research/25/l/CVE-2025-55182-analysis-poc-itw.html
+    - https://github.com/msanft/CVE-2025-55182
+author: Inovasys_Yousef_M.Helmy
+date: 2025-12-14
+tags:
+    - attack.persistence
+    - attack.t1505.003
+    - cve.2025-55182
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection_parent:
+        ParentImage|contains: "node.exe"
+    selection_directory:
+        TargetFilename|contains:
+            - "\\react-server\\"
+            - "\\react-scripts\\"
+            - "\\react-dom\\"
+            - "\\react\\"
+            - "\\nodejs\\"
+            - "\\temp\\"
+    selection_extension:
+        TargetFilename|endswith:
+            - ".aspx"
+            - ".asp"
+            - ".jsp"
+            - ".jspx"
+            - ".php"
+            - ".bat"
+            - ".exe"
+            - ".py"
+            - ".pl"
+            - ".go"
+            - ".zip"
+            - ".7z"
+    condition: selection_parent and selection_directory and selection_extension
+falsepositives:
+    - Legitimate file uploads or deployments by web applications.
+level: high
