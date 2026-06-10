@@ -1,0 +1,58 @@
+title: Web Server Process Spawning Shell Interpreter
+id: b2c3d4e5-f6a7-8901-bcde-f12345678901
+status: experimental
+description: Detects web application runtime processes spawning shell
+  interpreters or executing reconnaissance commands mid-runtime. Indicates
+  successful server-side code injection via React2Shell or similar exploits.
+references:
+  - https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/
+author: Manar_Mamdouh_Inovasys
+date: 2026-05-16
+tags:
+  - attack.execution
+  - attack.t1059.004
+  - attack.t1059.007
+logsource:
+  category: process_creation
+  product: linux
+detection:
+  selection_parent_web:
+    ParentImage|endswith:
+      - '/node'
+      - '/deno'
+      - '/python'
+      - '/python3'
+      - '/php'
+      - '/ruby'
+      - '/java'
+  selection_shell_child:
+    Image|endswith:
+      - '/sh'
+      - '/bash'
+      - '/dash'
+      - '/zsh'
+      - '/ksh'
+  selection_recon_commands:
+    CommandLine|contains:
+      - 'whoami'
+      - 'id '
+      - 'printenv'
+      - 'env '
+      - 'cat /etc'
+      - 'cat /proc'
+      - 'uname -a'
+      - 'hostname'
+      - 'curl '
+      - 'wget '
+      - 'python -c'
+      - 'python3 -c'
+      - '/dev/tcp'
+      - 'base64'
+      - 'nc '
+      - 'ncat'
+  condition: selection_parent_web and (selection_shell_child or selection_recon_commands)
+falsepositives:
+  - Build scripts that spawn shells during deployment
+  - Development environments running test suites
+  - Applications with legitimate shell execution (document converters, etc.)
+level: high
