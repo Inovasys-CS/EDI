@@ -1,0 +1,41 @@
+title: Suspicious Connection to cloud Storage from Web Application Process
+id: 3ec4b56c-7b95-4474-8068-0e1df64e7543
+status: experimental
+description:  Detects web application or scripting processes establishing
+  network connections to S3-compatible cloud storage services, which may
+  indicate data exfiltration or unauthorized file uploads.
+references:
+  - https://thedfirreport.com/2026/04/22/bissa-scanner-exposed-ai-assisted-mass-exploitation-and-credential-harvesting/
+author: Manar_Mamdouh_Inovasys
+date: 2026-05-01
+tags:
+  - attack.exfiltration
+  - attack.t1567.002
+  - attack.t1560.001
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection_web_process:
+    Image|endswith:
+      - '/python3'
+      - '/python'
+      - '/node'
+      - '/php'
+      - '/ruby'
+      - '/java'
+  selection_s3_endpoints:
+    DestinationHostname|contains:
+      - 's3.filebase.com'
+      - 'filebase.com'
+      - '.s3.amazonaws.com'
+      - '.s3-accelerate.amazonaws.com'
+      - 'backblazeb2.com'
+      - 'wasabisys.com'
+      - 'digitaloceanspaces.com'
+  condition: selection_web_process and selection_s3_endpoints
+falsepositives:
+  - Legitimate application backup processes
+  - Log shipping to S3
+  - Deployment pipelines using S3 artifact storage
+level: low
