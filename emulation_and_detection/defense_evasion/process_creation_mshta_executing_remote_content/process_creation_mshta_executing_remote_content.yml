@@ -1,0 +1,34 @@
+title: MSHTA Executing Remote Content
+id: d8b8a3d4-6e44-4d5d-a6f9-9c4f5b8c1234
+status: experimental
+description: Detects mshta.exe executing content from a remote URL
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
+author: Inovasys_Mahmoud_Osama
+date: 2026-06-10
+tags:
+  - inovasys.public
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1218.005
+
+logsource:
+  category: process_creation
+  product: windows
+
+detection:
+  selection_img:
+    Image|endswith: '\mshta.exe'
+
+  selection_remote:
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+
+  condition: selection_img and selection_remote
+
+falsepositives:
+  - Administrative scripts
+  - Legacy applications using remote HTA files
+
+level: high
