@@ -1,0 +1,31 @@
+title: MSHTA Added to RunMRU
+id: 7d1a9b8d-4d57-4b4a-9b7a-1c3d8f9e2a11
+status: experimental
+description: Detects mshta.exe being entered into the Windows Run dialog and recorded in RunMRU.
+references:
+  - https://attack.mitre.org/techniques/T1218/005/
+author: Inovasys_Mahmoud_Osama
+date: 2026-06-10
+
+tags:
+  - public
+  - attack.defense_evasion
+  - attack.t1218.005
+
+logsource:
+  product: windows
+  category: registry_set
+
+detection:
+  target_key:
+    TargetObject|contains: '\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU\'
+
+  mshta_value:
+    Details|contains: 'mshta'
+
+  condition: target_key and mshta_value
+
+falsepositives:
+  - Legitimate administrative use of mshta.exe
+
+level: medium
