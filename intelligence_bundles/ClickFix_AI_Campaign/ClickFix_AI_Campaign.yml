@@ -1,0 +1,13 @@
+title: ClickFix AI Campaign
+description:  A collection of rules that detect clickfix compaign using AI software as lure
+category: Report
+date: 2026/05/29
+company: rapid7
+reference: https://www.rapid7.com/blog/post/ve-clickfix-phishing-campaign-fake-claude-installer/
+rules:
+    - execution/proc_creation_win_powershell_susp_parameter_variation
+    - execution/proc_creation_win_powershell_download_iex
+    - execution/proc_creation_win_schtasks_susp_pattern
+    - defense_evasion/mshta_added_to_runmru
+    - defense_evasion/process_creation_mshta_executing_remote_content
+    - defense_evasion/proc_creation_win_powershell_cmdline_special_characters
