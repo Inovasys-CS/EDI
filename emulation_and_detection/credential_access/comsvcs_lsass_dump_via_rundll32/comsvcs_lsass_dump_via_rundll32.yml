@@ -1,0 +1,39 @@
+title: Comsvcs LSASS Dump Via Rundll32
+id: 9e7fe324-4bb7-40ee-b42f-ea9cb721a665
+status: test
+description: Detects the execution of Rundll32 to dump LSASS memory using comsvcs.dll,Minidump.
+references:
+    - https://www.ired.team/offensive-security/credential-access-and-credential-dumping/dump-credentials-from-lsass-process-without-mimikatz#comsvcs.dll
+    - https://book.hacktricks.xyz/windows-hardening/stealing-credentials#dumping-lsass-with-comsvcs.dll
+    - https://github.com/login-securite/lsassy/blob/master/lsassy/dumpmethod/comsvcs.py
+    - https://news.sophos.com/en-us/2023/05/09/akira-ransomware-is-bringin-88-back/
+
+tags:
+    - inovasys.public
+    - attack.credential_access
+    - attack.t1003.001
+
+author: Inovasys_Salem_Salem
+date: 2023-09-12
+
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    rundll_exec:
+        - Image|endswith: '\rundll32.exe'
+        - OriginalFileName: 'RUNDLL32.EXE'
+    commandline_dll:
+        CommandLine|contains: 'comsvcs.dll'
+    commandline_function:
+        CommandLine|contains:
+            - 'MiniDump'
+            - '#+0000^24'
+    condition: rundll_exec and all of commandline_*
+
+falsepositives:
+    - Unknown
+fields:
+    - CommandLine
+    - ParentProcessName
+level: high
