@@ -1,0 +1,36 @@
+title: Potential DLL Side-Loading of msimg32.dll from Suspicious Directory
+id: 7c3d8e52-6f1b-4a91-9c2e-0b6a9e8f4d21
+status: experimental
+description:  Detects potential DLL side-loading of the legitimate Windows msimg32.dll from
+    user-writable, temporary, or otherwise non-standard directories commonly abused
+    for malware, msimg32.dll should only ever be loaded from %SystemRoot%\System32 or
+    %SystemRoot%\SysWOW64 under normal conditions; any load from elsewhere is
+    itself anomalous.
+references:
+    - https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/
+author: Inovasys_Manar_Mamdouh
+date: 2026-08-14
+tags:
+    - attack.defense-evasion
+    - attack.t1574.002
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection_dll:
+        ImageLoaded|endswith: '\msimg32.dll'
+
+    filter_legit_system_path:
+        ImageLoaded|contains:
+            - '\Windows\System32\'
+            - '\Windows\SysWOW64\'
+            - '\Windows\WinSxS\'
+
+    condition: selection_dll and not filter_legit_system_path
+
+falsepositives:
+    - Legitimate or portable software may bundle a private, signed copy of msimg32.dll in a temp or custom app directory during installation/extraction.
+    - Enterprise software packagers (e.g., self-extracting installers) occasionally stage DLLs in %TEMP% before install.
+    - Always validate the loading process (Image), its parent, digital signature status, and file hash before escalating.
+
+level: Medium
