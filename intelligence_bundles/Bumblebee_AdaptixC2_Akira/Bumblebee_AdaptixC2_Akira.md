@@ -1,5 +1,5 @@
 
-# BumbleBee → AdaptixC2 → Akira
+# BumbleBee → AdaptixC2 → Akira Ransomware
 
 The DFIR Report - 2026/06/29, [From Bing Search to Ransomware: BumbleBee and AdaptixC2 Deliver Akira](https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/)
 
