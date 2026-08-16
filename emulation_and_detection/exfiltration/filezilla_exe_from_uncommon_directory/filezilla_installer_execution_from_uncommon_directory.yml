@@ -1,0 +1,35 @@
+title: FileZilla Installer Execution From Uncommon Directory
+id: 8f2c1a4e-6b3d-4e2f-9a1c-3d7e5b2f9c11
+status: experimental
+description: Detects execution of a FileZilla installer/binary from an uncommon staging
+    directory (e.g. ProgramData, Temp, AppData) rather than the expected
+    Program Files installation path. 
+references:
+    - https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/
+author: Inovasys_Manar_Mamdouh
+date: 2026-08-15
+tags:
+    - attack.exfiltration
+    - attack.t1048.001
+    - attack.t1567
+    - attack.command-and-control
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_installer:
+        Image|contains:
+            - 'FileZilla
+        Image|endswith: '.exe'
+    selection_paths:
+        Image|contains:
+            - '\ProgramData\'
+            - '\AppData\Local\Temp\'
+            - '\Windows\Temp\'
+            - '\Users\Public\'
+    condition: selection_installer and selection_paths
+falsepositives:
+    - Legitimate portable/admin-run FileZilla usage in rare environments
+    - Software packaging/deployment tools that stage installers in ProgramData
+level: high
