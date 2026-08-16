@@ -1,7 +1,7 @@
-title: BumbleBee AdaptixC2 Akira
+title: BumbleBee AdaptixC2 Akira Ransomware 
 description: A collection of rules that aim to detect behaviors and artifacts observed in the BumbleBee, AdaptixC2, and Akira attack chain.
 category: Report
-date: 2026/06/29
+date: 2026/08/16
 company: The DFIR Report
 reference: https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/
 rules:
