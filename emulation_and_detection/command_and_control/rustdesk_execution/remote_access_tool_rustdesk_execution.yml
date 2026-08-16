@@ -1,0 +1,29 @@
+title: Remote Access Tool - RustDesk Execution
+id: 7c1e2f9a-3b6d-4e2a-8f0c-9d5a6b7e1c4f
+status: test
+related:
+    - id: b52e84a3-029e-4529-b09b-71d19dd27e94
+description: |
+    An adversary may use legitimate desktop support and remote access software, such as RustDesk, Team Viewer, Go2Assist, LogMein, AmmyyAdmin, etc, to establish an interactive command and control channel to target systems within networks.
+    RustDesk is an open-source remote desktop application that is portable, free, and can be run without installation, which makes it attractive to adversaries seeking to bypass application control or blend in with legitimate IT support traffic.
+    These services are commonly used as legitimate technical support software, and may be allowed by application control within a target environment.
+references:
+    - https://thedfirreport.com/2026/06/29/from-bing-search-to-ransomware-bumblebee-and-adaptixc2-deliver-akira-3/#defense-evasion
+    - https://rustdesk.com/
+author: Inovasys_Manar_Mamdouh
+tags:
+    - attack.command_and_control
+    - attack.t1219
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        - Image|endswith: '\rustdesk.exe'
+        - Description|contains: 'RustDesk'
+        - Product|contains: 'RustDesk'
+        - Company|contains: 'Purslane Ltd'
+    condition: selection
+falsepositives:
+    - Legitimate use
+level: medium
