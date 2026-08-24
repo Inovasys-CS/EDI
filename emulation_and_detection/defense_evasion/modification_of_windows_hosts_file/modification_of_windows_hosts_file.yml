@@ -1,0 +1,24 @@
+title: Modification of Windows Hosts File
+id: 7f3b9e2a-4c1d-4e8f-9a2b-6d5c8e1f3a7b
+status: experimental
+description: Detects modification of the Windows hosts file, which can be abused by attackers or malware to redirect traffic, block security updates, or block access to security vendor domains.
+references:
+    - https://www.zscaler.com/blogs/security-research/abyssos-technical-analysis-new-modular-rat#technical-analysis
+author: Inovasys_Manar_Mamdouh
+date: 2026-08-21
+tags:
+    - attack.defense-evasion
+    - attack.impact
+    - attack.t1565.001
+logsource:
+    category: file_event
+    product: windows
+detection:
+    selection:
+        FolderPath|contains: 'C:\Windows\System32\drivers\etc\hosts'
+        ActionType: 'FileModified'
+    condition: selection
+falsepositives:
+    - Legitimate administrative changes to the hosts file
+    - Security software or VPN clients that modify the hosts file as part of normal operation
+level: medium
