@@ -1,0 +1,29 @@
+title: Self-Deletion via CMD Ping Timing Trick
+id: a1b2c3d4-e5f6-7890-abcd-ef1234567801
+status: experimental
+description: |
+  Detects Abyssos RAT self-deletion technique using a cmd.exe ping timing delay
+  to unlock and delete its own binary after execution. The SELF_DELETE command
+  uses the pattern: cmd.exe /C ping 127.0.0.1 -n 3 >nul & del /F /Q <filepath>.
+  This technique is also used after executing downloaded payloads (EXECURL).
+references:
+  - https://www.zscaler.com/blogs/security-research/abyssos-technical-analysis-new-modular-rat
+author: Inovasys_Manar_Mamdouh
+date: 2026-08-22
+tags:
+  - attack.defense_evasion
+  - attack.t1070.004
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains|all:
+      - 'ping 127.0.0.1'
+      - '>nul'
+      - 'del /F /Q'
+  condition: selection
+falsepositives:
+  - Legitimate administrative scripts that use ping timing for file deletion
+  - Uncommon in enterprise environments; investigate all hits
+level: high
