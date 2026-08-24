@@ -1,1 +1,14 @@
-
+title: Abyssos RAT
+description: A collection of rules that aim to detect Abyssos RAT.
+category: Report
+date: 2026/8/10
+company: Zscaler ThreatLabz
+reference: https://www.zscaler.com/blogs/security-research/abyssos-technical-analysis-new-modular-rat#technical-analysis
+rules:
+  - defense_evasion/self_deletion_via_cmd_ping_timing_trick
+  - privilege_escalation/Bypass_UAC_via_Fodhelper.exe
+  - privilege_escalation/CMSTP_UAC_bypass_via_com_object_access
+  - privilege_escalation/Fodhelper_UAC_bypass_registry-change
+  - defense_evasion/modification_of_windows_hosts_file
+  - privilege_escalation/shell_open_registry_keys_manipulation
+  - defense_evasion/enumeration_of_sandbox_process_names
