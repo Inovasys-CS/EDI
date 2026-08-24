@@ -1,0 +1,30 @@
+title: Suspicious Enumeration of Virtualization/Sandbox Process Names
+id: e1f2a3b4-c5d6-7890-efab-890000000011
+status: experimental
+description: Detects process creation events where a process lists or checks for the presence of virtualization tool processes. Abyssos performs anti-analysis  checks by scanning running processes for VMware, VirtualBox, Xen, Parallels,and QEMU tools before executing. While this rule may generate false positives,
+  it can identify sandbox evasion behavior when correlated with other Abyssos indicators. This is a hunting rule rather than a high-confidence alert.
+references:
+  - https://www.zscaler.com/blogs/security-research/abyssos-technical-analysis-new-modular-rat
+author: Inovasys_Manar_Mamdouh
+date: 2026-08-22
+tags:
+  - attack.defense_evasion
+  - attack.t1497.001
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_tasklist:
+    Image|endswith: '\tasklist.exe'
+    CommandLine|contains:
+      - 'vmtoolsd'
+      - 'vboxservice'
+      - 'vboxtray'
+      - 'xenservice'
+      - 'qemu-ga'
+  condition: selection_tasklist
+falsepositives:
+  - Security scanning tools
+  - IT asset management solutions
+  - System health monitoring utilities
+level: low
