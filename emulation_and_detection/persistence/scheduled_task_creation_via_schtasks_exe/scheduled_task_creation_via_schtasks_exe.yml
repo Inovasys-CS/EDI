@@ -1,0 +1,68 @@
+title: Scheduled Task Creation Via Schtasks.EXE
+name: scheduled_task_creation_via_schtasks
+id: c0ab5538-ce1b-44e8-847e-2f1fda0fd08e
+status: test
+description: Detects the creation of scheduled tasks via the "schtasks" utility.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/schtasks-create
+author: Florian Roth (Nextron Systems)
+date: 2019-01-16
+modified: 2025-02-11
+tags:
+    - inovasys.public
+    - attack.execution
+    - attack.persistence
+    - attack.privilege-escalation
+    - attack.t1053.005
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection_image:
+        - Image|endswith: '\schtasks.exe'
+        - OriginalFileName: 'schtasks.exe'
+    selection_cmdline:
+        CommandLine|contains: ' /create '
+    filter_main_office:
+        ParentImage|endswith: '\officesvcmgr.exe'
+        CommandLine|contains|all:
+            - '"Microsoft\Office\Office Serviceability Manager" /XML' 
+            - 'C:\Program Files\Common Files\Microsoft Shared\ClickToRun\OfficeSvcMgrSchedule'
+            - '.xml'
+    filter_main_office_integrator:
+        ParentImage|endswith: '\microsoft office\root\integration\integrator.exe'
+        CommandLine|contains|all:
+            - '/tn "Microsoft\Office\Office'
+            - '/XML "C:\ProgramData\Microsoft\ClickToRun\'
+    filter_main_office_clicktorun:
+        ParentImage: 'c:\program files\common files\microsoft shared\clicktorun\officeclicktorun.exe'
+        CommandLine|contains|all:
+            - '/tn "Microsoft\Office\Office'
+            - '/XML "C:\Program Files\Common Files\Microsoft Shared\ClickToRun\'
+    filter_optional_dell_supportassist:
+        ParentImage: 'c:\program files\dell\supportassistagent\bin\supportassistagent.exe'
+        CommandLine|contains|all:
+            - '/TN "Dell SupportAssistAgent AutoUpdate"'
+            - '/XML C:\Windows\TEMP\AutoUpdateScheduler.xml'
+    filter_optional_adobe_creative:
+        ParentImage|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - '/tn "Launch Adobe CCXProcess"' 
+            - '/tr "\"C:\Program Files\Adobe\Adobe Creative Cloud Experience\CCXProcess.exe\""'
+    filter_optional_teamviewer:
+        ParentImage|endswith: '\teamviewer_.exe'
+        CommandLine|contains|all:
+            - '\TeamViewer\RollbackTemp\TeamViewer_.exe' 
+            - '/TN TVInstallRestore'
+            - '/RESTORE" /RU SYSTEM /SC ONLOGON /F'
+    filter_optional_sqlserver:
+        ParentImage|endswith: '\cmd.exe'
+        CommandLine|contains|all:
+            - '/tn "\Microsoft\SqlServerExtension\SqlServerExtensionPermissionProvider"' 
+            - '/xml C:\Windows\'
+        CommandLine|endswith: '.tmp'
+    condition: all of selection_* and not 1 of filter_*
+falsepositives:
+    - Administrative activity
+    - Software installation
+level: medium
