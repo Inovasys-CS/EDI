@@ -1,1 +1,17 @@
-
+title: Nimbus Manticore (UNC1549)
+description: A collection of rules that aim to detect Nimbus Manticore (UNC1549).
+category: Report
+date: 2026/5/22
+company: Check Point Research
+reference: https://research.checkpoint.com/2026/fast-and-furious-nimbus-manticore-operations-during-the-iranian-conflict/
+rules:
+  - persistence/scheduled_task_creation_via_schtasks_exe
+  - persistence/webshell_detection_with_command_line_keywords
+  - execution/proc_creation_win_schtasks_folder_combos
+  - execution/proc_creation_win_schtasks_susp_pattern
+  - command_and_control/scheduled_task_creation_with_curl_to_download_file
+  - execution/suspicious_dll_sideloading
+  - initial_access/phishing_pattern_iso_in_archive
+  - defense_evasion/microsoft_office_dll_sideload
+  - exfiltration/rclone_config_file_creation
+  - defense_evasion/msxsl_exe_execution
