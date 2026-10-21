@@ -1,0 +1,30 @@
+title: Scheduled Task Creation with curl to Download File
+id: 4ce2d727-aabb-4528-9944-13d1e7918bbc
+status: experimental
+description: Detects creation of scheduled tasks that use curl to download files, which may indicate initial access or persistence.
+references:
+    -https://www.proofpoint.com/us/blog/threat-insight/hidden-plain-sight-ta397s-new-attack-chain-delivers-espionage-rats
+author: Inovasys_Mahmoud_Osama
+date: 2025-05-07
+tags:
+    - inovasys.public
+    - attack.persistence
+    - attack.command_and_control
+    - attack.t1053.005
+    - attack.t1105
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith:
+            - '\schtasks.exe'
+        CommandLine|contains|all:
+            - ' /create '
+            - 'curl'
+            - 'http'
+    condition: selection
+falsepositives:
+    - Admins creating scheduled tasks to automate software updates or downloads.
+level: medium
+
